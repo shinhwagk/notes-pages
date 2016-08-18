@@ -1,0 +1,4 @@
+GET / controllers.Application.index
+
+
+GET /api/labels controllers.Application.labels

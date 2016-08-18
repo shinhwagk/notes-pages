@@ -1,8 +1,12 @@
 import {Component} from '@angular/core';
 
+import {NavComponent} from "./nav.component";
+
+
 @Component({
-  selector: 'my-app',
-  templateUrl:`app/app.component.html`
+  selector: 'nb-app',
+  templateUrl: `app/app.component.html`,
+  directives: [NavComponent]
 })
 
 export class AppComponent {

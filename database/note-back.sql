@@ -6,13 +6,13 @@ create table labels(
 );
 
 create table labelsnet(
-	label_id_center int,
-	label_id_edge int
+	label_id_center int not null,
+	label_id_edge int not null
 );
 
-create table labeldocs(
-	label_id int,
-	note_id int
+create table labelnotes(
+	label_id int not null,
+	note_id int not null
 );
 
 create table notes(
