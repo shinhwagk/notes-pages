@@ -13,15 +13,30 @@ var api_service_1 = require("./api.service");
 var NavComponent = (function () {
     function NavComponent(_apiServices) {
         this._apiServices = _apiServices;
+        this._labels = [];
+        this._selected_labels = [];
     }
     NavComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._apiServices.getLabels().then(function (p) { return _this._data_labels = p; });
+        this._apiServices.getInitLabels().toPromise().then(function (p) { return _this._labels = p; });
+    };
+    NavComponent.prototype.check_label_selected = function (l) {
+        return this._selected_labels.filter(function (p) { return p == l; }).length > 0 ? true : false;
+    };
+    NavComponent.prototype.label_selected = function (l) {
+        if (this.check_label_selected(l)) {
+            this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
+        }
+        else {
+            this._selected_labels.push(l);
+        }
+        this._apiServices.getLabels(this._selected_labels).toPromise().then();
     };
     NavComponent = __decorate([
         core_1.Component({
             selector: 'nb-app-nav',
             templateUrl: "app/nav.component.html",
+            styleUrls: ["app/nav.component.css"],
             providers: [api_service_1.ApiServices]
         }), 
         __metadata('design:paramtypes', [api_service_1.ApiServices])

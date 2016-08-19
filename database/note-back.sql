@@ -1,17 +1,18 @@
 create database note_back;
 
 create table labels(
-	id int primary key AUTO_INCREMENT,
-	name varchar(20)
+	name varchar(20) primary key
 );
 
-create table labelsnet(
-	label_id_center int not null,
-	label_id_edge int not null
+drop table labelsnets;
+create table labelsnets(
+	center varchar(20) not null,
+	edge varchar(20) not null,
+	primary key (center,edge)
 );
 
 create table labelnotes(
-	label_id int not null,
+	label_name varchar(20) not null,
 	note_id int not null
 );
 
@@ -31,8 +32,8 @@ create table notedocuments(
 insert into labels(name) values("oracle");
 insert into labels(name) values("install");
 
-insert into labelsnet values(1,2);
-insert into labelsnet values(2,1);
+insert into labelsnets values("oracle","install");
+insert into labelsnets values("install","oracle");
 
 
 select from labelsnet n,labeldocs d,labels s where n.label_id = d.label_id

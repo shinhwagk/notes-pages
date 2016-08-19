@@ -16,9 +16,14 @@ var http_1 = require("@angular/http");
 var ApiServices = (function () {
     function ApiServices(_http) {
         this._http = _http;
+        this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        this.options = new http_1.RequestOptions({ headers: this.headers });
     }
-    ApiServices.prototype.getLabels = function () {
+    ApiServices.prototype.getInitLabels = function () {
         return this._http.get("/api/labels").map(function (res) { return res.json(); });
+    };
+    ApiServices.prototype.getLabels = function (l) {
+        return this._http.post("/api/labels", this.options).map(function (res) { return res.json(); });
     };
     ApiServices = __decorate([
         core_1.Injectable(), 

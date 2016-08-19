@@ -1,14 +1,16 @@
 package controllers
 
 import javax.inject.Inject
-import slick.driver.MySQLDriver.api._
-import scala.concurrent.ExecutionContext.Implicits.global
-import models.database.Labels
-import models.database.Labels.Label
+
+import models.database.{Labels, LabelsNets}
 import play.api.db.slick.DatabaseConfigProvider
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import slick.driver.JdbcProfile
+import slick.driver.MySQLDriver.api._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * Created by zhangxu on 2016/8/17.
@@ -21,7 +23,17 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Co
   }
 
   def labels = Action.async { implicit request =>
-    import models.transition.JsonTransitions._
-    db.run(Labels.table.result).map(rs => Ok(Json.toJson(rs)))
+    db.run(Labels.table.map(_.name).result).map(rs => Ok(Json.toJson(rs)))
+  }
+
+  def labelsByLabels = Action.async { implicit request =>
+    val body: AnyContent = request.body
+    val jsonBody: Option[JsValue] = body.asJson
+    jsonBody.map { json =>
+      db.run(LabelsNets.table.filter(_.center inSet json.as[List[String]]).map(_.edge).result)
+        .map(p => Ok(Json.toJson(p)))
+    }.getOrElse {
+      Future(BadRequest("Expecting application/json request body"))
+    }
   }
 }
