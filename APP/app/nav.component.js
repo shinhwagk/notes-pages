@@ -13,7 +13,7 @@ var api_service_1 = require("./api.service");
 var NavComponent = (function () {
     function NavComponent(_apiServices) {
         this._apiServices = _apiServices;
-        this._labels = [];
+        this._labels = ["aa", ["xxx", "s"]];
         this._selected_labels = [];
     }
     NavComponent.prototype.ngOnInit = function () {
@@ -23,7 +23,7 @@ var NavComponent = (function () {
     NavComponent.prototype.check_label_selected = function (l) {
         return this._selected_labels.filter(function (p) { return p == l; }).length > 0 ? true : false;
     };
-    NavComponent.prototype.label_selected = function (l) {
+    NavComponent.prototype.select_label = function (l) {
         if (this.check_label_selected(l)) {
             this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
         }
