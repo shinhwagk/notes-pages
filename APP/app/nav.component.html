@@ -1,5 +1,5 @@
 <nav class="navbar navbar-fixed-bottom navbar-light bg-faded">
-  <li *ngFor="let l of _labels" class="nav-item active" style="display:inline" (click)="label_selected(l)"
+  <li *ngFor="let l of _labels" class="nav-item active" style="display:inline" (click)="select_label(l)"
       [class.selected]="check_label_selected(l)">{{l}}
   </li>
 </nav>
