@@ -1,17 +1,17 @@
 "use strict";
 var RestUrls = (function () {
     function RestUrls() {
-        this.allLabelsUrl = "/api/labels";
+        this.labelsUrl = "/api/labels";
     }
     RestUrls.prototype.labelUrl = function (label) {
-        return "/api/labels/" + label;
+        return "/api/label/" + label;
     };
     return RestUrls;
 }());
 exports.RestUrls = RestUrls;
 var FileUrls = (function () {
     function FileUrls() {
-        this.allLabelsUrl = "/api/labels.json";
+        this.labelsUrl = "/api/labels.json";
     }
     FileUrls.prototype.labelUrl = function (label) {
         return "/api/labels/" + label + ".json";

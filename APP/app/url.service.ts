@@ -9,7 +9,7 @@ interface Urls {
 
 export class RestUrls implements Urls {
   labelUrl(label: string): string {
-    return `/api/labels/${label}`;
+    return `/api/label/${label}`;
   }
 
   labelsUrl: string = "/api/labels"

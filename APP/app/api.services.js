@@ -21,10 +21,10 @@ var ApiServices = (function () {
         this.options = new http_1.RequestOptions({ headers: this.headers });
     }
     ApiServices.prototype.getAllLabels = function () {
-        return this._http.get(url_service_1.UrlServices.LabelsUrl).map(function (res) { return res.json(); });
+        return this._http.get(url_service_1.UrlServices.labelsUrl).map(function (res) { return res.json(); });
     };
-    ApiServices.prototype.getLabels = function (l) {
-        return this._http.post(url_service_1.UrlServices.labelUrl(l), this.options).map(function (res) { return res.json(); });
+    ApiServices.prototype.getLabel = function (l) {
+        return this._http.get(url_service_1.UrlServices.labelUrl(l)).map(function (res) { return res.json(); });
     };
     ApiServices = __decorate([
         core_1.Injectable(), 

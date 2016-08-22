@@ -9,12 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var api_service_1 = require("./api.service");
+var api_services_1 = require("./api.services");
 var NavComponent = (function () {
     function NavComponent(_apiServices) {
         this._apiServices = _apiServices;
-        this._labels = ["aa", ["xxx", "s"]];
+        this._labels = [];
         this._selected_labels = [];
+        this._select_edge_labels = [];
     }
     NavComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -24,22 +25,34 @@ var NavComponent = (function () {
         return this._selected_labels.filter(function (p) { return p == l; }).length > 0 ? true : false;
     };
     NavComponent.prototype.select_label = function (l) {
+        var _this = this;
         if (this.check_label_selected(l)) {
+            // this.ngOnInit()
             this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
+            this._apiServices.getLabel(l).toPromise().then(function (p) {
+                p.edge.forEach(function (l) {
+                });
+            });
         }
         else {
             this._selected_labels.push(l);
+            this._labels = [];
+            this._selected_labels.forEach(function (sl) { return _this._labels.push(sl); });
+            this._apiServices.getLabel(l).toPromise().then(function (p) {
+                p.edge.forEach(function (e) {
+                    _this._labels.push(e);
+                });
+            });
         }
-        this._apiServices.getLabels(this._selected_labels).toPromise().then();
     };
     NavComponent = __decorate([
         core_1.Component({
             selector: 'nb-app-nav',
             templateUrl: "app/nav.component.html",
             styleUrls: ["app/nav.component.css"],
-            providers: [api_service_1.ApiServices]
+            providers: [api_services_1.ApiServices]
         }), 
-        __metadata('design:paramtypes', [api_service_1.ApiServices])
+        __metadata('design:paramtypes', [api_services_1.ApiServices])
     ], NavComponent);
     return NavComponent;
 }());
