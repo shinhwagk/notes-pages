@@ -1,20 +1,14 @@
 create database note_back;
 
-create table labels(
-	name varchar(20) primary key
-);
-
-drop table labelsnets;
-create table labelsnets(
-	center varchar(20) not null,
-	edge varchar(20) not null,
-	primary key (center,edge)
-);
-
-create table labelnotes(
-	label_name varchar(20) not null,
-	note_id int not null
-);
+drop table labels;
+CREATE TABLE labels (
+  data json not null,
+  name varchar(20) GENERATED ALWAYS AS (JSON_UNQUOTE(data->'$.name')) VIRTUAL NOT NULL,
+	edge text GENERATED ALWAYS AS (JSON_UNQUOTE(data->'$.edge')) VIRTUAL NOT NULL,
+	notes text GENERATED ALWAYS AS (JSON_UNQUOTE(data->'$.notes')) VIRTUAL NOT NULL,
+  UNIQUE KEY name (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- {"edge": ["install"], "name": "oracle", "notes": [1, 2, 3]}
 
 create table notes(
 	id int primary key AUTO_INCREMENT,
@@ -29,11 +23,7 @@ create table notedocuments(
 
 
 --test
-insert into labels(name) values("oracle");
-insert into labels(name) values("install");
-
-insert into labelsnets values("oracle","install");
-insert into labelsnets values("install","oracle");
+ 
 
 
 select from labelsnet n,labeldocs d,labels s where n.label_id = d.label_id

@@ -3,18 +3,20 @@
  */
 import {Injectable} from "@angular/core";
 import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import {UrlServices} from "./url.service";
 
 @Injectable()
 export class ApiServices {
   constructor(private _http: Http) {
   }
 
-  getInitLabels() {
-    return this._http.get("/api/labels").map((res: Response) => res.json())
+
+  getAllLabels() {
+    return this._http.get(UrlServices.labelsUrl).map((res: Response) => res.json())
   }
 
-  getLabels(l: string[]) {
-    return this._http.post(`/api/labels`, this.options).map((res: Response) => res.json())
+  getLabel(l: string) {
+    return this._http.post(UrlServices.labelUrl(l), this.options).map((res: Response) => res.json())
   }
 
   headers = new Headers({'Content-Type': 'application/json'});

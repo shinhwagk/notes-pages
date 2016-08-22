@@ -10,13 +10,15 @@ import {ApiServices} from "./api.service";
 
 export class NavComponent implements OnInit {
   ngOnInit(): void {
-    this._apiServices.getInitLabels().toPromise().then(p=> this._labels = p)
+    this._apiServices.getAllLabels().toPromise().then(p=> this._labels = p)
   }
 
   constructor(private _apiServices: ApiServices) {
   }
 
   _labels: string[] = []
+
+  _label: {name: string,edge: string[],notes: number[]}
 
   _selected_labels: string[] = []
 
@@ -31,8 +33,8 @@ export class NavComponent implements OnInit {
       this._selected_labels.push(l)
     }
 
-    this._apiServices.getLabels(this._selected_labels).toPromise().then(
-      
+    this._apiServices.getLabel(l).toPromise().then(l=>
+      this._label = l
     )
   }
 }

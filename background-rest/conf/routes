@@ -2,4 +2,4 @@ GET / controllers.Application.index
 
 
 GET /api/labels controllers.Application.labels
-POST /api/labels controllers.Application.labelsByLabels
+GET /api/label/:label controllers.Application.label(label:String)

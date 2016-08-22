@@ -18,7 +18,7 @@ var NavComponent = (function () {
     }
     NavComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._apiServices.getInitLabels().toPromise().then(function (p) { return _this._labels = p; });
+        this._apiServices.getAllLabels().toPromise().then(function (p) { return _this._labels = p; });
     };
     NavComponent.prototype.check_label_selected = function (l) {
         return this._selected_labels.filter(function (p) { return p == l; }).length > 0 ? true : false;
