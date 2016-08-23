@@ -8,14 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
 var api_services_1 = require("./api.services");
+var core_1 = require("@angular/core");
 var NavComponent = (function () {
     function NavComponent(_apiServices) {
         this._apiServices = _apiServices;
-        this._labels = [];
+        this._labels = new Set();
         this._selected_labels = [];
-        this._select_edge_labels = [];
     }
     NavComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -25,25 +24,35 @@ var NavComponent = (function () {
         return this._selected_labels.filter(function (p) { return p == l; }).length > 0 ? true : false;
     };
     NavComponent.prototype.select_label = function (l) {
-        var _this = this;
         if (this.check_label_selected(l)) {
-            // this.ngOnInit()
-            this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
-            this._apiServices.getLabel(l).toPromise().then(function (p) {
-                p.edge.forEach(function (l) {
-                });
-            });
+            if (this._selected_labels.length == 1) {
+                this._selected_labels = [];
+                this.ngOnInit();
+            }
+            else {
+                this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
+                this.shuffle_selected_labels();
+            }
         }
         else {
             this._selected_labels.push(l);
-            this._labels = [];
-            this._selected_labels.forEach(function (sl) { return _this._labels.push(sl); });
-            this._apiServices.getLabel(l).toPromise().then(function (p) {
-                p.edge.forEach(function (e) {
-                    _this._labels.push(e);
+            this.shuffle_selected_labels();
+        }
+    };
+    NavComponent.prototype.shuffle_selected_labels = function () {
+        var _this = this;
+        this._labels = new Set();
+        var _label_edge = [];
+        this._selected_labels.forEach(function (sl) {
+            _this._labels.add(sl);
+            _this._apiServices.getLabel(sl).toPromise().then(function (p) {
+                p.edge.forEach(function (ls) {
+                    _label_edge.push(ls);
+                    _label_edge.filter(function (le) { return _label_edge.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
+                        .forEach(function (le) { return _this._labels.add(le); });
                 });
             });
-        }
+        });
     };
     NavComponent = __decorate([
         core_1.Component({
