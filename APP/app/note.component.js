@@ -23,8 +23,6 @@ var NoteComponent = (function () {
         this._note_id_commands = [];
         this._note_id_concepts = [];
         this._note_id_files = [];
-        this.temp_commands = [];
-        this.temp_concepts = [];
     }
     NoteComponent.prototype.ngOnInit = function () {
     };
@@ -32,7 +30,7 @@ var NoteComponent = (function () {
         set: function (nids) {
             var _this = this;
             this._note_ids = JSON.parse(nids);
-            // this.clear_note()
+            console.info("_note_ids1", this._note_ids, "===1");
             var notes = { "command": new Array(), "concept": new Array(), "file": new Array() };
             this._note_ids.forEach(function (id) {
                 return _this._apiServices.getNote(id).toPromise().then(function (n) { return _this.note_dispatcher(n, notes); });
@@ -42,20 +40,18 @@ var NoteComponent = (function () {
         configurable: true
     });
     NoteComponent.prototype.note_dispatcher = function (note, notes) {
-        var _this = this;
-        console.info(notes.concept.push(1), 12123);
-        console.info(notes.concept.filter(function (e) { return e == note; }), 12124);
         switch (note.category) {
             case "concept":
-                // this.temp_concepts.push(note)
-                this._note_id_concepts = notes.concept.filter(function (elem) { return notes.concept.filter(function (e) { return e == elem; }).length >= 1; });
+                notes.concept.push(note);
+                this._note_id_concepts = notes.concept;
                 break;
             case "command":
-                this.temp_commands.push(note);
-                this._note_id_commands = this.temp_commands.filter(function (elem) { return _this.temp_commands.filter(function (e) { return e == elem; }).length >= 1; });
+                notes.command.push(note);
+                this._note_id_commands = notes.command;
                 break;
             case "file":
-                this._note_id_files.push(note);
+                notes.file.push(note);
+                this._note_id_files = notes.file;
                 break;
             default:
                 confirm("Sorry, that color is not in the system yet!");
@@ -68,8 +64,8 @@ var NoteComponent = (function () {
     };
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', Object), 
-        __metadata('design:paramtypes', [Object])
+        __metadata('design:type', String), 
+        __metadata('design:paramtypes', [String])
     ], NoteComponent.prototype, "_notes_str", null);
     NoteComponent = __decorate([
         core_1.Component({
