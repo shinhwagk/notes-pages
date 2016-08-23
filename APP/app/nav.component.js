@@ -35,48 +35,40 @@ var NavComponent = (function () {
                 this._labels = this._all_label;
             }
             else {
-                this.shuffle_selected_labels();
+                this.shuffle_selected();
             }
         }
         else {
             this._selected_labels.push(l);
-            this.shuffle_selected_labels();
+            this.shuffle_selected();
         }
     };
-    NavComponent.prototype.shuffle_selected_labels = function () {
-        var _this = this;
-        var _labels = new Set();
-        var _note_ids = new Set();
+    NavComponent.prototype.shuffle_selected = function () {
         var _label_edge = [];
-        var _notes = [];
+        var _note_id = [];
         var _selected_labels_count = this._selected_labels.length;
-        this._selected_labels.forEach(function (sl) {
-            _labels.add(sl);
-            _this._apiServices.getLabel(sl).toPromise().then(function (p) {
-                _selected_labels_count -= 1;
-                p.edge.forEach(function (ls) {
-                    _label_edge.push(ls);
-                    _label_edge.filter(function (le) { return _label_edge.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
-                        .forEach(function (le) { return _labels.add(le); });
-                });
-                p.notes.forEach(function (ls) {
-                    _notes.push(ls);
-                    _notes.filter(function (le) { return _notes.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
-                        .forEach(function (le) { return _note_ids.add(le); });
-                });
-                if (_selected_labels_count == 0) {
-                    _this._note_ids = Array.from(_note_ids);
-                    _this._labels = Array.from(_labels);
-                }
-            });
-        });
+        this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _note_id);
     };
-    NavComponent.prototype.abc = function (a) {
-        if (a == 0) {
+    NavComponent.prototype.shuffle_selected_action = function (_selected_labels_count, _label_edge, _note_id) {
+        var _this = this;
+        var sl = this._selected_labels[_selected_labels_count];
+        if (_selected_labels_count == -1) {
+            var _labels_1 = new Set();
+            var _note_ids_1 = new Set();
+            this._selected_labels.forEach(function (elem) { return _labels_1.add(elem); });
+            _label_edge.filter(function (le) { return _label_edge.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
+                .forEach(function (elem) { return _labels_1.add(elem); });
+            _note_id.filter(function (le) { return _note_id.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
+                .forEach(function (elem) { return _note_ids_1.add(elem); });
+            this._note_ids = Array.from(_note_ids_1);
+            this._labels = Array.from(_labels_1);
         }
         else {
-            this._selected_labels[1];
-            this.abc(a - 1);
+            this._apiServices.getLabel(sl).toPromise().then(function (p) {
+                p.edge.forEach(function (ls) { return _label_edge.push(ls); });
+                p.notes.forEach(function (ls) { return _note_id.push(ls); });
+                _this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _note_id);
+            });
         }
     };
     NavComponent = __decorate([

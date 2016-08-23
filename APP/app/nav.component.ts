@@ -38,48 +38,39 @@ export class NavComponent implements OnInit {
             if (this._selected_labels.length == 0) {
                 this._labels = this._all_label
             } else {
-                this.shuffle_selected_labels()
+                this.shuffle_selected()
             }
         } else {
             this._selected_labels.push(l)
-            this.shuffle_selected_labels()
+            this.shuffle_selected()
         }
     }
 
-    shuffle_selected_labels() {
-        let _labels = new Set<string>()
-        let _note_ids = new Set<number>()
+    shuffle_selected() {
         let _label_edge: string[] = []
-        let _notes: number[] = []
+        let _note_id: number[] = []
         let _selected_labels_count: number = this._selected_labels.length
-        this._selected_labels.forEach(sl=> {
-            _labels.add(sl)
-            this._apiServices.getLabel(sl).toPromise().then((p: {name: string,edge: string[],notes: number[]})=> {
-                _selected_labels_count -= 1
-                p.edge.forEach(ls=> {
-                    _label_edge.push(ls)
-                    _label_edge.filter(le=> _label_edge.filter(le2=>le2 == le).length >= this._selected_labels.length)
-                        .forEach(le=>_labels.add(le))
-                })
-                p.notes.forEach(ls=> {
-                    _notes.push(ls)
-                    _notes.filter(le=> _notes.filter(le2=>le2 == le).length >= this._selected_labels.length)
-                        .forEach(le=>_note_ids.add(le))
-                })
-                if (_selected_labels_count == 0) {
-                    this._note_ids = Array.from(_note_ids)
-                    this._labels = Array.from(_labels)
-                }
-            })
-        })
+        this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _note_id)
     }
 
-    abc(a){
-        if(a==0){
-
-        }else{
-            this._selected_labels[1]
-            this.abc(a-1)
+    shuffle_selected_action(_selected_labels_count: number, _label_edge, _note_id) {
+        let sl = this._selected_labels[_selected_labels_count]
+        if (_selected_labels_count == -1) {
+            let _labels = new Set<string>()
+            let _note_ids = new Set<number>()
+            this._selected_labels.forEach(elem=>_labels.add(elem))
+            _label_edge.filter(le=> _label_edge.filter(le2=>le2 == le).length >= this._selected_labels.length)
+                .forEach(elem=>_labels.add(elem))
+            _note_id.filter(le=> _note_id.filter(le2=>le2 == le).length >= this._selected_labels.length)
+                .forEach(elem=>_note_ids.add(elem))
+            this._note_ids = Array.from<number>(_note_ids)
+            this._labels = Array.from<string>(_labels)
+        } else {
+            this._apiServices.getLabel(sl).toPromise().then((p: {name: string,edge: string[],notes: number[]})=> {
+                p.edge.forEach(ls=> _label_edge.push(ls))
+                p.notes.forEach(ls=> _note_id.push(ls))
+                this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _note_id)
+            })
         }
     }
 }

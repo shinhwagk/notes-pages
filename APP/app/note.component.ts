@@ -30,7 +30,6 @@ export class NoteComponent implements OnInit {
 
     @Input() set _notes_str(nids: string) {
         this._note_ids = JSON.parse(nids)
-        console.info("_note_ids1", this._note_ids, "===1")
 
         let notes = {"command": new Array<any>(), "concept": new Array<any>(), "file": new Array<any>()}
 

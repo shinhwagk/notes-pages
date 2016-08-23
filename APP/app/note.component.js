@@ -30,7 +30,6 @@ var NoteComponent = (function () {
         set: function (nids) {
             var _this = this;
             this._note_ids = JSON.parse(nids);
-            console.info("_note_ids1", this._note_ids, "===1");
             var notes = { "command": new Array(), "concept": new Array(), "file": new Array() };
             this._note_ids.forEach(function (id) {
                 return _this._apiServices.getNote(id).toPromise().then(function (n) { return _this.note_dispatcher(n, notes); });
