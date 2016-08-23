@@ -2,7 +2,8 @@ package controllers
 
 import javax.inject.Inject
 
-import models.database.{Labels, LabelsNets}
+import models.database.Labels
+import models.database.table.Notes
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
 import play.api.mvc._
@@ -10,8 +11,7 @@ import slick.driver.JdbcProfile
 import slick.driver.MySQLDriver.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 /**
   * Created by zhangxu on 2016/8/17.
@@ -30,5 +30,10 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Co
   def label(label: String) = Action.async { implicit request =>
     db.run(Labels.table.filter(_.name === label).result.head)
       .map(rs => Ok(JsObject(Seq("name" -> JsString(rs.name), "edge" -> Json.parse(rs.edge), "notes" -> Json.parse(rs.notes)))))
+  }
+
+  def note(id: Int) = Action.async { implicit request =>
+    db.run(Notes.table.filter(_.id === id).filter(_.status === 1).result.head)
+      .map(rs => Ok(Json.parse(rs.data)))
   }
 }

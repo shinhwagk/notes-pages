@@ -8,20 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var nav_component_1 = require("./nav.component");
-var note_component_1 = require("./note.component");
-var AppComponent = (function () {
-    function AppComponent() {
+/**
+ * Created by zhangxu on 2016/8/19.
+ */
+var core_1 = require("@angular/core");
+var NoteFileComponent = (function () {
+    function NoteFileComponent() {
     }
-    AppComponent = __decorate([
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], NoteFileComponent.prototype, "note", void 0);
+    NoteFileComponent = __decorate([
         core_1.Component({
-            selector: 'nb-app',
-            templateUrl: "app/app.component.html",
-            directives: [nav_component_1.NavComponent, note_component_1.NoteComponent]
+            selector: 'nb-app-note-file',
+            templateUrl: "app/notes/note-file.component.html",
+            styleUrls: ["app/notes/note-file.component.css"]
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], NoteFileComponent);
+    return NoteFileComponent;
 }());
-exports.AppComponent = AppComponent;
+exports.NoteFileComponent = NoteFileComponent;

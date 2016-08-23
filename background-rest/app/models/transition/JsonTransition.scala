@@ -1,8 +1,5 @@
 package models.transition
 
-import models.database.Labels.{Label, Labels}
-import play.api.libs.json.Json
-
 /**
   * Created by zhangxu on 2016/8/17.
   */

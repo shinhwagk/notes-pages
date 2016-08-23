@@ -8,20 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var nav_component_1 = require("./nav.component");
-var note_component_1 = require("./note.component");
-var AppComponent = (function () {
-    function AppComponent() {
+/**
+ * Created by zhangxu on 2016/8/19.
+ */
+var core_1 = require("@angular/core");
+var NoteConceptComponent = (function () {
+    function NoteConceptComponent() {
     }
-    AppComponent = __decorate([
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], NoteConceptComponent.prototype, "note", void 0);
+    NoteConceptComponent = __decorate([
         core_1.Component({
-            selector: 'nb-app',
-            templateUrl: "app/app.component.html",
-            directives: [nav_component_1.NavComponent, note_component_1.NoteComponent]
+            selector: 'nb-app-note-concept',
+            templateUrl: "app/notes/note-concept.component.html",
+            styleUrls: ["app/notes/note-concept.component.css"]
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], NoteConceptComponent);
+    return NoteConceptComponent;
 }());
-exports.AppComponent = AppComponent;
+exports.NoteConceptComponent = NoteConceptComponent;

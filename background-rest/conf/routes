@@ -3,3 +3,4 @@ GET / controllers.Application.index
 
 GET /api/labels controllers.Application.labels
 GET /api/label/:label controllers.Application.label(label:String)
+GET /api/note/:id controllers.Application.note(id:Int)

@@ -2,22 +2,68 @@ create database note_back;
 
 drop table labels;
 CREATE TABLE labels (
-  data json not null,
-  name varchar(20) GENERATED ALWAYS AS (JSON_UNQUOTE(data->'$.name')) VIRTUAL NOT NULL,
-	edge text GENERATED ALWAYS AS (JSON_UNQUOTE(data->'$.edge')) VIRTUAL NOT NULL,
-	notes text GENERATED ALWAYS AS (JSON_UNQUOTE(data->'$.notes')) VIRTUAL NOT NULL,
-  UNIQUE KEY name (name)
+  data json not null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- {"edge": ["install"], "name": "oracle", "notes": [1, 2, 3]}
+drop view vlabels;
+create view vlabels
+as
+select 
+JSON_UNQUOTE(data->'$.name') name,
+JSON_UNQUOTE(data->'$.edge') edge,
+JSON_UNQUOTE(data->'$.notes') notes,
+data
+from labels;
 
+/*
+ ****************
+*/
+drop table notes;
 create table notes(
 	id int primary key AUTO_INCREMENT,
-	category varchar(10) -- concepts | command
+	data json not null
 );
 
-create table notedocuments(
+drop view vnotes;
+create view vnotes 
+as 
+select 
+	id,
+	JSON_UNQUOTE(data->'$.status') status,
+	JSON_UNQUOTE(data->'$.category') category,
+	json_insert(data,'$.id',id) data 
+from notes;
+
+--eg
+insert into notes(data) values('{"category":"command","status":1}');
+insert into notes(data) values('{"category":"command","status":1}');
+insert into notes(data) values('{"category":"concept","status":1}');
+insert into notes(data) values('{"category":"concept","status":1}');
+commit;
+
+drop table note_documents;
+create table note_documents(
+	id int primary key AUTO_INCREMENT,
 	note_id int not null,
-	document text
+	title text
+);
+
+drop table note_commands;
+create table note_commands(
+	id int primary key AUTO_INCREMENT,
+	note_id int not null,
+	content_01 text,
+	content_02 text,
+	createdate,
+	updatedata,
+	file_id int,
+	document_id int
+);
+
+drop table note_files;
+create table note_files(
+	id int primary key AUTO_INCREMENT,
+	note_id int not null,
 )
 
 

@@ -7,17 +7,21 @@ import {UrlServices} from "./url.service";
 
 @Injectable()
 export class ApiServices {
-    constructor(private _http: Http) {
-    }
+  constructor(private _http: Http) {
+  }
 
-    getAllLabels() {
-        return this._http.get(UrlServices.labelsUrl).map((res: Response) => res.json())
-    }
+  getAllLabels() {
+    return this._http.get(UrlServices.labelsUrl).map((res: Response) => res.json())
+  }
 
-    getLabel(l: string) {
-        return this._http.get(UrlServices.labelUrl(l)).map((res: Response) => res.json())
-    }
+  getLabel(l: string) {
+    return this._http.get(UrlServices.labelUrl(l)).map((res: Response) => res.json())
+  }
 
-    headers = new Headers({'Content-Type': 'application/json'});
-    options = new RequestOptions({headers: this.headers});
+  getNote(id: number) {
+    return this._http.get(UrlServices.noteUrl(id)).map((res: Response) => res.json())
+  }
+
+  headers = new Headers({'Content-Type': 'application/json'});
+  options = new RequestOptions({headers: this.headers});
 }

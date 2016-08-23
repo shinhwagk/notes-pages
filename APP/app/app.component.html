@@ -1,6 +1,11 @@
-<div class="container">
-  <dev class="row">
-    2
-  </dev>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <nb-app-note [_notes_str]="nav._notes | json"></nb-app-note>
+    </div>
+  </div>
+  <nav class="navbar navbar-fixed-bottom navbar-light bg-faded">
+    <nb-app-nav #nav></nb-app-nav>
+  </nav>
 </div>
-<nb-app-nav></nb-app-nav>
+

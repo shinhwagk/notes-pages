@@ -26,6 +26,9 @@ var ApiServices = (function () {
     ApiServices.prototype.getLabel = function (l) {
         return this._http.get(url_service_1.UrlServices.labelUrl(l)).map(function (res) { return res.json(); });
     };
+    ApiServices.prototype.getNote = function (id) {
+        return this._http.get(url_service_1.UrlServices.noteUrl(id)).map(function (res) { return res.json(); });
+    };
     ApiServices = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

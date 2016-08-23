@@ -15,9 +15,12 @@ var NavComponent = (function () {
         this._apiServices = _apiServices;
         this._labels = new Set();
         this._selected_labels = [];
+        this._notes = new Set();
     }
     NavComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this._labels = new Set();
+        this._notes = new Set();
         this._apiServices.getAllLabels().toPromise().then(function (p) { return _this._labels = p; });
     };
     NavComponent.prototype.check_label_selected = function (l) {
@@ -25,12 +28,11 @@ var NavComponent = (function () {
     };
     NavComponent.prototype.select_label = function (l) {
         if (this.check_label_selected(l)) {
-            if (this._selected_labels.length == 1) {
-                this._selected_labels = [];
+            this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
+            if (this._selected_labels.length == 0) {
                 this.ngOnInit();
             }
             else {
-                this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
                 this.shuffle_selected_labels();
             }
         }
@@ -42,7 +44,9 @@ var NavComponent = (function () {
     NavComponent.prototype.shuffle_selected_labels = function () {
         var _this = this;
         this._labels = new Set();
+        this._notes = new Set();
         var _label_edge = [];
+        var _notes = [];
         this._selected_labels.forEach(function (sl) {
             _this._labels.add(sl);
             _this._apiServices.getLabel(sl).toPromise().then(function (p) {
@@ -50,6 +54,11 @@ var NavComponent = (function () {
                     _label_edge.push(ls);
                     _label_edge.filter(function (le) { return _label_edge.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
                         .forEach(function (le) { return _this._labels.add(le); });
+                });
+                p.notes.forEach(function (ls) {
+                    _notes.push(ls);
+                    _notes.filter(function (le) { return _notes.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
+                        .forEach(function (le) { return _this._notes.add(le); });
                 });
             });
         });
