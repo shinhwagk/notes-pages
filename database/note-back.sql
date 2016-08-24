@@ -9,10 +9,10 @@ drop view vlabels;
 create view vlabels
 as
 select 
-JSON_UNQUOTE(data->'$.name') name,
-JSON_UNQUOTE(data->'$.edge') edge,
-JSON_UNQUOTE(data->'$.notes') notes,
-data
+	JSON_UNQUOTE(data->'$.name') name,
+	JSON_UNQUOTE(data->'$.edge') edge,
+	JSON_UNQUOTE(data->'$.notes') notes,
+	data
 from labels;
 
 /*
@@ -31,7 +31,7 @@ select
 	id,
 	JSON_UNQUOTE(data->'$.status') status,
 	JSON_UNQUOTE(data->'$.category') category,
-	json_insert(data,'$.id',id) data 
+	json_remove(json_insert(data,'$.id',id),'$.status') data 
 from notes;
 
 --eg

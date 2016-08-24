@@ -10,5 +10,15 @@ import {Component, Input} from "@angular/core";
 })
 
 export class NoteFileComponent {
-  @Input() note
+  @Input() set set_notes(notes) {
+    this.notes = notes
+  }
+
+  notes: FileNote[] = []
+}
+
+interface FileNote {
+  id: number
+  note: {title: string,doc_id: number}
+  category: string
 }

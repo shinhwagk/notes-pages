@@ -14,11 +14,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var NoteFileComponent = (function () {
     function NoteFileComponent() {
+        this.notes = [];
     }
+    Object.defineProperty(NoteFileComponent.prototype, "set_notes", {
+        set: function (notes) {
+            this.notes = notes;
+        },
+        enumerable: true,
+        configurable: true
+    });
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', Object)
-    ], NoteFileComponent.prototype, "note", void 0);
+        __metadata('design:type', Object), 
+        __metadata('design:paramtypes', [Object])
+    ], NoteFileComponent.prototype, "set_notes", null);
     NoteFileComponent = __decorate([
         core_1.Component({
             selector: 'nb-app-note-file',

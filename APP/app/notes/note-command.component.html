@@ -1,1 +1,10 @@
-{{note.id}}
+<table class="table .table-hover">
+  <tr *ngFor="let note of notes">
+    <td>
+      <pre>{{note.note.content_1}}</pre>
+    </td>
+    <td>
+      <pre>{{note.note.content_2}}</pre>
+    </td>
+  </tr>
+</table>

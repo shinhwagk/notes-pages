@@ -33,7 +33,7 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Co
   }
 
   def note(id: Int) = Action.async { implicit request =>
-    db.run(Notes.table.filter(_.id === id).filter(_.status === 1).result.head)
-      .map(rs => Ok(Json.parse(rs.data)))
+    db.run(Notes.table.filter(_.id === id).filter(_.status === 1).map(_.data).result.head)
+      .map(rs => Ok(rs))
   }
 }

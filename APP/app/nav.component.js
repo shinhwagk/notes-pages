@@ -71,6 +71,10 @@ var NavComponent = (function () {
             });
         }
     };
+    NavComponent.prototype.clear_selected_labels = function () {
+        this._selected_labels = [];
+        this._labels = this._all_label;
+    };
     NavComponent = __decorate([
         core_1.Component({
             selector: 'nb-app-nav',

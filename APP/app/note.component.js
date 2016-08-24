@@ -20,9 +20,10 @@ var NoteComponent = (function () {
     function NoteComponent(_apiServices) {
         this._apiServices = _apiServices;
         this._note_ids = [];
-        this._note_id_commands = [];
-        this._note_id_concepts = [];
-        this._note_id_files = [];
+        this._note_commands = [];
+        this._note_concepts = [];
+        this._note_files = [];
+        this._note_commands_json = "[]";
     }
     NoteComponent.prototype.ngOnInit = function () {
     };
@@ -42,24 +43,20 @@ var NoteComponent = (function () {
         switch (note.category) {
             case "concept":
                 notes.concept.push(note);
-                this._note_id_concepts = notes.concept;
+                this._note_concepts = notes.concept;
                 break;
             case "command":
                 notes.command.push(note);
-                this._note_id_commands = notes.command;
+                this._note_commands = notes.command;
+                this._note_commands_json = JSON.stringify(notes.command);
                 break;
             case "file":
                 notes.file.push(note);
-                this._note_id_files = notes.file;
+                this._note_files = notes.file;
                 break;
             default:
                 confirm("Sorry, that color is not in the system yet!");
         }
-    };
-    NoteComponent.prototype.clear_note = function () {
-        this._note_id_commands = [];
-        this._note_id_concepts = [];
-        this._note_id_files = [];
     };
     __decorate([
         core_1.Input(), 

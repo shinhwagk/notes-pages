@@ -14,11 +14,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var NoteCommandComponent = (function () {
     function NoteCommandComponent() {
+        this.notes = [];
     }
+    Object.defineProperty(NoteCommandComponent.prototype, "set_notes", {
+        set: function (notes) {
+            this.notes = notes;
+        },
+        enumerable: true,
+        configurable: true
+    });
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', Object)
-    ], NoteCommandComponent.prototype, "note", void 0);
+        __metadata('design:type', Object), 
+        __metadata('design:paramtypes', [Object])
+    ], NoteCommandComponent.prototype, "set_notes", null);
     NoteCommandComponent = __decorate([
         core_1.Component({
             selector: 'nb-app-note-command',

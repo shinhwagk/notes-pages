@@ -1,26 +1,24 @@
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-sm-7">
     <div class="card">
       <div class="card-header">
         Commands
-        <a href="#" class="pull-right"> <i class="fa fa-plus"></i> </a>
+        <a href="#" class="pull-right"> <i class="fa fa-plus"></i>&nbsp;</a>
       </div>
       <div class="card-block">
-        <div *ngFor="let ncm of _note_id_commands">
-          <nb-app-note-command [note]="ncm"></nb-app-note-command>
-        </div>
+        <nb-app-note-command [set_notes]="_note_commands"></nb-app-note-command>
       </div>
     </div>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-5">
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header">
-            Concepts <a href="#" class="pull-right"> <i class="fa fa-plus"></i> </a>
+            Concepts <a href="#" class="pull-right"> <i class="fa fa-plus"></i>&nbsp;</a>
           </div>
           <div class="card-block">
-            <div *ngFor="let ncm of _note_id_concepts">
+            <div *ngFor="let ncm of _note_concepts">
               <nb-app-note-concept [note]="ncm"></nb-app-note-concept>
             </div>
           </div>
@@ -30,10 +28,10 @@
         <div class="card">
           <div class="card-header">
             Files
-            <a href="#" class="pull-right"> <i class="fa fa-plus"></i> </a>
+            <a href="#" class="pull-right"> <i class="fa fa-plus"></i>&nbsp;</a>
           </div>
           <div class="card-block">
-            <div *ngFor="let nif of _note_id_files">
+            <div *ngFor="let nif of _note_files">
               <nb-app-note-file [note]="nif"></nb-app-note-file>
             </div>
           </div>

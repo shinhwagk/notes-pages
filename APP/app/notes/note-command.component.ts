@@ -10,5 +10,16 @@ import {Component, Input} from "@angular/core";
 })
 
 export class NoteCommandComponent {
-  @Input() note
+
+  @Input() set set_notes(notes) {
+    this.notes = notes
+  }
+
+  notes: CommandNote[] = []
+}
+
+interface CommandNote {
+  id: number
+  note: {content_1: string,content_2: string,doc_id: number}
+  category: string
 }

@@ -10,5 +10,15 @@ import {Component, Input} from "@angular/core";
 })
 
 export class NoteConceptComponent {
-  @Input() note
+  @Input() set set_notes(notes) {
+    this.notes = notes
+  }
+
+  notes: ConceptNote[] = []
+}
+
+interface ConceptNote {
+  id: number
+  note: {title: string,doc_id: number}
+  category: string
 }
