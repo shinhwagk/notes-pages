@@ -11,7 +11,6 @@ import slick.driver.JdbcProfile
 import slick.driver.MySQLDriver.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 /**
   * Created by zhangxu on 2016/8/17.
@@ -33,7 +32,7 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Co
   }
 
   def note(id: Int) = Action.async { implicit request =>
-    db.run(Notes.table.filter(_.id === id).filter(_.status === 1).map(_.data).result.head)
+    db.run(Notes.table.filter(_.id === id).map(_.data).result.head)
       .map(rs => Ok(rs))
   }
 }

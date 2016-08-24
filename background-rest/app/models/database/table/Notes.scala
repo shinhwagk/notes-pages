@@ -7,19 +7,18 @@ import slick.driver.MySQLDriver.api._
   */
 object Notes {
 
-  case class Note(id: Int, category: String, status: Int, data: String)
+  case class Note(id: Int, category: String, data: String)
 
   class Notes(tag: Tag) extends Table[Note](tag, "vnotes") {
 
     def id = column[Int]("id")
 
-    def status = column[Int]("status")
 
     def category = column[String]("category")
 
     def data = column[String]("data")
 
-    def * = (id, category, status, data) <> (Note.tupled, Note.unapply)
+    def * = (id, category, data) <> (Note.tupled, Note.unapply)
   }
 
   val table = TableQuery[Notes]

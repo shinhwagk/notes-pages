@@ -23,7 +23,6 @@ var NoteComponent = (function () {
         this._note_commands = [];
         this._note_concepts = [];
         this._note_files = [];
-        this._note_commands_json = "[]";
     }
     NoteComponent.prototype.ngOnInit = function () {
     };
@@ -48,7 +47,6 @@ var NoteComponent = (function () {
             case "command":
                 notes.command.push(note);
                 this._note_commands = notes.command;
-                this._note_commands_json = JSON.stringify(notes.command);
                 break;
             case "file":
                 notes.file.push(note);
