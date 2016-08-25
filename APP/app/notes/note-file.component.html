@@ -1,1 +1,6 @@
-<div *ngFor="let note of notes"><a href="{{note.note.doc_id}}">{{note.note.title}}</a></div>
+<div class="card">
+  <div class="card-header"> Files</div>
+  <div class="card-block">
+    <div *ngFor="let note of notes"><a href="{{note.note.doc_id}}">{{note.note.title}}</a></div>
+  </div>
+</div>

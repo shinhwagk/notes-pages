@@ -15,7 +15,7 @@ select
 	JSON_UNQUOTE(data->'$.edge') edge,
 	JSON_UNQUOTE(data->'$.notes') notes,
 	data
-from labels;
+from labels where JSON_LENGTH(data->'$.notes') > 0;
 
 /*
  ****************

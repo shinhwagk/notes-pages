@@ -1,38 +1,15 @@
 <div class="row">
-    <div class="col-sm-7">
-        <div class="card">
-            <div class="card-header">
-                Commands
-                <a href="#" class="pull-right"> <i class="fa fa-plus"></i>&nbsp;</a>
-            </div>
-            <div class="card-block">
-                <nb-app-note-command [set_notes]="_note_commands"></nb-app-note-command>
-            </div>
-        </div>
+  <div class="col-sm-7">
+    <nb-app-note-command [set_notes]="_note_commands"></nb-app-note-command>
+  </div>
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-sm-12">
+        <nb-app-note-concept [set_notes]="_note_concepts"></nb-app-note-concept>
+      </div>
+      <div class="col-sm-12">
+        <nb-app-note-file [set_notes]="_note_files"></nb-app-note-file>
+      </div>
     </div>
-    <div class="col-sm-5">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        Concepts <a href="#" class="pull-right"> <i class="fa fa-plus"></i>&nbsp;</a>
-                    </div>
-                    <div class="card-block">
-                        <nb-app-note-concept [set_notes]="_note_concepts"></nb-app-note-concept>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        Files
-                        <a href="#" class="pull-right"> <i class="fa fa-plus"></i>&nbsp;</a>
-                    </div>
-                    <div class="card-block">
-                        <nb-app-note-file [set_notes]="_note_files"></nb-app-note-file>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>

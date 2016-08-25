@@ -13,7 +13,6 @@ object Notes {
 
     def id = column[Int]("id")
 
-
     def category = column[String]("category")
 
     def data = column[String]("data")
