@@ -1,0 +1,22 @@
+<ul>
+  <li *ngFor="let l of _all_label"
+      (click)="select_label(l)"
+      [class.selected]="check_label_selected(l)">{{l}}
+  </li>
+  <li>
+    <button class="btn btn-secondary btn-sm" (click)="clear_selected_labels()">clear
+    </button>
+  </li>
+</ul>
+<div class="container">
+  <div class="row">
+    <button (click)="open_template('concept')" [class.btn-info]="template_concept">concept</button>
+    <button (click)="open_template('command')"  [class.btn-info]="template_command">command</button>
+    <button (click)="open_template('file')"  [class.btn-info]="template_file">file</button>
+  </div>
+  <div class="row">
+    <nb-edit-concept *ngIf="template_concept"></nb-edit-concept>
+    <nb-edit-command *ngIf="template_command"></nb-edit-command>
+    <nb-edit-file *ngIf="template_file"></nb-edit-file>
+  </div>
+</div>

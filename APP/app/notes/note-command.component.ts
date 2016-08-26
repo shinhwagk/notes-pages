@@ -20,6 +20,7 @@ export class NoteCommandComponent {
 
 interface CommandNote {
   id: number
-  note: {content_1: string,content_2: string,doc_id: number}
+  content_1: string;
+  content_2: string
   category: string
 }

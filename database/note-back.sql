@@ -1,5 +1,12 @@
 create database note_back;
 
+create table labels (
+	name text primary key,
+	edge text,
+	notes text
+
+)
+
 drop table labels;
 CREATE TABLE labels (
   data json not null,
@@ -25,6 +32,16 @@ create table notes(
 	id int primary key AUTO_INCREMENT,
 	data json not null
 );
+
+create table notes(
+	id int primary key AUTO_INCREMENT,
+	category text not null,
+	data text,
+	relate text,
+	createdate date;
+	updatedate date;
+	status int
+)
 
 drop view vnotes;
 create view vnotes 

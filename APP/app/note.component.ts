@@ -39,6 +39,7 @@ export class NoteComponent implements OnInit {
   }
 
   note_dispatcher(note, notes) {
+    console.info(note)
     switch (note.category) {
       case "concept":
         notes.concept.push(note)
