@@ -1,7 +1,7 @@
 package models.database.table
 
 import java.sql.Date
-
+import models.database.Labels
 import slick.driver.H2Driver.api._
 
 /**
@@ -9,28 +9,26 @@ import slick.driver.H2Driver.api._
   */
 object Notes {
 
-  case class Note(id: Int, category: String, data: String, relate: String, createdate: Date, updatedate: Date, status: Int)
+  case class Note(id: Int, category: String, createDate: Date, updateDate: Date, status: Boolean, labelId: Int)
 
+  class Notes(tag: Tag) extends Table[Note](tag, "NOTES") {
 
-  class Notes(tag: Tag) extends Table[Note](tag, "notes") {
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
 
-    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def category = column[String]("CATEGORY")
 
-    def category = column[String]("category")
+    def createDate = column[Date]("CREATE_DATE")
 
-    def data = column[String]("data")
+    def updateDate = column[Date]("UPDATE_DATE")
 
-    def relate = column[String]("relate")
+    def status = column[Boolean]("STATUS")
 
-    def createdate = column[Date]("createdate")
+    def labelId = column[Int]("LABEL_ID")
 
-    def updatedate = column[Date]("updatedate")
+    def * = (id, category, createDate, updateDate, status, labelId) <> (Note.tupled, Note.unapply)
 
-    def status = column[Int]("status")
-
-    def * = (id, category, data, relate, createdate, updatedate, status) <> (Note.tupled, Note.unapply)
+    def labelFk = foreignKey("FK_LABELS_FILES_ID", labelId, Labels._table)(_.id)
   }
 
-  val table = TableQuery[Notes]
-
+  val _table = TableQuery[Notes]
 }

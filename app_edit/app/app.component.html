@@ -1,7 +1,7 @@
 <ul>
   <li *ngFor="let l of _all_label"
-      (click)="select_label(l)"
-      [class.selected]="check_label_selected(l)">{{l}}
+      (click)="select_label(l.id)"
+      [class.selected]="check_label_selected(l.id)">{{l.name}}
   </li>
   <li>
     <button class="btn btn-secondary btn-sm" (click)="clear_selected_labels()">clear

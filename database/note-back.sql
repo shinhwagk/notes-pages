@@ -4,7 +4,6 @@ create table labels (
 	name text primary key,
 	edge text,
 	notes text
-
 )
 
 drop table labels;

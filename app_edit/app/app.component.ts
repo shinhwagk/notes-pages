@@ -1,35 +1,35 @@
 import {Component, OnInit} from "@angular/core";
-import {Http} from "@angular/http";
 import {TemplateConceptComponent} from "./template/concept.component";
 import {TemplateCommandComponent} from "./template/command.component";
 import {TemplateFileComponent} from "./template/file.component";
+import {ApiServices} from "./template/api.services";
 
 @Component({
   selector: 'nb-edit',
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css'],
-  directives: [TemplateCommandComponent, TemplateConceptComponent, TemplateFileComponent]
+  directives: [TemplateCommandComponent, TemplateConceptComponent, TemplateFileComponent],
+  providers: [ApiServices]
 })
 
 export class AppComponent implements OnInit {
 
-  constructor(private _http: Http) {
+  constructor(private _api: ApiServices) {
   }
 
   ngOnInit(): void {
-    this._http.get("/api/labels").map(res => res.json())
-      .toPromise().then(_all_label=> this._all_label = _all_label)
+    this._api.labels().toPromise().then(_all_label=> this._all_label = _all_label)
   }
 
-  _all_label: string[] = []
+  _all_label: {id: number,name: string}[] = []
 
-  _selected_labels: string[] = []
+  _selected_labels: number[] = []
 
-  check_label_selected(l: string) {
+  check_label_selected(l: number) {
     return this._selected_labels.indexOf(l) != -1 ? true : false
   }
 
-  select_label(l: string) {
+  select_label(l: number) {
     if (this.check_label_selected(l)) {
       this._selected_labels = this._selected_labels.filter(p=>p != l)
     } else {

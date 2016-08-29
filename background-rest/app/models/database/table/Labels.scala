@@ -7,21 +7,20 @@ import slick.driver.H2Driver.api._
   */
 object Labels {
 
-  case class Label(name: String, edge: String, notes: String, status: Int)
+  case class Label(id: Int, name: String, status: Boolean)
 
-  class Labels(tag: Tag) extends Table[Label](tag, "labels") {
+  class Labels(tag: Tag) extends Table[Label](tag, "LABELS") {
 
-    def name = column[String]("name", O.PrimaryKey)
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
 
-    def edge = column[String]("edge")
+    def name = column[String]("NAME")
 
-    def notes = column[String]("notes")
+    def status = column[Boolean]("STATUS")
 
-    def status = column[Int]("status")
+    def * = (id, name, status) <> (Label.tupled, Label.unapply)
 
-    def * = (name, edge, notes, status) <> (Label.tupled, Label.unapply)
+    def unqName = index("UNQ_NAME", name, unique = true)
   }
 
-  val table = TableQuery[Labels]
-
+  val _table = TableQuery[Labels]
 }

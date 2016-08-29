@@ -1,8 +1,8 @@
 GET / controllers.Application.index
 
 
-GET /api/labels controllers.Application.labels
-GET /api/label/:label controllers.Application.label(label:String)
+GET /api/labels controllers.Application.allLabels
+#GET /api/label/:label controllers.Application.label(label:String)
 
-GET /api/note/:id controllers.Application.note(id:Int)
+#GET /api/note/:id controllers.Application.note(id:Int)
 POST /api/note controllers.Application.insertNote
