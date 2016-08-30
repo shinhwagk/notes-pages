@@ -8,6 +8,9 @@ import slick.driver.H2Driver.api._
   * Created by zhangxu on 2016/8/23.
   */
 object Notes {
+  object NoteCategory{
+    val command = "COMMAND"
+  }
 
   case class Note(id: Int, category: String, createDate: Date, updateDate: Date, status: Boolean, labelId: Int)
 

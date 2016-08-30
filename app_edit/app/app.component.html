@@ -11,12 +11,12 @@
 <div class="container">
   <div class="row">
     <button (click)="open_template('concept')" [class.btn-info]="template_concept">concept</button>
-    <button (click)="open_template('command')"  [class.btn-info]="template_command">command</button>
-    <button (click)="open_template('file')"  [class.btn-info]="template_file">file</button>
+    <button (click)="open_template('command')" [class.btn-info]="template_command">command</button>
+    <button (click)="open_template('file')" [class.btn-info]="template_file">file</button>
   </div>
   <div class="row">
     <nb-edit-concept *ngIf="template_concept"></nb-edit-concept>
-    <nb-edit-command *ngIf="template_command"></nb-edit-command>
+    <nb-edit-command *ngIf="template_command" [set_labels]="_selected_labels"></nb-edit-command>
     <nb-edit-file *ngIf="template_file"></nb-edit-file>
   </div>
 </div>

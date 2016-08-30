@@ -6,3 +6,4 @@ GET /api/labels controllers.Application.allLabels
 
 #GET /api/note/:id controllers.Application.note(id:Int)
 POST /api/note controllers.Application.insertNote
+POST /api/command controllers.Application.insertCommand

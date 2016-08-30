@@ -1,11 +1,13 @@
 package controllers
 
+import java.sql.Date
 import javax.inject.Inject
 
 import models.database.Labels
 import models.database.Labels.Label
-import models.database.table.Notes
-import models.database.table.Notes.Note
+import models.database.table.NoteCommands.NoteCommand
+import models.database.table.{NoteCommands, Notes}
+import models.database.table.Notes.{Note, NoteCategory}
 import models.transition.DataObject
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
@@ -52,5 +54,19 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Co
     request.body.asJson.map { optnote =>
       db.run(Notes._table += optnote.as[Note]).map(rs => Ok)
     }.getOrElse(Future(InternalServerError("xxx")))
+  }
+
+  def insertCommand = Action.async { implicit request =>
+    request.body.asJson.map { jsValue =>
+      val contentOne = (jsValue \ "contentOne").as[String]
+      val contentTwo = (jsValue \ "contentTwo").as[String]
+      val labelId = (jsValue \ "labelId").as[Int]
+      val note = Note(0, NoteCategory.command, new Date(new java.util.Date().getTime), new Date(new java.util.Date().getTime), true, labelId)
+      db.run((Notes._table returning Notes._table.map(_.id)) += note).flatMap(id =>
+        db.run(NoteCommands._table += NoteCommand(0, contentOne, contentTwo, id))
+      ).map(rs => Ok)
+    }.getOrElse(Future(InternalServerError("xxx")))
+
+    Future(Ok)
   }
 }
