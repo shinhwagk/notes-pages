@@ -4,13 +4,13 @@ import {ApiServices} from "../api.services";
  * Created by zhangxu on 2016/8/26.
  */
 @Component({
-    selector: 'nb-edit-file',
-    templateUrl: `app/template/file.component.html`,
-    styleUrls: ['app/template/file.component.css'],
+    selector: 'nb-edit-operation',
+    templateUrl: `app/template/operation.component.html`,
+    styleUrls: ['app/template/operation.component.css'],
     providers: [ApiServices]
 })
 
-export class TemplateFileComponent {
+export class TemplateOperationComponent {
     constructor(private _api: ApiServices) {
     }
 
@@ -23,18 +23,17 @@ export class TemplateFileComponent {
 
     submit() {
         this._selected_labels.forEach(id=> {
-            let file: File = {
+            let operation: Operation = {
                 id: 0,
                 title: this._title,
                 labelId: id
             }
-            this._api.addFile(file).toPromise().then(p=>console.info("add concept Success."))
+            this._api.addOperation(operation).toPromise().then(r=>console.info("add operation success."))
         })
-
     }
 }
 
-interface File {
+interface Operation {
     id: number
     title: string;
     labelId: number;

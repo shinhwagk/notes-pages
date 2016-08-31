@@ -1,4 +1,4 @@
-package models.database.table
+package database.table
 
 import slick.driver.H2Driver.api._
 

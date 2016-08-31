@@ -1,4 +1,4 @@
-package models.database.table
+package database.table
 
 import java.sql.Date
 import models.database.Labels
@@ -10,9 +10,10 @@ import slick.driver.H2Driver.api._
 object Notes {
   object NoteCategory{
     val command = "COMMAND"
+    val concept = "CONCEPT"
   }
 
-  case class Note(id: Int, category: String, createDate: Date, updateDate: Date, status: Boolean, labelId: Int)
+  case class Note(id: Int, category: String, createDate: Long, updateDate: Long, status: Boolean, labelId: Int)
 
   class Notes(tag: Tag) extends Table[Note](tag, "NOTES") {
 
@@ -20,9 +21,9 @@ object Notes {
 
     def category = column[String]("CATEGORY")
 
-    def createDate = column[Date]("CREATE_DATE")
+    def createDate = column[Long]("CREATE_DATE")
 
-    def updateDate = column[Date]("UPDATE_DATE")
+    def updateDate = column[Long]("UPDATE_DATE")
 
     def status = column[Boolean]("STATUS")
 
