@@ -1,6 +1,5 @@
 package database.table
 
-import java.sql.Date
 import models.database.Labels
 import slick.driver.H2Driver.api._
 
@@ -8,12 +7,15 @@ import slick.driver.H2Driver.api._
   * Created by zhangxu on 2016/8/23.
   */
 object Notes {
-  object NoteCategory{
+
+  object NoteCategory {
     val command = "COMMAND"
     val concept = "CONCEPT"
+    val operation = "OPERATION"
+    val file = "FILE"
   }
 
-  case class Note(id: Int, category: String, createDate: Long, updateDate: Long, status: Boolean, labelId: Int)
+  case class Note(id: Int, category: String, createDate: Long, updateDate: Long, status: Boolean)
 
   class Notes(tag: Tag) extends Table[Note](tag, "NOTES") {
 
@@ -27,11 +29,7 @@ object Notes {
 
     def status = column[Boolean]("STATUS")
 
-    def labelId = column[Int]("LABEL_ID")
-
-    def * = (id, category, createDate, updateDate, status, labelId) <> (Note.tupled, Note.unapply)
-
-    def labelFk = foreignKey("FK_LABELS_FILES_ID", labelId, Labels._table)(_.id)
+    def * = (id, category, createDate, updateDate, status) <> (Note.tupled, Note.unapply)
   }
 
   val _table = TableQuery[Notes]

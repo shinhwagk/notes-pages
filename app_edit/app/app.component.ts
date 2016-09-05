@@ -1,15 +1,10 @@
 import {Component, OnInit} from "@angular/core";
-import {TemplateConceptComponent} from "./template/concept.component";
-import {TemplateCommandComponent} from "./template/command.component";
-import {TemplateFileComponent} from "./template/file.component";
 import {ApiServices} from "./api.services";
-import {TemplateOperationComponent} from "./template/operation.component";
 
 @Component({
     selector: 'nb-edit',
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
-    directives: [TemplateCommandComponent, TemplateConceptComponent, TemplateFileComponent, TemplateOperationComponent],
     providers: [ApiServices]
 })
 

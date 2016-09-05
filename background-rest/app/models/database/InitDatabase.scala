@@ -1,5 +1,6 @@
 package models.database
 
+import database.table.NoteWithNoteRelations
 import slick.driver.H2Driver.api._
 
 object InitDatabase {
@@ -12,14 +13,15 @@ object InitDatabase {
 //  }
 //
 //
-//  def createTables = {
+  def createTables = {
 //    val setup = DBIO.seq(
 //      (Labels._table.schema
 //        ++ LabelEdges._table.schema
 //        ++ Notes._table.schema
 //        ++ NoteCommands._table.schema
 //        ++ NoteDocuments._table.schema
-//        ++ NoteFiles._table.schema).create,
+//        ++ NoteFiles._table.schema
+//        ++ NoteRelations._table.schema).create,
 //      Labels._table += Label(1, "oracle", true),
 //      Labels._table += Label(1, "install", true)
 //    )

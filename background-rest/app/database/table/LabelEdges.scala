@@ -8,7 +8,7 @@ import slick.driver.H2Driver.api._
   */
 object LabelEdges {
 
-  case class LabelEdge(centreId: Int, edgeId: Int, status: Boolean)
+  case class LabelEdge(centreId: Int, edgeId: Int)
 
   class LabelEdges(tag: Tag) extends Table[LabelEdge](tag, "LABEL_EDGE") {
 
@@ -16,9 +16,7 @@ object LabelEdges {
 
     def edgeId = column[Int]("EDGE_ID")
 
-    def status = column[Boolean]("STATUS")
-
-    def * = (centreId, edgeId, status) <> (LabelEdge.tupled, LabelEdge.unapply)
+    def * = (centreId, edgeId) <> (LabelEdge.tupled, LabelEdge.unapply)
 
     def centreIdFk = foreignKey("FK_LABEL_CENTRE_ID", centreId, Labels._table)(_.id)
 

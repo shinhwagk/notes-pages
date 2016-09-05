@@ -5,12 +5,12 @@ package controllers
   */
 object ApplicationObject {
 
-  case class RestConcept(id: Int, title: String, labelId: Int)
+  case class RestConcept(id: Int, title: String, labelIds: List[Int])
 
-  case class RestFile(id: Int, title: String, labelId: Int)
+  case class RestFile(id: Int, title: String, labelIds: List[Int])
 
-  case class RestOperation(id: Int, title: String, labelId: Int)
+  case class RestOperation(id: Int, title: String, labelIds: List[Int])
 
-  case class RestCommand(id: Int, contentOne: String, contentTwo: String, labelId: Int)
+  case class RestCommand(id: Int, contentOne: String, contentTwo: String, labelIds: List[Int])
 
 }

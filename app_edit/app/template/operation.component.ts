@@ -22,19 +22,17 @@ export class TemplateOperationComponent {
     }
 
     submit() {
-        this._selected_labels.forEach(id=> {
-            let operation: Operation = {
-                id: 0,
-                title: this._title,
-                labelId: id
-            }
-            this._api.addOperation(operation).toPromise().then(r=>console.info("add operation success."))
-        })
+        let operation: Operation = {
+            id: 0,
+            title: this._title,
+            labelIds: this._selected_labels
+        }
+        this._api.addOperation(operation).toPromise().then(r=>console.info("add operation success."))
     }
 }
 
 interface Operation {
     id: number
     title: string;
-    labelId: number;
+    labelIds: number[];
 }

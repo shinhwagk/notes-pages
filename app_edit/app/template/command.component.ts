@@ -38,15 +38,13 @@ export class TemplateCommandComponent {
     }
 
     submit() {
-        this._selected_labels.forEach(id=> {
-            let command: Command = {
-                id: 0,
-                contentOne: this._contentOne,
-                contentTwo: this._contentTwo,
-                labelId: id
-            }
-            this._api.addCommand(command).toPromise().then(r=>console.info("add command success."))
-        })
+        let command: Command = {
+            id: 0,
+            contentOne: this._contentOne,
+            contentTwo: this._contentTwo,
+            labelIds: this._selected_labels
+        }
+        this._api.addCommand(command).toPromise().then(r=>console.info("add command success."))
     }
 }
 
@@ -54,5 +52,5 @@ interface Command {
     id: number
     contentOne: string;
     contentTwo: string;
-    labelId: number
+    labelIds: number[]
 }

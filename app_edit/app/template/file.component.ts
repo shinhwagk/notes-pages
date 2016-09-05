@@ -22,20 +22,17 @@ export class TemplateFileComponent {
     }
 
     submit() {
-        this._selected_labels.forEach(id=> {
-            let file: File = {
-                id: 0,
-                title: this._title,
-                labelId: id
-            }
-            this._api.addFile(file).toPromise().then(p=>console.info("add concept Success."))
-        })
-
+        let file: File = {
+            id: 0,
+            title: this._title,
+            labelIds: this._selected_labels
+        }
+        this._api.addFile(file).toPromise().then(p=>console.info("add concept Success."))
     }
 }
 
 interface File {
     id: number
     title: string;
-    labelId: number;
+    labelIds: number[];
 }

@@ -54,11 +54,11 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   //  implicit val noteWrites: Writes[Note]
 
 
-//  def insertNote = Action.async { implicit request =>
-//    request.body.asJson.map { optnote =>
-//      db.run(Notes._table += optnote.as[Note]).map(rs => Ok)
-//    }.getOrElse(Future(InternalServerError("xxx")))
-//  }
+  //  def insertNote = Action.async { implicit request =>
+  //    request.body.asJson.map { optnote =>
+  //      db.run(Notes._table += optnote.as[Note]).map(rs => Ok)
+  //    }.getOrElse(Future(InternalServerError("xxx")))
+  //  }
 
   def addCommand = Action.async { implicit request =>
     request.body.asJson.map { jsValue =>
@@ -88,7 +88,5 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
     }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
   }
 
-  def addLabel = Action.async{implicit request =>
 
-  }
 }

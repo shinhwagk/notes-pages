@@ -22,20 +22,17 @@ export class TemplateConceptComponent {
     }
 
     submit() {
-        this._selected_labels.forEach(id=> {
-            let concept: Concept = {
-                id: 0,
-                title: this._title,
-                labelId: id
-            }
-            this._api.addConcept(concept).toPromise().then(p=>console.info("add concept Success."))
-        })
-
+        let concept: Concept = {
+            id: 0,
+            title: this._title,
+            labelIds: this._selected_labels
+        }
+        this._api.addConcept(concept).toPromise().then(p=>console.info("add concept Success."))
     }
 }
 
 interface Concept {
     id: number
     title: string;
-    labelId: number;
+    labelIds: number[];
 }

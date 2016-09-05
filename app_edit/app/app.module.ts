@@ -4,13 +4,18 @@
 import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
-import {AppComponent} from "./app.component";
 import {FormsModule} from "@angular/forms";
+import {AppComponent} from "./app.component";
+import {TemplateOperationComponent} from "./template/operation.component";
+import {TemplateFileComponent} from "./template/file.component";
+import {TemplateConceptComponent} from "./template/concept.component";
+import {TemplateCommandComponent} from "./template/command.component";
+
 
 @NgModule({
-  imports: [BrowserModule, HttpModule, FormsModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent]
+    imports: [BrowserModule, HttpModule, FormsModule],
+    declarations: [AppComponent,TemplateCommandComponent, TemplateConceptComponent, TemplateFileComponent, TemplateOperationComponent],
+    bootstrap: [AppComponent]
 })
 
 export class AppModule {
