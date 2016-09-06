@@ -13,24 +13,29 @@ export class ApiServices {
         return this._http.get("/api/labels").map(res => res.json())
     }
 
-    addCommand(c) {
-        let body = JSON.stringify(c);
-        return this._http.post("/api/command", body, this.options).map(res => res.json())
-    }
+    // addCommand(c) {
+    //     let body = JSON.stringify(c);
+    //     return this._http.post("/api/command", body, this.options).map(res => res.json())
+    // }
 
-    addConcept(c) {
-        let body = JSON.stringify(c);
-        return this._http.post("/api/concept", body, this.options).map(res => res.json())
-    }
+    // addConcept(c) {
+    //     let body = JSON.stringify(c);
+    //     return this._http.post("/api/concept", body, this.options).map(res => res.json())
+    // }
 
-    addFile(c) {
-        let body = JSON.stringify(c);
-        return this._http.post("/api/file", body, this.options).map(res => res.json())
-    }
+    // addFile(c) {
+    //     let body = JSON.stringify(c);
+    //     return this._http.post("/api/file", body, this.options).map(res => res.json())
+    // }
 
-    addOperation(c) {
-        let body = JSON.stringify(c);
-        return this._http.post("/api/operation", body, this.options).map(res => res.json())
+    // addOperation(c) {
+    //     let body = JSON.stringify(c);
+    //     return this._http.post("/api/operation", body, this.options).map(res => res.json())
+    // }
+
+    addNote(note){
+        let body = JSON.stringify(note);
+        return this._http.post("/api/note", body, this.options).map(res => res.json())
     }
 
     headers = new Headers({'Content-Type': 'application/json'});

@@ -1,5 +1,5 @@
 node_modules
 .idea
 typings
-./**/*.js
-./**/*.map
+*.js
+*.map

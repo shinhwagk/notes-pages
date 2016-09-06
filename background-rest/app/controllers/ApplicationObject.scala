@@ -13,4 +13,5 @@ object ApplicationObject {
 
   case class RestCommand(id: Int, contentOne: String, contentTwo: String, labelIds: List[Int])
 
+  case class RestNote(id: Int, content: String, labelIds: List[Int], category: String)
 }

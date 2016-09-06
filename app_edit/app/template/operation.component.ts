@@ -1,5 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {ApiServices} from "../api.services";
+import {Note} from "./note"
 /**
  * Created by zhangxu on 2016/8/26.
  */
@@ -23,16 +24,18 @@ export class TemplateOperationComponent {
 
     submit() {
         let operation: Operation = {
-            id: 0,
             title: this._title,
+        }
+        let note: Note = {
+            id: 0,
+            category:"operation",
+            content: JSON.stringify(operation),
             labelIds: this._selected_labels
         }
-        this._api.addOperation(operation).toPromise().then(r=>console.info("add operation success."))
+        this._api.addNote(operation).toPromise().then(r => console.info("add operation success."))
     }
 }
 
 interface Operation {
-    id: number
     title: string;
-    labelIds: number[];
 }

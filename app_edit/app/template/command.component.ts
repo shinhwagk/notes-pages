@@ -1,5 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {ApiServices} from "../api.services";
+import {Note} from "./note"
 /**
  * Created by zhangxu on 2016/8/26.
  */
@@ -38,19 +39,21 @@ export class TemplateCommandComponent {
     }
 
     submit() {
-        let command: Command = {
+        let CommandContent:CommandContent = {
+            contentOne:this._contentOne,
+            contentTwo:this._contentTwo
+        }
+        let note: Note = {
             id: 0,
-            contentOne: this._contentOne,
-            contentTwo: this._contentTwo,
+            category:"command",
+            content:JSON.stringify(CommandContent),
             labelIds: this._selected_labels
         }
-        this._api.addCommand(command).toPromise().then(r=>console.info("add command success."))
+        this._api.addNote(note).toPromise().then(r => console.info("add command success."))
     }
 }
 
-interface Command {
-    id: number
+interface CommandContent {
     contentOne: string;
     contentTwo: string;
-    labelIds: number[]
 }

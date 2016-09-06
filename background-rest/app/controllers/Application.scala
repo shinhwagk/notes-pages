@@ -3,6 +3,7 @@ package controllers
 import javax.inject.Inject
 
 import database.Dao
+import database.table.Notes
 import database.table.Notes.Note
 import models.database.Labels
 import models.transition.DataObject
@@ -21,6 +22,7 @@ import scala.concurrent.Future
 class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) extends Controller {
 
   import controllers.ApplicationObject._
+  import database.table.CustomColumnType._
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
@@ -29,10 +31,10 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   implicit val noteReads = Json.reads[Note]
   implicit val noteWrites = Json.writes[Note]
   implicit val labelWrites = Json.writes[DataObject.Label]
-  implicit val restConceptReads = Json.reads[RestConcept]
-  implicit val restFileReads = Json.reads[RestFile]
-  implicit val restOperationtReads = Json.reads[RestOperation]
-  implicit val restCommandReads = Json.reads[RestCommand]
+//  implicit val restConceptReads = Json.reads[RestConcept]
+//  implicit val restFileReads = Json.reads[RestFile]
+//  implicit val restOperationtReads = Json.reads[RestOperation]
+  implicit val restNoteReads = Json.reads[RestNote]
 
   def allLabels = Action.async { implicit request =>
     db.run(Labels._table.filter(_.status).map(rs => (rs.id, rs.name)).result)
@@ -54,39 +56,40 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   //  implicit val noteWrites: Writes[Note]
 
 
-  //  def insertNote = Action.async { implicit request =>
-  //    request.body.asJson.map { optnote =>
-  //      db.run(Notes._table += optnote.as[Note]).map(rs => Ok)
-  //    }.getOrElse(Future(InternalServerError("xxx")))
+  def addNote = Action.async { implicit request =>
+    request.body.asJson.map { restNote =>
+      val rn = restNote.as[RestNote]
+      dao.addNote(rn).map(rs => Ok)
+    }.getOrElse(Future(InternalServerError("xxx")))
+  }
+
+  //  def addCommand = Action.async { implicit request =>
+  //    request.body.asJson.map { jsValue =>
+  //      val rCommand: RestCommand = jsValue.as[RestCommand]
+  //      dao.addCommand(rCommand)
+  //    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
   //  }
-
-  def addCommand = Action.async { implicit request =>
-    request.body.asJson.map { jsValue =>
-      val rCommand: RestCommand = jsValue.as[RestCommand]
-      dao.addCommand(rCommand)
-    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
-  }
-
-  def addConcept = Action.async { implicit request =>
-    request.body.asJson.map { jsValue =>
-      val rConcept: RestConcept = jsValue.as[RestConcept]
-      dao.addConcept(rConcept)
-    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
-  }
-
-  def addFile = Action.async { implicit request =>
-    request.body.asJson.map { jsValue =>
-      val rFile: RestFile = jsValue.as[RestFile]
-      dao.addFile(rFile)
-    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
-  }
-
-  def addOperation = Action.async { implicit request =>
-    request.body.asJson.map { jsValue =>
-      val rOperation: RestOperation = jsValue.as[RestOperation]
-      dao.addOperation(rOperation)
-    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
-  }
+  //
+  //  def addConcept = Action.async { implicit request =>
+  //    request.body.asJson.map { jsValue =>
+  //      val rConcept: RestConcept = jsValue.as[RestConcept]
+  //      dao.addConcept(rConcept)
+  //    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
+  //  }
+  //
+  //  def addFile = Action.async { implicit request =>
+  //    request.body.asJson.map { jsValue =>
+  //      val rFile: RestFile = jsValue.as[RestFile]
+  //      dao.addFile(rFile)
+  //    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
+  //  }
+  //
+  //  def addOperation = Action.async { implicit request =>
+  //    request.body.asJson.map { jsValue =>
+  //      val rOperation: RestOperation = jsValue.as[RestOperation]
+  //      dao.addOperation(rOperation)
+  //    }.map(_.map(_ => Ok)).getOrElse(Future(InternalServerError))
+  //  }
 
 
 }

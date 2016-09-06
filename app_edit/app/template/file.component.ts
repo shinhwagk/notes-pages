@@ -1,5 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {ApiServices} from "../api.services";
+import {Note} from "./note"
 /**
  * Created by zhangxu on 2016/8/26.
  */
@@ -23,16 +24,18 @@ export class TemplateFileComponent {
 
     submit() {
         let file: File = {
+            title: this._title
+        }
+        let note: Note = {
             id: 0,
-            title: this._title,
+            category:"file",
+            content: JSON.stringify(file),
             labelIds: this._selected_labels
         }
-        this._api.addFile(file).toPromise().then(p=>console.info("add concept Success."))
+        this._api.addNote(file).toPromise().then(p=>console.info("add concept Success."))
     }
 }
 
 interface File {
-    id: number
     title: string;
-    labelIds: number[];
 }

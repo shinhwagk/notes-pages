@@ -1,13 +1,9 @@
-GET / controllers.Application.index
+#GET / controllers.Application.index
 
 
-GET /api/labels controllers.Application.allLabels
+#GET /api/labels controllers.Application.allLabels
 #GET /api/label/:label controllers.Application.label(label:String)
 
 #GET /api/note/:id controllers.Application.note(id:Int)
-#POST /api/note controllers.Application.insertNote
-POST /api/command controllers.Application.addCommand
-POST /api/concept controllers.Application.addConcept
-POST /api/file controllers.Application.addFile
-POST /api/operation controllers.Application.addOperation
-POST /api/label controllers.Application.addLabel
+POST /api/note controllers.Application.addNote
+#POST /api/label controllers.Application.addLabel

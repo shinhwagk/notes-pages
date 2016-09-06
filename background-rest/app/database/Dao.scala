@@ -2,13 +2,9 @@ package database
 
 import javax.inject.Inject
 
-import database.table.LabelWithNoteRelations.LabelWithNoteRelation
-import database.table.NoteCommands.NoteCommand
-import database.table.NoteConcepts.NoteConcept
-import database.table.NoteFiles.NoteFile
-import database.table.NoteOperations.NoteOperation
-import database.table.Notes.{Note, NoteCategory}
+import database.table.Notes.Note
 import database.table._
+import models.database.Labels
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.H2Driver.api._
 import slick.driver.JdbcProfile
@@ -21,45 +17,37 @@ import scala.concurrent.{ExecutionContext, Future}
 class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: ExecutionContext) {
 
   import controllers.ApplicationObject._
+  import database.table.CustomColumnType._
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
-  def addConcept(rConcept: RestConcept) = {
-    addNote(NoteCategory.concept)
-      .flatMap(noteId => db.run(NoteConcepts._table += NoteConcept(0, rConcept.title, noteId))
-        .flatMap(_ => Future.sequence(rConcept.labelIds.map(lid => addLabelWithNoteRelations(LabelWithNoteRelation(lid, noteId)))))
-      )
+  def addNote(rNote: RestNote) = {
+    db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
+      .flatMap(noteId => Future.sequence(rNote.labelIds.map(id => updateLabelSinceAddNote(id, noteId))))
+      .flatMap(_ => updateLabelsColumnEdges)
   }
 
-  def addFile(rFile: RestFile) = {
-
-    addNote(NoteCategory.file)
-      .flatMap(noteId => db.run(NoteFiles._table += NoteFile(0, rFile.title, noteId))
-        .flatMap(_ => Future.sequence(rFile.labelIds.map(lid => addLabelWithNoteRelations(LabelWithNoteRelation(lid, noteId)))))
-      )
+  def updateLabelSinceAddNote(id: Int, noteId: Int): Future[Int] = {
+    db.run(Labels._table.filter(_.id === id).map(_.notes).result.head)
+      .flatMap(notes => db.run(Labels._table.filter(_.id === id).map(_.notes).update(noteId :: notes)))
   }
 
-  def addOperation(rOperation: RestOperation) = {
-    addNote(NoteCategory.operation)
-      .flatMap(noteId => db.run(NoteOperations._table += NoteOperation(0, rOperation.title, noteId))
-        .flatMap(_ => Future.sequence(rOperation.labelIds.map(lid => addLabelWithNoteRelations(LabelWithNoteRelation(lid, noteId)))))
-      )
+  def updateLabelsColumnEdges = {
+    val c1: Future[List[(Int, List[Int])]] = db.run(Labels._table.map(p => (p.id, p.notes)).to[List].result)
+    val c2: Future[List[(Int, Int)]] = c1.map(_.flatMap(p => p._2.map((p._1, _))))
+    val c3: Future[List[List[Int]]] = c2.map(_.groupBy(_._2).map { case (k, v) => (k, v.map(_._1)) }.map(_._2).toList)
+    c3.flatMap { labelGroup =>
+      Future.sequence(labelGroup.map { labelIds =>
+        labelIds match {
+          case List(id) => updateLabelsColumnEdgesByid(id, Nil)
+          case _ => Future.sequence(labelIds.map(id => updateLabelsColumnEdgesByid(id, labelIds.filter(_ != id)))).map(_.sum)
+        }
+      })
+    }
   }
 
-  def addCommand(rCommand: RestCommand) = {
-    addNote(NoteCategory.command)
-      .flatMap(noteId => db.run(NoteCommands._table += NoteCommand(0, rCommand.contentOne, rCommand.contentTwo, noteId))
-        .flatMap(_ => Future.sequence(rCommand.labelIds.map(lid => addLabelWithNoteRelations(LabelWithNoteRelation(lid, noteId)))))
-      )
-  }
-
-  def addNote(noteCategory: String): Future[Int] = {
-    val currTime: Long = System.currentTimeMillis()
-    val note: Note = Note(0, noteCategory, currTime, currTime, true)
-    db.run(Notes._table returning Notes._table.map(_.id) += note)
-  }
-
-  def addLabelWithNoteRelations(lwnr: LabelWithNoteRelation): Future[Int] = {
-    db.run(LabelWithNoteRelations._table += lwnr)
+  def updateLabelsColumnEdgesByid(labelId: Int, e: List[Int]): Future[Int] = {
+    db.run(Labels._table.filter(_.id === labelId).map(_.edges).result.head)
+      .flatMap(edges => db.run(Labels._table.filter(_.id === labelId).map(_.edges).update((edges ::: e).distinct)))
   }
 }
