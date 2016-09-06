@@ -17,9 +17,7 @@ var NoteCommandComponent = (function () {
         this.notes = [];
     }
     Object.defineProperty(NoteCommandComponent.prototype, "set_notes", {
-        set: function (notes) {
-            this.notes = notes;
-        },
+        set: function (notes) { this.notes = notes; },
         enumerable: true,
         configurable: true
     });

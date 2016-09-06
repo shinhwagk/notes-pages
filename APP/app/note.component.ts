@@ -27,19 +27,19 @@ export class NoteComponent implements OnInit {
   _note_commands: any[] = []
   _note_concepts: any[] = []
   _note_files: any[] = []
+  _note_operations: any[] = []
 
   @Input() set _notes_str(nids: string) {
     this._note_ids = JSON.parse(nids)
 
-    let notes = {"command": new Array<any>(), "concept": new Array<any>(), "file": new Array<any>()}
+    let notes = { "command": new Array<any>(), "concept": new Array<any>(), "file": new Array<any>(), "operation": new Array<any>() }
 
-    this._note_ids.forEach(id=>
-      this._apiServices.getNote(id).toPromise().then(n=>this.note_dispatcher(n, notes))
+    this._note_ids.forEach(id =>
+      this._apiServices.getNote(id).toPromise().then(n => this.note_dispatcher(n, notes))
     )
   }
 
   note_dispatcher(note, notes) {
-    console.info(note)
     switch (note.category) {
       case "concept":
         notes.concept.push(note)
@@ -52,6 +52,10 @@ export class NoteComponent implements OnInit {
       case "file":
         notes.file.push(note)
         this._note_files = notes.file
+        break
+      case "operation":
+        notes.operation.push(note)
+        this._note_operations = notes.operation
         break
       default:
         confirm("Sorry, that color is not in the system yet!");

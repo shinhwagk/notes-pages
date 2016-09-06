@@ -16,23 +16,15 @@ export class TemplateFileComponent {
     }
 
     _title: string
-    _selected_labels: number[] = []
+    _selected_labels: string[] = []
 
-    @Input() set set_labels(ls: number[]) {
+    @Input() set set_labels(ls: string[]) {
         this._selected_labels = ls
     }
 
     submit() {
-        let file: File = {
-            title: this._title
-        }
-        let note: Note = {
-            id: 0,
-            category:"file",
-            content: JSON.stringify(file),
-            labelIds: this._selected_labels
-        }
-        this._api.addNote(file).toPromise().then(p=>console.info("add concept Success."))
+        let file: File = { title: this._title }
+        this._api.addNote(file, "file", this._selected_labels)
     }
 }
 

@@ -1,7 +1,7 @@
 <ul>
     <li *ngFor="let l of _all_label"
-        (click)="select_label(l.id)"
-        [class.selected]="check_label_selected(l.id)">{{l.name}}
+        (click)="select_label(l)"
+        [class.selected]="check_label_selected(l)">{{l}}
     </li>
     <li>
         <button class="btn btn-secondary btn-sm" (click)="clear_selected_labels()">clear
@@ -14,11 +14,13 @@
         <button (click)="open_template('command')" [class.btn-info]="template_command">command</button>
         <button (click)="open_template('file')" [class.btn-info]="template_file">file</button>
         <button (click)="open_template('operation')" [class.btn-info]="template_operation">operation</button>
+        <button (click)="open_template('label')" [class.btn-info]="template_label">label</button>
     </div>
     <div class="row">
         <nb-edit-command *ngIf="template_command" [set_labels]="_selected_labels"></nb-edit-command>
         <nb-edit-concept *ngIf="template_concept"></nb-edit-concept>
         <nb-edit-operation *ngIf="template_operation"></nb-edit-operation>
         <nb-edit-file *ngIf="template_file"></nb-edit-file>
+        <nb-edit-label *ngIf="template_label"></nb-edit-label>
     </div>
 </div>

@@ -16,23 +16,15 @@ export class TemplateConceptComponent {
     }
 
     _title: string
-    _selected_labels: number[] = []
+    _selected_labels: string[] = []
 
-    @Input() set set_labels(ls: number[]) {
+    @Input() set set_labels(ls: string[]) {
         this._selected_labels = ls
     }
 
     submit() {
-        let concept: Concept = {
-            title: this._title
-        }
-        let note: Note = {
-            id: 0,
-            category:"concept",
-            content: JSON.stringify(concept),
-            labelIds: this._selected_labels
-        }
-        this._api.addNote(concept).toPromise().then(p => console.info("add concept Success."))
+        let concept: Concept = { title: this._title }
+        this._api.addNote(concept, "concept", this._selected_labels)
     }
 }
 

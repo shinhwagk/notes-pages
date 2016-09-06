@@ -2,7 +2,7 @@
  * Created by zhangxu on 2016/8/19.
  */
 import {Component, Input} from "@angular/core";
-
+import {Note} from "./note"
 @Component({
   selector: 'nb-app-note-command',
   templateUrl: `app/notes/note-command.component.html`,
@@ -10,17 +10,12 @@ import {Component, Input} from "@angular/core";
 })
 
 export class NoteCommandComponent {
+  @Input() set set_notes(notes) { this.notes = notes }
 
-  @Input() set set_notes(notes) {
-    this.notes = notes
-  }
-
-  notes: CommandNote[] = []
+  notes: Note[] = []
 }
 
-interface CommandNote {
-  id: number
-  content_1: string;
-  content_2: string
-  category: string
+interface Command {
+  contentOne: string
+  contentTwo: string
 }

@@ -3,41 +3,40 @@
  */
 import {Http, Headers, RequestOptions} from "@angular/http";
 import {Injectable} from "@angular/core";
-
+import {Note} from "./template/note"
 @Injectable()
 export class ApiServices {
     constructor(private _http: Http) {
     }
 
     labels() {
-        return this._http.get("/api/labels").map(res => res.json())
+        return this.getRequest("/api/labels")
     }
 
-    // addCommand(c) {
-    //     let body = JSON.stringify(c);
-    //     return this._http.post("/api/command", body, this.options).map(res => res.json())
-    // }
-
-    // addConcept(c) {
-    //     let body = JSON.stringify(c);
-    //     return this._http.post("/api/concept", body, this.options).map(res => res.json())
-    // }
-
-    // addFile(c) {
-    //     let body = JSON.stringify(c);
-    //     return this._http.post("/api/file", body, this.options).map(res => res.json())
-    // }
-
-    // addOperation(c) {
-    //     let body = JSON.stringify(c);
-    //     return this._http.post("/api/operation", body, this.options).map(res => res.json())
-    // }
-
-    addNote(note){
-        let body = JSON.stringify(note);
-        return this._http.post("/api/note", body, this.options).map(res => res.json())
+    addNote(template, category, labels) {
+        let note: Note = {
+            id: 0,
+            category: category,
+            content: JSON.stringify(template),
+            labels: labels
+        }
+        this.postRequest("/api/note", JSON.stringify(note)).toPromise()
+            .then(r => console.info("add " + category + " success."))
+            .catch(ex => console.error(ex))
     }
 
-    headers = new Headers({'Content-Type': 'application/json'});
-    options = new RequestOptions({headers: this.headers});
+    addLabel(label) {
+        return this.postRequest("/api/label", JSON.stringify(label))
+    }
+
+    postRequest(url, body) {
+        return this._http.post(url, body, this.options).map(res => res.json())
+    }
+
+    getRequest(url) {
+        return this._http.get(url).map(res => res.json())
+    }
+
+    headers = new Headers({ 'Content-Type': 'application/json' });
+    options = new RequestOptions({ headers: this.headers });
 }

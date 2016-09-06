@@ -23,6 +23,7 @@ var NoteComponent = (function () {
         this._note_commands = [];
         this._note_concepts = [];
         this._note_files = [];
+        this._note_operations = [];
     }
     NoteComponent.prototype.ngOnInit = function () {
     };
@@ -30,7 +31,7 @@ var NoteComponent = (function () {
         set: function (nids) {
             var _this = this;
             this._note_ids = JSON.parse(nids);
-            var notes = { "command": new Array(), "concept": new Array(), "file": new Array() };
+            var notes = { "command": new Array(), "concept": new Array(), "file": new Array(), "operation": new Array() };
             this._note_ids.forEach(function (id) {
                 return _this._apiServices.getNote(id).toPromise().then(function (n) { return _this.note_dispatcher(n, notes); });
             });
@@ -39,7 +40,6 @@ var NoteComponent = (function () {
         configurable: true
     });
     NoteComponent.prototype.note_dispatcher = function (note, notes) {
-        console.info(note);
         switch (note.category) {
             case "concept":
                 notes.concept.push(note);
@@ -52,6 +52,10 @@ var NoteComponent = (function () {
             case "file":
                 notes.file.push(note);
                 this._note_files = notes.file;
+                break;
+            case "operation":
+                notes.operation.push(note);
+                this._note_operations = notes.operation;
                 break;
             default:
                 confirm("Sorry, that color is not in the system yet!");

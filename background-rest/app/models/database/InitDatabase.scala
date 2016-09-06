@@ -15,16 +15,16 @@ object InitDatabase {
     //    val setup = createTables
     //     val setup =   insertDataLabel
     //    val setup = query
-//    val setup = DBIO.seq(
-//      createTables,
-//      Labels._table += Label(0, "aaa"),
-//      Labels._table += Label(0, "aaa2"),
-//      Labels._table += Label(0, "aaa3"),
-//      Labels._table += Label(0, "aaa4")
-//    )
-
-    db.run(Labels._table.result).onComplete {
-      case Success(rs) => println("init database success." + rs)
+    //    val setup = DBIO.seq(
+    //      createTables,
+    //      Labels._table += Label(0, "aaa"),
+    //      Labels._table += Label(0, "aaa2"),
+    //      Labels._table += Label(0, "aaa3"),
+    //      Labels._table += Label(0, "aaa4")
+    //    )
+    import database.table.CustomColumnType._
+    db.run(Notes._table.result).onComplete {
+      case Success(rs) => println("init database success." + rs.toList)
       case Failure(ex) => println(ex.getMessage)
     }
     sleep

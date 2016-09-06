@@ -20,9 +20,9 @@ export class TemplateCommandComponent {
 
     _contentOne: string
     _contentTwo: string
-    _selected_labels: number[] = []
+    _selected_labels: string[] = []
 
-    @Input() set set_labels(ls: number[]) {
+    @Input() set set_labels(ls: string[]) {
         this._selected_labels = ls
     }
 
@@ -39,21 +39,12 @@ export class TemplateCommandComponent {
     }
 
     submit() {
-        let CommandContent:CommandContent = {
-            contentOne:this._contentOne,
-            contentTwo:this._contentTwo
-        }
-        let note: Note = {
-            id: 0,
-            category:"command",
-            content:JSON.stringify(CommandContent),
-            labelIds: this._selected_labels
-        }
-        this._api.addNote(note).toPromise().then(r => console.info("add command success."))
+        let command: Command = { contentOne: this._contentOne, contentTwo: this._contentTwo }
+        this._api.addNote(command, "command", this._selected_labels)
     }
 }
 
-interface CommandContent {
+interface Command {
     contentOne: string;
     contentTwo: string;
 }

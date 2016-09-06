@@ -16,9 +16,9 @@ export class TemplateOperationComponent {
     }
 
     _title: string
-    _selected_labels: number[] = []
+    _selected_labels: string[] = []
 
-    @Input() set set_labels(ls: number[]) {
+    @Input() set set_labels(ls: string[]) {
         this._selected_labels = ls
     }
 
@@ -26,13 +26,7 @@ export class TemplateOperationComponent {
         let operation: Operation = {
             title: this._title,
         }
-        let note: Note = {
-            id: 0,
-            category:"operation",
-            content: JSON.stringify(operation),
-            labelIds: this._selected_labels
-        }
-        this._api.addNote(operation).toPromise().then(r => console.info("add operation success."))
+        this._api.addNote(operation, "operation", this._selected_labels)
     }
 }
 

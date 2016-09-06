@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, Input} from "@angular/core";
 import {ApiServices} from "./api.services";
 
 @Component({
@@ -14,20 +14,20 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this._api.labels().toPromise().then(_all_label=> this._all_label = _all_label)
+        this._api.labels().toPromise().then(_all_label => this._all_label = _all_label)
     }
 
-    _all_label: {id: number,name: string}[] = []
+    _all_label: string [] = []
 
-    _selected_labels: number[] = []
+    _selected_labels: string[] = []
 
-    check_label_selected(l: number) {
+    check_label_selected(l: string) {
         return this._selected_labels.indexOf(l) != -1 ? true : false
     }
 
-    select_label(l: number) {
+    select_label(l: string) {
         if (this.check_label_selected(l)) {
-            this._selected_labels = this._selected_labels.filter(p=>p != l)
+            this._selected_labels = this._selected_labels.filter(p => p != l)
         } else {
             this._selected_labels.push(l)
         }
@@ -41,12 +41,14 @@ export class AppComponent implements OnInit {
     template_command = false
     template_file = false
     template_operation = false
+    template_label = false
 
     open_template(template) {
         this.template_concept = false
         this.template_command = false
         this.template_file = false
         this.template_operation = false
+        this.template_label = false
         switch (template) {
             case 'concept':
                 this.template_concept = true
@@ -59,6 +61,9 @@ export class AppComponent implements OnInit {
                 break
             case 'operation':
                 this.template_operation = true
+                break
+            case 'label':
+                this.template_label = true
                 break
             default:
                 confirm("Sorry, that color is not in the system yet!");

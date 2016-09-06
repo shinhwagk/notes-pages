@@ -10,11 +10,11 @@ import {TemplateOperationComponent} from "./template/operation.component";
 import {TemplateFileComponent} from "./template/file.component";
 import {TemplateConceptComponent} from "./template/concept.component";
 import {TemplateCommandComponent} from "./template/command.component";
-
+import {TemplateLabelComponent} from "./template/label.component";
 
 @NgModule({
     imports: [BrowserModule, HttpModule, FormsModule],
-    declarations: [AppComponent,TemplateCommandComponent, TemplateConceptComponent, TemplateFileComponent, TemplateOperationComponent],
+    declarations: [AppComponent, TemplateCommandComponent, TemplateConceptComponent, TemplateFileComponent, TemplateOperationComponent, TemplateLabelComponent],
     bootstrap: [AppComponent]
 })
 

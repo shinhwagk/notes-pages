@@ -10,4 +10,9 @@ object CustomColumnType {
     s => Json.toJson(s).toString(),
     i => Json.parse(i).as[List[Int]]
   )
+
+  implicit val ListStringColumnType = MappedColumnType.base[List[String], String](
+    s => Json.toJson(s).toString(),
+    i => Json.parse(i).as[List[String]]
+  )
 }
