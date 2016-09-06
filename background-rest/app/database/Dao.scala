@@ -24,9 +24,11 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
   val db = dbConfigProvider.get[JdbcProfile].db
 
   def addNote(rNote: RestAddNote): Future[List[Int]] = {
-    db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
-      .flatMap(noteId => Future.sequence(rNote.labels.map(updateLabelSinceAddNote(_, noteId))))
-      .flatMap(_ => updateLabelsColumnEdges)
+//    db.run(Labels._table.map(_.edges).update(Nil)).flatMap(_ =>
+      db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
+        .flatMap(noteId => Future.sequence(rNote.labels.map(updateLabelSinceAddNote(_, noteId))))
+        .flatMap(_ => updateLabelsColumnEdges)
+//    )
   }
 
   def addLabel(name: String): Future[Int] = {

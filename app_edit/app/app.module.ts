@@ -14,7 +14,12 @@ import {TemplateLabelComponent} from "./template/label.component";
 
 @NgModule({
     imports: [BrowserModule, HttpModule, FormsModule],
-    declarations: [AppComponent, TemplateCommandComponent, TemplateConceptComponent, TemplateFileComponent, TemplateOperationComponent, TemplateLabelComponent],
+    declarations: [AppComponent,
+        TemplateCommandComponent,
+        TemplateConceptComponent,
+        TemplateFileComponent,
+        TemplateOperationComponent,
+        TemplateLabelComponent],
     bootstrap: [AppComponent]
 })
 

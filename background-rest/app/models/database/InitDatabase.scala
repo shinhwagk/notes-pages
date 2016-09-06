@@ -6,6 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import models.database.Labels.Label
 import slick.driver.H2Driver.api._
 
+import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 object InitDatabase {
@@ -23,10 +24,26 @@ object InitDatabase {
     //      Labels._table += Label(0, "aaa4")
     //    )
     import database.table.CustomColumnType._
-    db.run(Notes._table.result).onComplete {
-      case Success(rs) => println("init database success." + rs.toList)
-      case Failure(ex) => println(ex.getMessage)
-    }
+//    db.run(Notes._table.filter(_.id < 16).delete).onComplete {
+//      case Success(_) => println("init database success.")
+//      case Failure(ex) => println(ex.getMessage)
+//    }
+//
+//    val notesIds: Future[List[Int]] = db.run(Notes._table.map(_.id).to[List].result)
+//    val labels: Future[Seq[(String, List[Int])]] = db.run(Labels._table.map(l => (l.name, l.notes)).result)
+//
+//    val b: Future[Future[Seq[Int]]] = for {
+//      notes <- notesIds
+//      l <- labels.map(_.map { case (a, b) => (a, b.filter(e => notes.contains(e))) })
+//    } yield Future.sequence(l.map { case (name, noteId) => db.run(Labels._table.filter(_.name === name).map(_.notes).update(noteId)) })
+//val c = b.flatMap(p=>p)
+
+
+        db.run(Labels._table.result).onComplete {
+          case Success(rs) => println("init database success.")
+            rs.foreach(println)
+          case Failure(ex) => println(ex.getMessage)
+        }
     sleep
   }
 

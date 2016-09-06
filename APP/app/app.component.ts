@@ -1,12 +1,8 @@
-import {Component, Input} from '@angular/core';
-
-import {NavComponent} from "./nav.component";
-import {NoteComponent} from "./note.component";
+import {Component} from "@angular/core";
 
 @Component({
   selector: 'nb-app',
-  templateUrl: `app/app.component.html`,
-  directives: [NavComponent, NoteComponent]
+  templateUrl: `app/app.component.html`
 })
 
 export class AppComponent {

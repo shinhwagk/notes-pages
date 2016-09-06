@@ -1,10 +1,11 @@
-#GET / controllers.Application.index
+GET / controllers.Application.index
 
+GET /api/labels         controllers.Application.allLabels
 
-GET /api/labels controllers.Application.allLabels
+GET /api/label/:name    controllers.Application.getLabel(name:String)
 
-GET /api/label/:name controllers.Application.getLabel(name:String)
+GET /api/note/:id       controllers.Application.getNote(id:Int)
 
-GET /api/note/:id controllers.Application.getNote(id:Int)
-POST /api/note controllers.Application.addNote
-POST /api/label controllers.Application.addLabel
+POST /api/note          controllers.Application.addNote
+
+POST /api/label         controllers.Application.addLabel

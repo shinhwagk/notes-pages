@@ -5,11 +5,21 @@ import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
+import {NoteConceptComponent} from "./notes/note-concept.component";
+import {NoteCommandComponent} from "./notes/note-command.component";
+import {NoteFileComponent} from "./notes/note-file.component";
+import {NavComponent} from "./nav.component";
+import {NoteComponent} from "./note.component";
 
 @NgModule({
-  imports: [BrowserModule, HttpModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent]
+    imports: [BrowserModule, HttpModule],
+    declarations: [AppComponent,
+        NavComponent,
+        NoteComponent,
+        NoteConceptComponent,
+        NoteCommandComponent,
+        NoteFileComponent],
+    bootstrap: [AppComponent]
 })
 
 export class AppModule {

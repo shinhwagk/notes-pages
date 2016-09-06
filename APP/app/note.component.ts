@@ -3,16 +3,12 @@
  */
 import {ApiServices} from "./api.services";
 import {Component, OnInit, Input} from "@angular/core";
-import {NoteConceptComponent} from "./notes/note-concept.component";
-import {NoteCommandComponent} from "./notes/note-command.component";
-import {NoteFileComponent} from "./notes/note-file.component";
 
 @Component({
   selector: 'nb-app-note',
   templateUrl: `app/note.component.html`,
   styleUrls: ["app/note.component.css"],
-  providers: [ApiServices],
-  directives: [NoteConceptComponent, NoteCommandComponent, NoteFileComponent]
+  providers: [ApiServices]
 })
 
 export class NoteComponent implements OnInit {

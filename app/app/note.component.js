@@ -13,9 +13,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var api_services_1 = require("./api.services");
 var core_1 = require("@angular/core");
-var note_concept_component_1 = require("./notes/note-concept.component");
-var note_command_component_1 = require("./notes/note-command.component");
-var note_file_component_1 = require("./notes/note-file.component");
 var NoteComponent = (function () {
     function NoteComponent(_apiServices) {
         this._apiServices = _apiServices;
@@ -71,8 +68,7 @@ var NoteComponent = (function () {
             selector: 'nb-app-note',
             templateUrl: "app/note.component.html",
             styleUrls: ["app/note.component.css"],
-            providers: [api_services_1.ApiServices],
-            directives: [note_concept_component_1.NoteConceptComponent, note_command_component_1.NoteCommandComponent, note_file_component_1.NoteFileComponent]
+            providers: [api_services_1.ApiServices]
         }), 
         __metadata('design:paramtypes', [api_services_1.ApiServices])
     ], NoteComponent);
