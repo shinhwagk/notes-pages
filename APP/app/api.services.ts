@@ -11,15 +11,19 @@ export class ApiServices {
   }
 
   getAllLabels() {
-    return this._http.get(UrlServices.labelsUrl).map((res: Response) => res.json())
+    return this._http.get(UrlServices.labelsUrl).map((res: Response) => res.json());
   }
 
   getLabel(l: string) {
-    return this._http.get(UrlServices.labelUrl(l)).map((res: Response) => res.json())
+    return this._http.get(UrlServices.labelUrl(l)).map((res: Response) => res.json());
   }
 
   getNote(id: number) {
-    return this._http.get(UrlServices.noteUrl(id)).map((res: Response) => res.json())
+    return this._http.get(UrlServices.noteUrl(id)).map((res: Response) => res.json());
+  }
+
+  getAppType() {
+    return this._http.get("./app.txt").map((res: Response) => res.text());
   }
 
   headers = new Headers({'Content-Type': 'application/json'});

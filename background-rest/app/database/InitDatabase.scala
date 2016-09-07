@@ -1,12 +1,10 @@
-package models.database
+package database
 
 import database.table.Notes
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import models.database.Labels.Label
+import models.database.Labels
 import slick.driver.H2Driver.api._
 
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
 object InitDatabase {
@@ -23,7 +21,6 @@ object InitDatabase {
     //      Labels._table += Label(0, "aaa3"),
     //      Labels._table += Label(0, "aaa4")
     //    )
-    import database.table.CustomColumnType._
 //    db.run(Notes._table.filter(_.id < 16).delete).onComplete {
 //      case Success(_) => println("init database success.")
 //      case Failure(ex) => println(ex.getMessage)

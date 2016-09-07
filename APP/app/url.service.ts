@@ -18,7 +18,6 @@ export class RestUrls implements Urls {
   }
 
   labelsUrl: string = "/api/labels"
-
 }
 
 export class FileUrls implements Urls {
@@ -31,7 +30,6 @@ export class FileUrls implements Urls {
   }
 
   labelsUrl: string = "/api/labels.json"
-
 }
 
 export const UrlServices: Urls = new RestUrls()
