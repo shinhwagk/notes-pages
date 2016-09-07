@@ -1,7 +1,7 @@
 /**
  * Created by zhangxu on 2016/8/22.
  */
-interface Urls {
+export interface Urls {
   labelsUrl: string;
   labelUrl(label: string): string;
   noteUrl(id: number): string;
@@ -33,3 +33,4 @@ export class FileUrls implements Urls {
 }
 
 export const UrlServices: Urls = new RestUrls()
+// export const UrlServices: Urls = new FileUrls()

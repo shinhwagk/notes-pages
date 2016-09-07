@@ -17,17 +17,20 @@ var url_service_1 = require("./url.service");
 var ApiServices = (function () {
     function ApiServices(_http) {
         this._http = _http;
+        this._urlServices = url_service_1.UrlServices;
         this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         this.options = new http_1.RequestOptions({ headers: this.headers });
     }
     ApiServices.prototype.getAllLabels = function () {
-        return this._http.get(url_service_1.UrlServices.labelsUrl).map(function (res) { return res.json(); });
+        return this._http.get(this._urlServices.labelsUrl).map(function (res) { return res.json(); });
     };
     ApiServices.prototype.getLabel = function (l) {
-        return this._http.get(url_service_1.UrlServices.labelUrl(l)).map(function (res) { return res.json(); });
+        return this._http.get(this._urlServices.labelUrl(l)).map(function (res) { return res.json(); });
     };
     ApiServices.prototype.getNote = function (id) {
-        return this._http.get(url_service_1.UrlServices.noteUrl(id)).map(function (res) { return res.json(); });
+        return this._http.get(this._urlServices.noteUrl(id)).map(function (res) { return res.json(); });
+    };
+    ApiServices.prototype.getAppType = function () {
     };
     ApiServices = __decorate([
         core_1.Injectable(), 

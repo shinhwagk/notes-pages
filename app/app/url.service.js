@@ -26,3 +26,4 @@ var FileUrls = (function () {
 }());
 exports.FileUrls = FileUrls;
 exports.UrlServices = new RestUrls();
+// export const UrlServices: Urls = new FileUrls() 

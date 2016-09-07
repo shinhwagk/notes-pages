@@ -7,9 +7,5 @@ import {ApiServices} from "./api.services";
   providers: [ApiServices]
 })
 
-export class AppComponent implements OnInit{
-  constructor(private _api:ApiServices){}
-  ngOnInit(): void {
-    this._api.getAppType().toPromise().then()
-  }
+export class AppComponent {
 }
