@@ -3,3 +3,5 @@ logs
 project/target
 project/project
 target
+data
+npm-debug.log

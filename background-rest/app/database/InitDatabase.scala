@@ -1,12 +1,10 @@
 package database
 
 import java.io.File
-
 import database.table.Notes
 import models.database.Labels
 import play.api.libs.json.{Json, Writes}
 import slick.driver.H2Driver.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.io.Source
@@ -16,63 +14,17 @@ object InitDatabase {
   lazy val db = Database.forConfig("default")
 
   def main(args: Array[String]): Unit = {
-    //    val setup = createTables
-    //     val setup =   insertDataLabel
-    //    val setup = query
-    //    val setup = DBIO.seq(
-    //      createTables,
-    //      Labels._table += Label(0, "aaa"),
-    //      Labels._table += Label(0, "aaa2"),
-    //      Labels._table += Label(0, "aaa3"),
-    //      Labels._table += Label(0, "aaa4")
-    //    )
-    //    db.run(Notes._table.filter(_.id < 16).delete).onComplete {
-    //      case Success(_) => println("init database success.")
-    //      case Failure(ex) => println(ex.getMessage)
-    //    }
-    //
-    //    val notesIds: Future[List[Int]] = db.run(Notes._table.map(_.id).to[List].result)
-    //    val labels: Future[Seq[(String, List[Int])]] = db.run(Labels._table.map(l => (l.name, l.notes)).result)
-    //
-    //    val b: Future[Future[Seq[Int]]] = for {
-    //      notes <- notesIds
-    //      l <- labels.map(_.map { case (a, b) => (a, b.filter(e => notes.contains(e))) })
-    //    } yield Future.sequence(l.map { case (name, noteId) => db.run(Labels._table.filter(_.name === name).map(_.notes).update(noteId)) })
-    //val c = b.flatMap(p=>p)
-
-    //    exportAllLabels
-    exportALLNotes
-    //    db.run(Labels._table.filter(_.name inSet (List("aaa", "aaa2"))).result).onComplete {
-    //      case Success(rs) => println("init database success.")
-    //        rs.foreach(println)
-    //      case Failure(ex) => println(ex.getMessage)
-    //    }
+    createTables
+//    exportALLLabel
     sleep
   }
 
   def createTables = {
-    DBIO.seq((Labels._table.schema ++ Notes._table.schema).create)
+    db.run(DBIO.seq((Labels._table.schema ++ Notes._table.schema).create)).onComplete {
+      case Success(_) => println("create table success.")
+      case Failure(ex) => println(ex.getMessage)
+    }
   }
-
-  def query = {
-    Labels._table.result
-  }
-
-  //    def insertDataNote = {
-  //      val note = Note(0, "command","""{"content_1": "xxxx", "content_2": "xxxx"}""", "[1]", new java.sql.Date(new java.util.Date().getTime), new java.sql.Date(new java.util.Date().getTime), 1)
-  //      db.run(Notes._table.+=(note)).onComplete {
-  //        case Success(_) => println("insert note success.")
-  //        case Failure(ex) => println(ex.getMessage)
-  //      }
-  //    }
-  //
-  //  def insertDataLabel = {
-  //    val label = Label("oracle", "[]", "[1,2]", 1)
-  //    db.run(Labels._table.+=(label)).onComplete {
-  //      case Success(_) => println("insert note success.")
-  //      case Failure(ex) => println(ex.getMessage)
-  //    }
-  //  }
 
   def sleep = {
     while (true) {
@@ -84,18 +36,26 @@ object InitDatabase {
   /**
     * export operation: all label
     */
-  def exportAllLabels: Unit = {
+  def exportAllLabelName: Unit = {
     urlToFile(s"http://127.0.0.1:9000/api/labels", s"labels.json", "exportAllLabels")
   }
 
   /**
     * export operation: all note
     */
-  def exportALLNotes: Unit = {
-    val allNoteIdsStr = Source.fromURL("http://127.0.0.1:9000/api/noteidall").mkString
-    val noteIdList = Json.parse(allNoteIdsStr).as[List[Int]]
+  def exportALLNote: Unit = {
+    val allNoteId = Source.fromURL("http://127.0.0.1:9000/api/noteidall").mkString
+    val noteIdList = Json.parse(allNoteId).as[List[Int]]
     noteIdList.foreach { id =>
-      urlToFile(s"http://127.0.0.1:9000/api/note/${id}", s"notes\\${id}", "exportALLNotes")
+      urlToFile(s"http://127.0.0.1:9000/api/note/${id}", s"notes\\${id}.json", "exportALLNotes")
+    }
+  }
+
+  def exportALLLabel: Unit = {
+    val allLabelName = Source.fromURL("http://127.0.0.1:9000/api/labels").mkString
+    val labelNameList = Json.parse(allLabelName).as[List[String]]
+    labelNameList.foreach { name =>
+      urlToFile(s"http://127.0.0.1:9000/api/label/${name}", s"labels\\${name}.json", "exportALLLabel")
     }
   }
 
