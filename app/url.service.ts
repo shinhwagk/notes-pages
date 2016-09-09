@@ -32,5 +32,5 @@ export class FileUrls implements Urls {
   labelsUrl: string = "/api/labels.json"
 }
 
-export const UrlServices: Urls = new RestUrls()
-// export const UrlServices: Urls = new FileUrls()
+// export const UrlServices: Urls = new RestUrls()
+export const UrlServices: Urls = new FileUrls()
