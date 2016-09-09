@@ -26,7 +26,7 @@ export class FileUrls implements Urls {
   }
 
   labelUrl(label: string): string {
-    return `data/label/${label}.json`;
+    return `data/labels/${label}.json`;
   }
 
   labelsUrl: string = "data/labels.json"
