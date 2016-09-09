@@ -10,14 +10,14 @@ export interface Urls {
 
 export class RestUrls implements Urls {
   noteUrl(id: number): string {
-    return `/api/note/${id}`;
+    return `data/notes/${id}.json`;
   }
 
   labelUrl(label: string): string {
-    return `/api/label/${label}`;
+    return `data/label/${label}.json`;
   }
 
-  labelsUrl: string = "/api/labels"
+  labelsUrl: string = "data/labels.json"
 }
 
 export class FileUrls implements Urls {
