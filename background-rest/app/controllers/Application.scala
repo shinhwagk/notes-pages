@@ -37,8 +37,8 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   }
 
   def getNote(id: Int) = Action.async { implicit request =>
-    db.run(Notes._table.filter(_.status).filter(_.id === id).result.head)
-      .map(note => RestNote(note.id, note.category, note.content))
+    db.run(Notes._table.filter(_.id === id).result.head)
+      .map(note => RestNote(note.id, note.category, note.content, note.relations))
       .map(rl => Ok(Json.toJson(rl).toString()))
   }
 
@@ -52,7 +52,28 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   def addNote = Action.async { implicit request =>
     request.body.asJson.map { restNote =>
       val rn = restNote.as[RestAddNote]
-      dao.addNote(rn).map(_ => Ok("{}"))
+      dao.addNote(rn).map(id => Ok(Json.parse(s"[${id}]").toString()))
     }.getOrElse(Future(InternalServerError("xxx")))
+  }
+
+  def putNote(id: Int) = Action.async { implicit request =>
+    Future(Ok)
+  }
+
+  //  def getNote(id: Int) = Action.async { implicit request =>
+  //
+  //
+  //    request.body.asJson.map { restNote =>
+  //      val rn = restNote.as[RestAddNote]
+  //      dao.addNote(rn).map(_ => Ok("{}"))
+  //    }.getOrElse(Future(InternalServerError("xxx")))
+  //  }
+
+  /**
+    * export operation
+    */
+  def getNoteIdAll = Action.async { implicit request =>
+    db.run(Notes._table.filter(_.status).map(_.id).to[List].result)
+      .map(ids => Ok(Json.toJson(ids).toString()))
   }
 }

@@ -1,0 +1,73 @@
+<form (submit)="submit()">
+    <h3>Modify</h3>
+    <div class="form-group">
+        <label for="id">id</label>
+        <input type="text" class="form-control" id="id" [(ngModel)]="_id" name="id" required>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<!--template command-->
+<div *ngIf="template_command">
+    <form (submit)="submit()">
+        <h3>{{template_name}}</h3>
+        <div class="form-group">
+            <label for="contentOne">Content 1</label>
+            <input type="text" class="form-control" id="contentOne" name="contentOne" [(ngModel)]="_note.content.contentOne" required>
+        </div>
+        <div class="form-group">
+            <label for="contentTwo">Content 2</label>
+            <textarea class="form-control" id="contentTwo" name="contentTwo" [(ngModel)]="_note.content.contentTwo" rows="5" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="relations">Relations</label>
+            <input type="text" class="form-control" id="relations" name="relations" [(ngModel)]="_note.relations" required>
+        </div>
+        <button type="submit" class="btn btn-default">Update</button>
+    </form>
+</div>
+
+<div *ngIf="template_file">
+    <form (submit)="submit()">
+        <h3>{{template_name}}</h3>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="_note.content.title" required>
+        </div>
+        <div class="form-group">
+            <label for="relations">Relations</label>
+            <input type="text" class="form-control" id="relations" name="relations" [(ngModel)]="_note.relations" required>
+        </div>
+        <button type="submit" class="btn btn-default">Update</button>
+    </form>
+</div>
+
+<div *ngIf="template_concept">
+    <form (submit)="submit()">
+        <h3>{{template_name}}</h3>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="_note.content.title" required>
+        </div>
+        <div class="form-group">
+            <label for="relations">Relations</label>
+            <input type="text" class="form-control" id="relations" name="relations" [(ngModel)]="_note.relations" required>
+        </div>
+        <button type="submit" class="btn btn-default">Update</button>
+    </form>
+</div>
+
+<div *ngIf="template_operation">
+    <form (submit)="submit()">
+        <h3>{{template_name}}</h3>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="_note.content.title" required>
+        </div>
+        <div class="form-group">
+            <label for="relations">Relations</label>
+            <input type="text" class="form-control" id="relations" name="relations" [(ngModel)]="_note.relations" required>
+        </div>
+        <button type="submit" class="btn btn-default">Update</button>
+    </form>
+</div>

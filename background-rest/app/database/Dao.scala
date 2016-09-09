@@ -23,12 +23,13 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
-  def addNote(rNote: RestAddNote): Future[List[Int]] = {
-//    db.run(Labels._table.map(_.edges).update(Nil)).flatMap(_ =>
-      db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
-        .flatMap(noteId => Future.sequence(rNote.labels.map(updateLabelSinceAddNote(_, noteId))))
-        .flatMap(_ => updateLabelsColumnEdges)
-//    )
+  def addNote(rNote: RestAddNote): Future[Int] = {
+    //    db.run(Labels._table.map(_.edges).update(Nil)).flatMap(_ =>
+    val futureNodeId = db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
+
+    futureNodeId.flatMap(noteId => Future.sequence(rNote.labels.map(updateLabelSinceAddNote(_, noteId))))
+      .flatMap(_ => updateLabelsColumnEdges)
+      .flatMap(_ => futureNodeId)
   }
 
   def addLabel(name: String): Future[Int] = {
@@ -58,4 +59,8 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
     db.run(Labels._table.filter(_.name === name).map(_.edges).result.head)
       .flatMap(ee => db.run(Labels._table.filter(_.name === name).map(_.edges).update((ee ::: es).distinct)))
   }
+
+  //  def selectNoteById(id: Int) = {
+  //    db.run(Notes._table.filter(_.id === id))
+  //  }
 }

@@ -23,8 +23,12 @@ export class TemplateConceptComponent {
     }
 
     submit() {
-        let concept: Concept = { title: this._title }
-        this._api.addNote(concept, "concept", this._selected_labels)
+        if (this._selected_labels.length == 0) {
+            alert("为选择label.")
+        } else {
+            let concept: Concept = { title: this._title }
+            this._api.addNote(concept, "concept", this._selected_labels)
+        }
     }
 }
 

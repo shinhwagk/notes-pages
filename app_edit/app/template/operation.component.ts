@@ -23,10 +23,12 @@ export class TemplateOperationComponent {
     }
 
     submit() {
-        let operation: Operation = {
-            title: this._title,
+        if (this._selected_labels.length == 0) {
+            alert("为选择label.")
+        } else {
+            let operation: Operation = { title: this._title, }
+            this._api.addNote(operation, "operation", this._selected_labels)
         }
-        this._api.addNote(operation, "operation", this._selected_labels)
     }
 }
 

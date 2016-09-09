@@ -21,38 +21,52 @@ var NoteComponent = (function () {
         this._note_concepts = [];
         this._note_files = [];
         this._note_operations = [];
+        this._note_commands_str = "{}";
+        this._note_concepts_str = "{}";
+        this._note_files_str = "{}";
+        this._note_operations_str = "{}";
     }
     NoteComponent.prototype.ngOnInit = function () {
+    };
+    NoteComponent.prototype.clear_note_str_and_note_container = function () {
+        this._note_commands = [];
+        this._note_concepts = [];
+        this._note_files = [];
+        this._note_operations = [];
+        this._note_commands_str = "{}";
+        this._note_concepts_str = "{}";
+        this._note_files_str = "{}";
+        this._note_operations_str = "{}";
     };
     Object.defineProperty(NoteComponent.prototype, "_notes_str", {
         set: function (nids) {
             var _this = this;
             this._note_ids = JSON.parse(nids);
-            var notes = { "command": new Array(), "concept": new Array(), "file": new Array(), "operation": new Array() };
+            this.clear_note_str_and_note_container();
             this._note_ids.forEach(function (id) {
-                return _this._apiServices.getNote(id).toPromise().then(function (n) { return _this.note_dispatcher(n, notes); });
+                return _this._apiServices.getNote(id).toPromise().then(function (n) { return _this.note_dispatcher(n); });
             });
         },
         enumerable: true,
         configurable: true
     });
-    NoteComponent.prototype.note_dispatcher = function (note, notes) {
+    NoteComponent.prototype.note_dispatcher = function (note) {
         switch (note.category) {
             case "concept":
-                notes.concept.push(note);
-                this._note_concepts = notes.concept;
+                this._note_concepts.push(note);
+                this._note_concepts_str = JSON.stringify(this._note_concepts);
                 break;
             case "command":
-                notes.command.push(note);
-                this._note_commands = notes.command;
+                this._note_commands.push(note);
+                this._note_commands_str = JSON.stringify(this._note_commands);
                 break;
             case "file":
-                notes.file.push(note);
-                this._note_files = notes.file;
+                this._note_files.push(note);
+                this._note_files_str = JSON.stringify(this._note_files);
                 break;
             case "operation":
-                notes.operation.push(note);
-                this._note_operations = notes.operation;
+                this._note_operations.push(note);
+                this._note_operations_str = JSON.stringify(this._note_operations);
                 break;
             default:
                 confirm("Sorry, that color is not in the system yet!");

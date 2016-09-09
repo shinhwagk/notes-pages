@@ -30,8 +30,6 @@ var ApiServices = (function () {
     ApiServices.prototype.getNote = function (id) {
         return this._http.get(this._urlServices.noteUrl(id)).map(function (res) { return res.json(); });
     };
-    ApiServices.prototype.getAppType = function () {
-    };
     ApiServices = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

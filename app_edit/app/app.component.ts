@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
         this._api.labels().toPromise().then(_all_label => this._all_label = _all_label)
     }
 
-    _all_label: string [] = []
+    _all_label: string[] = []
 
     _selected_labels: string[] = []
 
@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
     template_file = false
     template_operation = false
     template_label = false
+    template_modify = false
 
     open_template(template) {
         this.template_concept = false
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit {
         this.template_file = false
         this.template_operation = false
         this.template_label = false
+        this.template_modify = false
         switch (template) {
             case 'concept':
                 this.template_concept = true
@@ -64,6 +66,9 @@ export class AppComponent implements OnInit {
                 break
             case 'label':
                 this.template_label = true
+                break
+            case 'modify':
+                this.template_modify = true
                 break
             default:
                 confirm("Sorry, that color is not in the system yet!");

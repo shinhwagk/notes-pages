@@ -14,13 +14,15 @@
         <button (click)="open_template('command')" [class.btn-info]="template_command">command</button>
         <button (click)="open_template('file')" [class.btn-info]="template_file">file</button>
         <button (click)="open_template('operation')" [class.btn-info]="template_operation">operation</button>
-        <button (click)="open_template('label')" [class.btn-info]="template_label">label</button>
+        <button (click)="open_template('label')" [class.btn-info]="template_label">add label</button>
+        <button (click)="open_template('modify')" [class.btn-info]="template_modify">modify</button>
     </div>
     <div class="row">
         <nb-edit-command *ngIf="template_command" [set_labels]="_selected_labels"></nb-edit-command>
-        <nb-edit-concept *ngIf="template_concept"></nb-edit-concept>
-        <nb-edit-operation *ngIf="template_operation"></nb-edit-operation>
-        <nb-edit-file *ngIf="template_file"></nb-edit-file>
+        <nb-edit-concept *ngIf="template_concept" [set_labels]="_selected_labels"></nb-edit-concept>
+        <nb-edit-operation *ngIf="template_operation" [set_labels]="_selected_labels"></nb-edit-operation>
+        <nb-edit-file *ngIf="template_file" [set_labels]="_selected_labels"></nb-edit-file>
         <nb-edit-label *ngIf="template_label"></nb-edit-label>
+        <nb-edit-modify *ngIf="template_modify"></nb-edit-modify>
     </div>
 </div>

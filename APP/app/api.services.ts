@@ -1,9 +1,9 @@
 /**
  * Created by zhangxu on 2016/8/17.
  */
-import {Injectable, OnInit} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {Http, Response, Headers, RequestOptions} from "@angular/http";
-import {UrlServices, Urls, RestUrls, FileUrls} from "./url.service";
+import {UrlServices, Urls} from "./url.service";
 
 @Injectable()
 export class ApiServices {
@@ -24,10 +24,6 @@ export class ApiServices {
     return this._http.get(this._urlServices.noteUrl(id)).map((res: Response) => res.json());
   }
 
-  getAppType() {
-
-  }
-
-  headers = new Headers({ 'Content-Type': 'application/json' });
-  options = new RequestOptions({ headers: this.headers });
+  headers = new Headers({'Content-Type': 'application/json'});
+  options = new RequestOptions({headers: this.headers});
 }

@@ -10,15 +10,20 @@ import {Component, Input} from "@angular/core";
 })
 
 export class NoteConceptComponent {
-  @Input() set set_notes(notes) {
-    this.notes = notes
+  @Input() set set_notes(notes_str) {
+    let notes = JSON.parse(notes_str)
+    this.notes = notes.map(note=> new ConceptNote(note.id,JSON.parse(note.content)))
   }
 
   notes: ConceptNote[] = []
 }
 
-interface ConceptNote {
+class ConceptNote {
   id: number
-  note: {title: string,doc_id: number}
-  category: string
+  content: {title: string}
+
+  constructor(id: number, content: {title: string}) {
+    this.id = id
+    this.content = content
+  }
 }

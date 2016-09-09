@@ -10,16 +10,18 @@ import {NoteCommandComponent} from "./notes/note-command.component";
 import {NoteFileComponent} from "./notes/note-file.component";
 import {NavComponent} from "./nav.component";
 import {NoteComponent} from "./note.component";
+import {NoteOperationComponent} from "./notes/operation.component";
 
 @NgModule({
-    imports: [BrowserModule, HttpModule],
-    declarations: [AppComponent,
-        NavComponent,
-        NoteComponent,
-        NoteConceptComponent,
-        NoteCommandComponent,
-        NoteFileComponent],
-    bootstrap: [AppComponent]
+  imports: [BrowserModule, HttpModule],
+  declarations: [AppComponent,
+    NavComponent,
+    NoteComponent,
+    NoteConceptComponent,
+    NoteCommandComponent,
+    NoteFileComponent,
+    NoteOperationComponent],
+  bootstrap: [AppComponent]
 })
 
 export class AppModule {

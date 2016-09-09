@@ -1,6 +1,6 @@
 <div class="card">
-  <div class="card-header"> Concepts</div>
+  <div class="card-header">Concept</div>
   <div class="card-block">
-    <div *ngFor="let note of notes"><a href="{{note.note.doc_id}}">{{note.note.title}}</a></div>
+    <div *ngFor="let note of notes"><a href="{{note.content.id}}">{{note.content.title}}</a></div>
   </div>
 </div>

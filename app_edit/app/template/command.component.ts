@@ -25,22 +25,13 @@ export class TemplateCommandComponent {
     @Input() set set_labels(ls: string[]) {
         this._selected_labels = ls
     }
-
-    test() {
-        console.info(this.doc, this.file)
-    }
-
-    switch_doc() {
-        this.doc = !this.doc
-    }
-
-    switch_file() {
-        this.file = !this.file
-    }
-
     submit() {
-        let command: Command = { contentOne: this._contentOne, contentTwo: this._contentTwo }
-        this._api.addNote(command, "command", this._selected_labels)
+        if (this._selected_labels.length == 0) {
+            alert("为选择label.")
+        } else {
+            let command: Command = { contentOne: this._contentOne, contentTwo: this._contentTwo }
+            this._api.addNote(command, "command", this._selected_labels)
+        }
     }
 }
 

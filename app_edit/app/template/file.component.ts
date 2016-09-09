@@ -23,8 +23,12 @@ export class TemplateFileComponent {
     }
 
     submit() {
-        let file: File = { title: this._title }
-        this._api.addNote(file, "file", this._selected_labels)
+        if (this._selected_labels.length == 0) {
+            alert("为选择label.")
+        } else {
+            let file: File = { title: this._title }
+            this._api.addNote(file, "file", this._selected_labels)
+        }
     }
 }
 

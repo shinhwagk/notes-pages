@@ -14,11 +14,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var NoteFileComponent = (function () {
     function NoteFileComponent() {
+        this.header = "File";
         this.notes = [];
     }
     Object.defineProperty(NoteFileComponent.prototype, "set_notes", {
-        set: function (notes) {
-            this.notes = notes;
+        set: function (notes_str) {
+            var notes = JSON.parse(notes_str);
+            this.notes = notes.map(function (note) { return new FileNote(note.id, JSON.parse(note.content)); });
         },
         enumerable: true,
         configurable: true
@@ -39,3 +41,10 @@ var NoteFileComponent = (function () {
     return NoteFileComponent;
 }());
 exports.NoteFileComponent = NoteFileComponent;
+var FileNote = (function () {
+    function FileNote(id, content) {
+        this.id = id;
+        this.content = content;
+    }
+    return FileNote;
+}());

@@ -17,8 +17,9 @@ var NoteConceptComponent = (function () {
         this.notes = [];
     }
     Object.defineProperty(NoteConceptComponent.prototype, "set_notes", {
-        set: function (notes) {
-            this.notes = notes;
+        set: function (notes_str) {
+            var notes = JSON.parse(notes_str);
+            this.notes = notes.map(function (note) { return new ConceptNote(note.id, JSON.parse(note.content)); });
         },
         enumerable: true,
         configurable: true
@@ -39,3 +40,10 @@ var NoteConceptComponent = (function () {
     return NoteConceptComponent;
 }());
 exports.NoteConceptComponent = NoteConceptComponent;
+var ConceptNote = (function () {
+    function ConceptNote(id, content) {
+        this.id = id;
+        this.content = content;
+    }
+    return ConceptNote;
+}());

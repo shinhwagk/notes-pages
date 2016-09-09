@@ -20,6 +20,7 @@ var note_command_component_1 = require("./notes/note-command.component");
 var note_file_component_1 = require("./notes/note-file.component");
 var nav_component_1 = require("./nav.component");
 var note_component_1 = require("./note.component");
+var operation_component_1 = require("./notes/operation.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -31,7 +32,8 @@ var AppModule = (function () {
                 note_component_1.NoteComponent,
                 note_concept_component_1.NoteConceptComponent,
                 note_command_component_1.NoteCommandComponent,
-                note_file_component_1.NoteFileComponent],
+                note_file_component_1.NoteFileComponent,
+                operation_component_1.NoteOperationComponent],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

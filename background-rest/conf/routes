@@ -8,4 +8,11 @@ GET /api/note/:id       controllers.Application.getNote(id:Int)
 
 POST /api/note          controllers.Application.addNote
 
+PUT /api/note/:id       controllers.Application.putNote(id:Int)
+
 POST /api/label         controllers.Application.addLabel
+
+
+#export url
+
+GET /api/noteidall      controllers.Application.getNoteIdAll

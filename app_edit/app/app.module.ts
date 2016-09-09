@@ -11,6 +11,7 @@ import {TemplateFileComponent} from "./template/file.component";
 import {TemplateConceptComponent} from "./template/concept.component";
 import {TemplateCommandComponent} from "./template/command.component";
 import {TemplateLabelComponent} from "./template/label.component";
+import {TemplateModifyComponent} from "./template/modify.component";
 
 @NgModule({
     imports: [BrowserModule, HttpModule, FormsModule],
@@ -19,7 +20,8 @@ import {TemplateLabelComponent} from "./template/label.component";
         TemplateConceptComponent,
         TemplateFileComponent,
         TemplateOperationComponent,
-        TemplateLabelComponent],
+        TemplateLabelComponent,
+        TemplateModifyComponent],
     bootstrap: [AppComponent]
 })
 

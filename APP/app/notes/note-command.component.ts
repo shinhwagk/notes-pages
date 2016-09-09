@@ -2,24 +2,29 @@
  * Created by zhangxu on 2016/8/19.
  */
 import {Component, Input} from "@angular/core";
-import {Note} from "./note"
 
 @Component({
-    selector: 'nb-app-note-command',
-    templateUrl: `app/notes/note-command.component.html`,
-    styleUrls: ["app/notes/note-command.component.css"]
+  selector: 'nb-app-note-command',
+  templateUrl: `app/notes/note-command.component.html`,
+  styleUrls: ["app/notes/note-command.component.css"]
 })
 
 export class NoteCommandComponent {
-    @Input() set set_notes(notes: Note<string>[]) {
-        this.notes = notes.map(note=>new Note<Command>(note.id, JSON.parse(note.content), note.category))
-    }
+  @Input() set set_notes(notes_str) {
+    let notes = JSON.parse(notes_str)
+    this._notes = notes.map(note=> new CommandeNote(note.id, JSON.parse(note.content)))
+  }
 
-    notes: Note<Command>[] = []
+  _notes: CommandeNote[] = []
 
 }
 
-interface Command {
-    contentOne: string
-    contentTwo: string
+class CommandeNote {
+  id: number
+  content: {contentOne: string, contentTwo: string}
+
+  constructor(id: number, content: {contentOne: string, contentTwo: string}) {
+    this.id = id
+    this.content = content
+  }
 }

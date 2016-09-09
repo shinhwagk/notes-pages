@@ -12,22 +12,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by zhangxu on 2016/8/19.
  */
 var core_1 = require("@angular/core");
-var note_1 = require("./note");
 var NoteCommandComponent = (function () {
     function NoteCommandComponent() {
-        this.notes = [];
+        this._notes = [];
     }
     Object.defineProperty(NoteCommandComponent.prototype, "set_notes", {
-        set: function (notes) {
-            this.notes = notes.map(function (note) { return new note_1.Note(note.id, JSON.parse(note.content), note.category); });
+        set: function (notes_str) {
+            var notes = JSON.parse(notes_str);
+            this._notes = notes.map(function (note) { return new CommandeNote(note.id, JSON.parse(note.content)); });
         },
         enumerable: true,
         configurable: true
     });
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', Array), 
-        __metadata('design:paramtypes', [Array])
+        __metadata('design:type', Object), 
+        __metadata('design:paramtypes', [Object])
     ], NoteCommandComponent.prototype, "set_notes", null);
     NoteCommandComponent = __decorate([
         core_1.Component({
@@ -40,3 +40,10 @@ var NoteCommandComponent = (function () {
     return NoteCommandComponent;
 }());
 exports.NoteCommandComponent = NoteCommandComponent;
+var CommandeNote = (function () {
+    function CommandeNote(id, content) {
+        this.id = id;
+        this.content = content;
+    }
+    return CommandeNote;
+}());
