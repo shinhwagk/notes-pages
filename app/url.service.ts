@@ -10,6 +10,18 @@ export interface Urls {
 
 export class RestUrls implements Urls {
   noteUrl(id: number): string {
+    return `/api/note/${id}`;
+  }
+
+  labelUrl(label: string): string {
+    return `/api/labels/${label}`;
+  }
+
+  labelsUrl: string = "/api/labels"
+}
+
+export class FileUrls implements Urls {
+  noteUrl(id: number): string {
     return `data/notes/${id}.json`;
   }
 
@@ -18,18 +30,6 @@ export class RestUrls implements Urls {
   }
 
   labelsUrl: string = "data/labels.json"
-}
-
-export class FileUrls implements Urls {
-  noteUrl(id: number): string {
-    return `/api/note/${id}.json`;
-  }
-
-  labelUrl(label: string): string {
-    return `/api/labels/${label}.json`;
-  }
-
-  labelsUrl: string = "/api/labels.json"
 }
 
 // export const UrlServices: Urls = new RestUrls()
