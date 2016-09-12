@@ -10,6 +10,8 @@ POST /api/note          controllers.Application.addNote
 
 PUT /api/note/:id       controllers.Application.putNote(id:Int)
 
+GET /api/modify/note/:id       controllers.Application.getPutNote(id:Int)
+
 POST /api/label         controllers.Application.addLabel
 
 

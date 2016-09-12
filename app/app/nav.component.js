@@ -16,7 +16,6 @@ var NavComponent = (function () {
         this._all_label = [];
         this._labels = [];
         this._selected_labels = [];
-        this._notes = new Map();
     }
     NavComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -30,59 +29,21 @@ var NavComponent = (function () {
     };
     NavComponent.prototype.select_label = function (l) {
         if (this.check_label_selected(l)) {
-            this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
-            if (this._selected_labels.length == 0) {
+            if (this._selected_labels.length - 1 === 0) {
                 this._labels = this._all_label;
             }
             else {
+                this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
             }
         }
         else {
             this._selected_labels.push(l);
+            this._selected_labels = this._selected_labels.slice(0);
         }
-        console.info(this._selected_labels);
-        console.info(JSON.stringify(this._selected_labels));
-    };
-    NavComponent.prototype.shuffle_selected = function () {
-        var _label_edge = [];
-        var _notes = new Map();
-        var _selected_labels_count = this._selected_labels.length;
-        this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _notes);
-    };
-    NavComponent.prototype.shuffle_selected_action = function (_selected_labels_count, _label_edge, _notes) {
-        var _this = this;
-        var sl = this._selected_labels[_selected_labels_count];
-        // if (_selected_labels_count == -1) {
-        //     let _labels = new Set<string>()
-        //     let _note_ids = new Set<number>()
-        //     this._selected_labels.forEach(elem => _labels.add(elem))
-        //     _label_edge.filter(le => _label_edge.filter(le2 => le2 == le).length >= this._selected_labels.length)
-        //         .forEach(elem => _labels.add(elem))
-        //
-        //     // _notes.filter(le => _notes.filter(le2 => le2 == le).length >= this._selected_labels.length)
-        //     //     .forEach(elem => _note_ids.add(elem))
-        //     // this._notes = Array.from<number>(_note_ids)
-        //     this._labels = Array.from<string>(_labels)
-        // } else {
-        this._api.getLabel(sl).toPromise().then(function (p) {
-            var keys = _this.getKeys(p.notes);
-            keys.forEach(function (k) { return console.info(p.notes[k]); });
-            p.edge.forEach(function (ls) { return _label_edge.push(ls); });
-            // p.notes.set(p.notes)
-            // this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _notes)
-        });
-        // }
     };
     NavComponent.prototype.clear_selected_labels = function () {
         this._selected_labels = [];
         this._labels = this._all_label;
-    };
-    NavComponent.prototype.getKeys = function (o) {
-        var keys = [];
-        for (var k in o) {
-            keys.push(k);
-        }
-        return keys;
     };
     NavComponent = __decorate([
         core_1.Component({

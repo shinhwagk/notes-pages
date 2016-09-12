@@ -1,6 +1,5 @@
-import {Component, Input} from "@angular/core";
+import {Component} from "@angular/core";
 import {ApiServices} from "../api.services";
-import {Note} from "./note"
 /**
  * Created by zhangxu on 2016/8/26.
  */
@@ -15,7 +14,7 @@ export class TemplateModifyComponent {
   constructor(private _api: ApiServices) {
   }
 
-  _id: number
+  _id: number = 0
 
   _note: any
   template_name: string
@@ -30,23 +29,34 @@ export class TemplateModifyComponent {
     this._api.getNote(this._id).toPromise().then(note => this.showTemplate(note))
   }
 
+  submit_modify() {
+    let putNote = {
+      id: this._note.id,
+      category: this._note.category,
+      content: JSON.stringify(this._note.content),
+      relations: JSON.parse(this._note.relations),
+      labels: this._note.labels.split(",")
+    }
+    this._api.updateNote(this._id, putNote).toPromise().then(note => alert("modify success."))
+  }
+
   showTemplate(note) {
     this.closeAllTemplate()
     switch (note.category) {
       case 'command':
-        this.modifyTemplate("Command", note)
+        this.modifyTemplate("command", note)
         this.template_command = true
         break;
       case 'file':
-        this.modifyTemplate("File", note)
+        this.modifyTemplate("file", note)
         this.template_file = true
         break;
       case 'concept':
-        this.modifyTemplate("Concept", note)
+        this.modifyTemplate("concept", note)
         this.template_file = true
         break;
       case 'operation':
-        this.modifyTemplate("Operation", note)
+        this.modifyTemplate("operation", note)
         this.template_file = true
         break;
       default:
@@ -56,7 +66,13 @@ export class TemplateModifyComponent {
 
   modifyTemplate(template_name, note) {
     this.template_name = template_name
-    this._note = { id: note.id, command: template_name, content: JSON.parse(note.content), relations: JSON.stringify(note.relations) }
+    this._note = {
+      id: note.id,
+      category: template_name,
+      content: JSON.parse(note.content),
+      relations: JSON.stringify(note.relations),
+      labels: note.labels.toString()
+    }
   }
 
   closeAllTemplate() {

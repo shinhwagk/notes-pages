@@ -39,9 +39,13 @@ export class ApiServices {
   }
 
   getNote(id) {
-    return this._http.get(`/api/note/${id}`).map(res => res.json())
+    return this._http.get(`/api/modify/note/${id}`).map(res => res.json())
   }
 
-  headers = new Headers({ 'Content-Type': 'application/json' });
-  options = new RequestOptions({ headers: this.headers });
+  updateNote(id, note) {
+    return this._http.put(`/api/note/${id}`, JSON.stringify(note), this.options).map(res => res.text())
+  }
+
+  headers = new Headers({'Content-Type': 'application/json'});
+  options = new RequestOptions({headers: this.headers});
 }

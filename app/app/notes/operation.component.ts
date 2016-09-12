@@ -2,17 +2,24 @@
  * Created by zhangxu on 2016/8/19.
  */
 import {Component, Input} from "@angular/core";
+import {ApiServices} from "../api.services";
 
 @Component({
   selector: 'nb-app-note-operation',
   templateUrl: `app/notes/operation.component.html`,
-  styleUrls: ["app/notes/operation.component.css"]
+  styleUrls: ["app/notes/operation.component.css"],
+  providers: [ApiServices]
 })
 
 export class NoteOperationComponent {
-  @Input() set set_notes(notes_str: string) {
-    let notes = JSON.parse(notes_str)
-    this.notes = notes.map(note=> new OperationNote(note.id,JSON.parse(note.content)))
+  constructor(private _api: ApiServices) {
+  }
+
+  @Input() set set_notes(ids) {
+    this.notes = []
+    ids.forEach(id=> {
+      this._api.getNote(id).toPromise().then(note=> this.notes.push(new OperationNote(note.id, JSON.parse(note.content), note.relations)))
+    })
   }
 
   header = "Operation"
@@ -22,9 +29,11 @@ export class NoteOperationComponent {
 class OperationNote {
   id: number
   content: {title: string}
+  relations: number[]
 
-  constructor(id: number, content: {title: string}) {
+  constructor(id: number, content: {title: string}, relations: number[]) {
     this.id = id
     this.content = content
+    this.relations = relations
   }
 }

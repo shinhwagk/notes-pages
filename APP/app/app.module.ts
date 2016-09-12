@@ -11,6 +11,7 @@ import {NoteFileComponent} from "./notes/note-file.component";
 import {NavComponent} from "./nav.component";
 import {NoteComponent} from "./note.component";
 import {NoteOperationComponent} from "./notes/operation.component";
+import {NoteRelationComponent} from "./notes/relation.component";
 
 @NgModule({
   imports: [BrowserModule, HttpModule],
@@ -20,7 +21,8 @@ import {NoteOperationComponent} from "./notes/operation.component";
     NoteConceptComponent,
     NoteCommandComponent,
     NoteFileComponent,
-    NoteOperationComponent],
+    NoteOperationComponent,
+    NoteRelationComponent],
   bootstrap: [AppComponent]
 })
 

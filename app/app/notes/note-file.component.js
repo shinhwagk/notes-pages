@@ -12,15 +12,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by zhangxu on 2016/8/19.
  */
 var core_1 = require("@angular/core");
+var api_services_1 = require("../api.services");
 var NoteFileComponent = (function () {
-    function NoteFileComponent() {
+    function NoteFileComponent(_api) {
+        this._api = _api;
         this.header = "File";
         this.notes = [];
     }
     Object.defineProperty(NoteFileComponent.prototype, "set_notes", {
-        set: function (notes_str) {
-            var notes = JSON.parse(notes_str);
-            this.notes = notes.map(function (note) { return new FileNote(note.id, JSON.parse(note.content)); });
+        set: function (ids) {
+            var _this = this;
+            this.notes = [];
+            ids.forEach(function (id) {
+                _this._api.getNote(id).toPromise().then(function (note) { return _this.notes.push(new FileNote(note.id, JSON.parse(note.content), note.relations)); });
+            });
         },
         enumerable: true,
         configurable: true
@@ -34,17 +39,19 @@ var NoteFileComponent = (function () {
         core_1.Component({
             selector: 'nb-app-note-file',
             templateUrl: "app/notes/note-file.component.html",
-            styleUrls: ["app/notes/note-file.component.css"]
+            styleUrls: ["app/notes/note-file.component.css"],
+            providers: [api_services_1.ApiServices]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [api_services_1.ApiServices])
     ], NoteFileComponent);
     return NoteFileComponent;
 }());
 exports.NoteFileComponent = NoteFileComponent;
 var FileNote = (function () {
-    function FileNote(id, content) {
+    function FileNote(id, content, relations) {
         this.id = id;
         this.content = content;
+        this.relations = relations;
     }
     return FileNote;
 }());

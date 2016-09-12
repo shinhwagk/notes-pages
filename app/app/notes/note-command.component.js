@@ -12,18 +12,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by zhangxu on 2016/8/19.
  */
 var core_1 = require("@angular/core");
+var api_services_1 = require("../api.services");
 var NoteCommandComponent = (function () {
-    function NoteCommandComponent() {
-        this._notes = [];
+    function NoteCommandComponent(_api) {
+        this._api = _api;
+        this.notes = [];
     }
     Object.defineProperty(NoteCommandComponent.prototype, "set_notes", {
-        set: function (notes_str) {
-            var notes = JSON.parse(notes_str);
-            this._notes = notes.map(function (note) { return new CommandeNote(note.id, JSON.parse(note.content)); });
+        set: function (ids) {
+            var _this = this;
+            this.notes = [];
+            ids.forEach(function (id) {
+                _this._api.getNote(id).toPromise().then(function (note) { return _this.notes.push(new CommandeNote(note.id, JSON.parse(note.content), note.relations)); });
+            });
         },
         enumerable: true,
         configurable: true
     });
+    NoteCommandComponent.prototype.jsonToString = function (a) {
+        return JSON.stringify(a);
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Object), 
@@ -33,17 +41,19 @@ var NoteCommandComponent = (function () {
         core_1.Component({
             selector: 'nb-app-note-command',
             templateUrl: "app/notes/note-command.component.html",
-            styleUrls: ["app/notes/note-command.component.css"]
+            styleUrls: ["app/notes/note-command.component.css"],
+            providers: [api_services_1.ApiServices]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [api_services_1.ApiServices])
     ], NoteCommandComponent);
     return NoteCommandComponent;
 }());
 exports.NoteCommandComponent = NoteCommandComponent;
 var CommandeNote = (function () {
-    function CommandeNote(id, content) {
+    function CommandeNote(id, content, relations) {
         this.id = id;
         this.content = content;
+        this.relations = relations;
     }
     return CommandeNote;
 }());

@@ -14,66 +14,78 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var api_services_1 = require("./api.services");
 var core_1 = require("@angular/core");
 var NoteComponent = (function () {
-    function NoteComponent(_apiServices) {
-        this._apiServices = _apiServices;
+    function NoteComponent(_api) {
+        this._api = _api;
         this._note_ids = [];
-        this._note_commands = [];
-        this._note_concepts = [];
-        this._note_files = [];
-        this._note_operations = [];
-        this._note_commands_str = "{}";
-        this._note_concepts_str = "{}";
-        this._note_files_str = "{}";
-        this._note_operations_str = "{}";
+        this.concept_id = [];
+        this.command_id = [];
+        this.file_id = [];
+        this.operation_id = [];
+        this.labels = [];
     }
-    NoteComponent.prototype.ngOnInit = function () {
+    NoteComponent.prototype.noteIdCollect = function (labels, num, noteIdArr) {
+        var _this = this;
+        var sl = labels[num];
+        if (num == -1) {
+            noteIdArr.forEach(function (x) { return _this.noteDispatcher(x); });
+            this.command_id = this.filterCommonNoteId(this.command_id);
+            this.file_id = this.filterCommonNoteId(this.file_id);
+            this.concept_id = this.filterCommonNoteId(this.concept_id);
+            this.operation_id = this.filterCommonNoteId(this.operation_id);
+            console.info(this.concept_id, 55);
+        }
+        else {
+            this._api.getLabel(sl).toPromise().then(function (n) {
+                noteIdArr.push(n.notes);
+                _this.noteIdCollect(labels, num - 1, noteIdArr);
+            });
+        }
     };
-    NoteComponent.prototype.clear_note_str_and_note_container = function () {
-        this._note_commands = [];
-        this._note_concepts = [];
-        this._note_files = [];
-        this._note_operations = [];
-        this._note_commands_str = "{}";
-        this._note_concepts_str = "{}";
-        this._note_files_str = "{}";
-        this._note_operations_str = "{}";
+    NoteComponent.prototype.filterCommonNoteId = function (id_arr) {
+        var _this = this;
+        var s = new Set();
+        id_arr.filter(function (le) { return id_arr.filter(function (le2) { return le2 == le; }).length >= _this.labels.length; }).forEach(function (v) { return s.add(v); });
+        return Array.from(s);
     };
     Object.defineProperty(NoteComponent.prototype, "_notes_str", {
-        set: function (nids) {
-            console.info(nids, 333);
-            // let test_str: string[] = []
-            // test_str.push(nids)
-            // test_str.forEach(console.info)
-            // this._note_ids = JSON.parse(nids)
-            // this.clear_note_str_and_note_container()
-            // this._note_ids.forEach(id =>
-            //     this._apiServices.getNote(id).toPromise().then(n => this.note_dispatcher(n))
-            // )
+        set: function (labels) {
+            this.labels = labels;
+            this.clearNote();
+            this.noteIdCollect(labels, labels.length - 1, []);
         },
         enumerable: true,
         configurable: true
     });
-    NoteComponent.prototype.note_dispatcher = function (note) {
-        switch (note.category) {
-            case "concept":
-                this._note_concepts.push(note);
-                this._note_concepts_str = JSON.stringify(this._note_concepts);
-                break;
-            case "command":
-                this._note_commands.push(note);
-                this._note_commands_str = JSON.stringify(this._note_commands);
-                break;
-            case "file":
-                this._note_files.push(note);
-                this._note_files_str = JSON.stringify(this._note_files);
-                break;
-            case "operation":
-                this._note_operations.push(note);
-                this._note_operations_str = JSON.stringify(this._note_operations);
-                break;
-            default:
-                confirm("Sorry, that color is not in the system yet!");
+    NoteComponent.prototype.clearNote = function () {
+        this.concept_id = [];
+        this.command_id = [];
+        this.file_id = [];
+        this.operation_id = [];
+    };
+    NoteComponent.prototype.noteDispatcher = function (note) {
+        var _this = this;
+        var keys = [];
+        for (var k in note) {
+            keys.push(k);
         }
+        keys.forEach(function (k) {
+            switch (k) {
+                case "concept":
+                    note[k].forEach(function (id) { return _this.concept_id.push(id); });
+                    break;
+                case "command":
+                    note[k].forEach(function (id) { return _this.command_id.push(id); });
+                    break;
+                case "file":
+                    note[k].forEach(function (id) { return _this.file_id.push(id); });
+                    break;
+                case "operation":
+                    note[k].forEach(function (id) { return _this.operation_id.push(id); });
+                    break;
+                default:
+                    confirm("Sorry, that color is not in the system yet!");
+            }
+        });
     };
     __decorate([
         core_1.Input(), 

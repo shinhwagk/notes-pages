@@ -2,6 +2,7 @@ package database
 
 import javax.inject.Inject
 
+import controllers.ApplicationObject.RestPutNote
 import database.table.Notes.Note
 import database.table._
 import models.database.Labels
@@ -62,6 +63,10 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
 
   def getNoteById(id: Int): Future[Note] = {
     db.run(Notes._table.filter(_.id === id).result.head)
+  }
+
+  def putNoteById(id: Int, rpn: RestPutNote) = {
+    db.run(Notes._table.filter(_.id === id).map(n => (n.content, n.relations)).update(rpn.content, rpn.relations))
   }
 
   //  def selectNoteById(id: Int) = {

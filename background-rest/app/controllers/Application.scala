@@ -4,7 +4,6 @@ import javax.inject.Inject
 
 import database.Dao
 import database.table.Notes
-import database.table.Notes.Note
 import models.database.Labels
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
@@ -21,6 +20,7 @@ import scala.concurrent.Future
 class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) extends Controller {
 
   import controllers.ApplicationObject._
+  import database.table.CustomColumnType._
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
@@ -42,8 +42,12 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
 
   def getNote(id: Int) = Action.async { implicit request =>
     db.run(Notes._table.filter(_.id === id).result.head)
-      .map(note => RestNote(note.id, note.category, note.content, note.relations))
-      .map(rl => Ok(Json.toJson(rl).toString()))
+      .flatMap { note =>
+        Future.sequence(note.relations.map(dao.getNoteById(_)))
+          .map(notes => notes.map(n => (n.category, n.id)).groupBy(_._1).map { case (k, v) => (k, v.map(_._2)) })
+          .map(n => RestNote(note.id, note.content, n))
+
+      }.map(rl => Ok(Json.toJson(rl).toString()))
   }
 
   def addLabel = Action.async { implicit request =>
@@ -61,7 +65,20 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   }
 
   def putNote(id: Int) = Action.async { implicit request =>
-    Future(Ok)
+    request.body.asJson.map { restPutNote =>
+      val rpn = restPutNote.as[RestPutNote]
+      dao.putNoteById(id, rpn).map(_ => Ok("{}"))
+    }.getOrElse(Future(InternalServerError("xxx")))
+  }
+
+  def getPutNote(id: Int) = Action.async { implicit request =>
+    db.run(Notes._table.filter(_.id === id).result.head)
+      .flatMap(note => {
+        val labelInfo = db.run(Labels._table.map(l => (l.name, l.notes)).to[List].result)
+        val labels: Future[List[String]] = labelInfo.map(_.filter(_._2.contains(note.id)).map(_._1))
+        labels.map(RestPutNote2(note.id, note.category, note.content, note.relations, _))
+      })
+      .map(rl => Ok(Json.toJson(rl).toString()))
   }
 
   //  def getNote(id: Int) = Action.async { implicit request =>
