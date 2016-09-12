@@ -1,10 +1,13 @@
 package database
 
 import java.io.File
+
 import database.table.Notes
 import models.database.Labels
+import models.database.Labels.Label
 import play.api.libs.json.{Json, Writes}
 import slick.driver.H2Driver.api._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.io.Source
@@ -15,7 +18,8 @@ object InitDatabase {
 
   def main(args: Array[String]): Unit = {
     createTables
-//    exportALLLabel
+
+    //    exportALLLabel
     sleep
   }
 
@@ -24,6 +28,15 @@ object InitDatabase {
       case Success(_) => println("create table success.")
       case Failure(ex) => println(ex.getMessage)
     }
+  }
+
+  def insertTestData = {
+    db.run(Labels._table += Label("oracle")).onComplete {
+      case Success(_) => println("create table success.")
+      case Failure(ex) => println(ex.getMessage)
+    }
+
+
   }
 
   def sleep = {

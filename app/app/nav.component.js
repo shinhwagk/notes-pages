@@ -11,16 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var api_services_1 = require("./api.services");
 var core_1 = require("@angular/core");
 var NavComponent = (function () {
-    function NavComponent(_apiServices) {
-        this._apiServices = _apiServices;
+    function NavComponent(_api) {
+        this._api = _api;
         this._all_label = [];
         this._labels = [];
         this._selected_labels = [];
-        this._note_ids = [];
+        this._notes = new Map();
     }
     NavComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._apiServices.getAllLabels().toPromise().then(function (p) {
+        this._api.getAllLabels().toPromise().then(function (p) {
             _this._all_label = p;
             _this._labels = _this._all_label;
         });
@@ -35,45 +35,54 @@ var NavComponent = (function () {
                 this._labels = this._all_label;
             }
             else {
-                this.shuffle_selected();
             }
         }
         else {
             this._selected_labels.push(l);
-            this.shuffle_selected();
         }
+        console.info(this._selected_labels);
+        console.info(JSON.stringify(this._selected_labels));
     };
     NavComponent.prototype.shuffle_selected = function () {
         var _label_edge = [];
-        var _note_id = [];
+        var _notes = new Map();
         var _selected_labels_count = this._selected_labels.length;
-        this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _note_id);
+        this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _notes);
     };
-    NavComponent.prototype.shuffle_selected_action = function (_selected_labels_count, _label_edge, _note_id) {
+    NavComponent.prototype.shuffle_selected_action = function (_selected_labels_count, _label_edge, _notes) {
         var _this = this;
         var sl = this._selected_labels[_selected_labels_count];
-        if (_selected_labels_count == -1) {
-            var _labels_1 = new Set();
-            var _note_ids_1 = new Set();
-            this._selected_labels.forEach(function (elem) { return _labels_1.add(elem); });
-            _label_edge.filter(function (le) { return _label_edge.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
-                .forEach(function (elem) { return _labels_1.add(elem); });
-            _note_id.filter(function (le) { return _note_id.filter(function (le2) { return le2 == le; }).length >= _this._selected_labels.length; })
-                .forEach(function (elem) { return _note_ids_1.add(elem); });
-            this._note_ids = Array.from(_note_ids_1);
-            this._labels = Array.from(_labels_1);
-        }
-        else {
-            this._apiServices.getLabel(sl).toPromise().then(function (p) {
-                p.edge.forEach(function (ls) { return _label_edge.push(ls); });
-                p.notes.forEach(function (ls) { return _note_id.push(ls); });
-                _this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _note_id);
-            });
-        }
+        // if (_selected_labels_count == -1) {
+        //     let _labels = new Set<string>()
+        //     let _note_ids = new Set<number>()
+        //     this._selected_labels.forEach(elem => _labels.add(elem))
+        //     _label_edge.filter(le => _label_edge.filter(le2 => le2 == le).length >= this._selected_labels.length)
+        //         .forEach(elem => _labels.add(elem))
+        //
+        //     // _notes.filter(le => _notes.filter(le2 => le2 == le).length >= this._selected_labels.length)
+        //     //     .forEach(elem => _note_ids.add(elem))
+        //     // this._notes = Array.from<number>(_note_ids)
+        //     this._labels = Array.from<string>(_labels)
+        // } else {
+        this._api.getLabel(sl).toPromise().then(function (p) {
+            var keys = _this.getKeys(p.notes);
+            keys.forEach(function (k) { return console.info(p.notes[k]); });
+            p.edge.forEach(function (ls) { return _label_edge.push(ls); });
+            // p.notes.set(p.notes)
+            // this.shuffle_selected_action(_selected_labels_count - 1, _label_edge, _notes)
+        });
+        // }
     };
     NavComponent.prototype.clear_selected_labels = function () {
         this._selected_labels = [];
         this._labels = this._all_label;
+    };
+    NavComponent.prototype.getKeys = function (o) {
+        var keys = [];
+        for (var k in o) {
+            keys.push(k);
+        }
+        return keys;
     };
     NavComponent = __decorate([
         core_1.Component({

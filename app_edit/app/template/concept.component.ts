@@ -24,7 +24,7 @@ export class TemplateConceptComponent {
 
     submit() {
         if (this._selected_labels.length == 0) {
-            alert("为选择label.")
+            alert("未选择label.")
         } else {
             let concept: Concept = { title: this._title }
             this._api.addNote(concept, "concept", this._selected_labels)

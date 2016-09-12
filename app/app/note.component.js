@@ -40,12 +40,15 @@ var NoteComponent = (function () {
     };
     Object.defineProperty(NoteComponent.prototype, "_notes_str", {
         set: function (nids) {
-            var _this = this;
-            this._note_ids = JSON.parse(nids);
-            this.clear_note_str_and_note_container();
-            this._note_ids.forEach(function (id) {
-                return _this._apiServices.getNote(id).toPromise().then(function (n) { return _this.note_dispatcher(n); });
-            });
+            console.info(nids, 333);
+            // let test_str: string[] = []
+            // test_str.push(nids)
+            // test_str.forEach(console.info)
+            // this._note_ids = JSON.parse(nids)
+            // this.clear_note_str_and_note_container()
+            // this._note_ids.forEach(id =>
+            //     this._apiServices.getNote(id).toPromise().then(n => this.note_dispatcher(n))
+            // )
         },
         enumerable: true,
         configurable: true
@@ -74,8 +77,8 @@ var NoteComponent = (function () {
     };
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', String), 
-        __metadata('design:paramtypes', [String])
+        __metadata('design:type', Object), 
+        __metadata('design:paramtypes', [Object])
     ], NoteComponent.prototype, "_notes_str", null);
     NoteComponent = __decorate([
         core_1.Component({

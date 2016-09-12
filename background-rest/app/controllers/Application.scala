@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import database.Dao
 import database.table.Notes
+import database.table.Notes.Note
 import models.database.Labels
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
@@ -32,8 +33,11 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
 
   def getLabel(name: String) = Action.async { implicit request =>
     db.run(Labels._table.filter(_.status).filter(_.name === name).result.head)
-      .map(l => RestLabel(l.name, l.edges, l.notes))
-      .map(rl => Ok(Json.toJson(rl).toString()))
+      .flatMap { l =>
+        Future.sequence(l.notes.map(dao.getNoteById(_)))
+          .map(notes => notes.map(n => (n.category, n.id)).groupBy(_._1).map { case (k, v) => (k, v.map(_._2)) })
+          .map(n => RestLabel(l.name, l.edges, n))
+      }.map(rl => Ok(Json.toJson(rl).toString()))
   }
 
   def getNote(id: Int) = Action.async { implicit request =>

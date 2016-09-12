@@ -60,6 +60,10 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
       .flatMap(ee => db.run(Labels._table.filter(_.name === name).map(_.edges).update((ee ::: es).distinct)))
   }
 
+  def getNoteById(id: Int): Future[Note] = {
+    db.run(Notes._table.filter(_.id === id).result.head)
+  }
+
   //  def selectNoteById(id: Int) = {
   //    db.run(Notes._table.filter(_.id === id))
   //  }
