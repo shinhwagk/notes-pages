@@ -6,7 +6,9 @@ import slick.driver.H2Driver.api._
   * Created by zhangxu on 2016/8/23.
   */
 object Notes {
-import CustomColumnType._
+
+  import CustomColumnType._
+
   object NoteCategory {
     val command = "COMMAND"
     val concept = "CONCEPT"
@@ -17,7 +19,6 @@ import CustomColumnType._
   case class Note(id: Int,
                   category: String,
                   content: String,
-                  relations: List[Int] = Nil,
                   createDate: Long = System.currentTimeMillis(),
                   updateDate: Long = System.currentTimeMillis(),
                   status: Boolean = true)
@@ -36,9 +37,7 @@ import CustomColumnType._
 
     def status = column[Boolean]("STATUS")
 
-    def relations = column[List[Int]]("RELATIONS")
-
-    def * = (id, category, content, relations, createDate, updateDate, status) <> (Note.tupled, Note.unapply)
+    def * = (id, category, content, createDate, updateDate, status) <> (Note.tupled, Note.unapply)
   }
 
   val _table = TableQuery[Notes]

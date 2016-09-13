@@ -10,8 +10,8 @@
           <pre>{{note.content.contentTwo}}</pre>
         </td>
         <td>
-          <nb-app-note-relation *ngIf="jsonToString(note.relations) !=='{}'"
-                                [relations]="note.relations"></nb-app-note-relation>
+          <nb-app-note-relation *ngIf="note.relations.length > 0"
+                                [set_relation]="note.relations"></nb-app-note-relation>
         </td>
       </tr>
     </table>

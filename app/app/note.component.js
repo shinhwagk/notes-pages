@@ -17,26 +17,26 @@ var NoteComponent = (function () {
     function NoteComponent(_api) {
         this._api = _api;
         this._note_ids = [];
-        this.concept_id = [];
-        this.command_id = [];
-        this.file_id = [];
-        this.operation_id = [];
+        this.concepts = [];
+        this.commands = [];
+        this.files = [];
+        this.operations = [];
         this.labels = [];
     }
     NoteComponent.prototype.noteIdCollect = function (labels, num, noteIdArr) {
         var _this = this;
         var sl = labels[num];
         if (num == -1) {
-            noteIdArr.forEach(function (x) { return _this.noteDispatcher(x); });
-            this.command_id = this.filterCommonNoteId(this.command_id);
-            this.file_id = this.filterCommonNoteId(this.file_id);
-            this.concept_id = this.filterCommonNoteId(this.concept_id);
-            this.operation_id = this.filterCommonNoteId(this.operation_id);
-            console.info(this.concept_id, 55);
+            this.clearNote();
+            var ids = this.filterCommonNoteId(noteIdArr);
+            console.info(ids, "noteIdCollect");
+            ids.forEach(function (id) {
+                _this._api.getNote(id).toPromise().then(function (note) { return _this.noteDispatcher(note); });
+            });
         }
         else {
             this._api.getLabel(sl).toPromise().then(function (n) {
-                noteIdArr.push(n.notes);
+                n.notes.forEach(function (id) { return noteIdArr.push(id); });
                 _this.noteIdCollect(labels, num - 1, noteIdArr);
             });
         }
@@ -57,35 +57,32 @@ var NoteComponent = (function () {
         configurable: true
     });
     NoteComponent.prototype.clearNote = function () {
-        this.concept_id = [];
-        this.command_id = [];
-        this.file_id = [];
-        this.operation_id = [];
+        this.concepts = [];
+        this.commands = [];
+        this.files = [];
+        this.operations = [];
     };
     NoteComponent.prototype.noteDispatcher = function (note) {
-        var _this = this;
-        var keys = [];
-        for (var k in note) {
-            keys.push(k);
+        switch (note.category) {
+            case "concept":
+                this.concepts.push(note);
+                this.concepts = this.concepts.slice(0);
+                break;
+            case "command":
+                this.commands.push(note);
+                this.commands = this.commands.slice(0);
+                break;
+            case "file":
+                this.files.push(note);
+                this.files = this.files.slice(0);
+                break;
+            case "operation":
+                this.operations.push(note);
+                this.operations = this.operations.slice(0);
+                break;
+            default:
+                confirm("Sorry, that color is not in the system yet!");
         }
-        keys.forEach(function (k) {
-            switch (k) {
-                case "concept":
-                    note[k].forEach(function (id) { return _this.concept_id.push(id); });
-                    break;
-                case "command":
-                    note[k].forEach(function (id) { return _this.command_id.push(id); });
-                    break;
-                case "file":
-                    note[k].forEach(function (id) { return _this.file_id.push(id); });
-                    break;
-                case "operation":
-                    note[k].forEach(function (id) { return _this.operation_id.push(id); });
-                    break;
-                default:
-                    confirm("Sorry, that color is not in the system yet!");
-            }
-        });
     };
     __decorate([
         core_1.Input(), 

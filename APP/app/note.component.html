@@ -1,18 +1,18 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-7" [hidden]="command_id.length === 0">
-      <nb-app-note-command [set_notes]="command_id"></nb-app-note-command>
+    <div class="col-sm-7" [hidden]="commands.length === 0">
+      <nb-app-note-command [set_notes]="commands"></nb-app-note-command>
     </div>
-    <div class="col-sm-5" [hidden]="operation_id.length === 0">
-      <nb-app-note-operation [set_notes]="operation_id"></nb-app-note-operation>
+    <div class="col-sm-5" [hidden]="operations.length === 0">
+      <nb-app-note-operation [set_notes]="operations"></nb-app-note-operation>
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6" [hidden]="concept_id.length === 0">
-      <nb-app-note-concept  [set_notes]="concept_id"></nb-app-note-concept>
+    <div class="col-sm-6" [hidden]="concepts.length === 0">
+      <nb-app-note-concept  [set_notes]="concepts"></nb-app-note-concept>
     </div>
-    <div class="col-sm-6" [hidden]="file_id.length === 0">
-      <nb-app-note-file [set_notes]="file_id"></nb-app-note-file>
+    <div class="col-sm-6" [hidden]="files.length === 0">
+      <nb-app-note-file [set_notes]="files"></nb-app-note-file>
     </div>
   </div>
 </div>

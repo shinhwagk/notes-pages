@@ -12,19 +12,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by zhangxu on 2016/8/19.
  */
 var core_1 = require("@angular/core");
-var api_services_1 = require("../api.services");
 var NoteCommandComponent = (function () {
-    function NoteCommandComponent(_api) {
-        this._api = _api;
+    function NoteCommandComponent() {
         this.notes = [];
+        this.header = "Command";
     }
     Object.defineProperty(NoteCommandComponent.prototype, "set_notes", {
-        set: function (ids) {
-            var _this = this;
-            this.notes = [];
-            ids.forEach(function (id) {
-                _this._api.getNote(id).toPromise().then(function (note) { return _this.notes.push(new CommandeNote(note.id, JSON.parse(note.content), note.relations)); });
-            });
+        set: function (notes) {
+            console.info(notes, this.header + " note before.");
+            this.notes = notes.map(function (n) { return new CommandeNote(n.id, JSON.parse(n.content), n.relations); });
+            console.info(this.notes, this.header + " note after");
         },
         enumerable: true,
         configurable: true
@@ -41,10 +38,9 @@ var NoteCommandComponent = (function () {
         core_1.Component({
             selector: 'nb-app-note-command',
             templateUrl: "app/notes/note-command.component.html",
-            styleUrls: ["app/notes/note-command.component.css"],
-            providers: [api_services_1.ApiServices]
+            styleUrls: ["app/notes/note-command.component.css"]
         }), 
-        __metadata('design:paramtypes', [api_services_1.ApiServices])
+        __metadata('design:paramtypes', [])
     ], NoteCommandComponent);
     return NoteCommandComponent;
 }());

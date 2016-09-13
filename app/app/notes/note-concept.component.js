@@ -12,19 +12,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by zhangxu on 2016/8/19.
  */
 var core_1 = require("@angular/core");
-var api_services_1 = require("../api.services");
 var NoteConceptComponent = (function () {
-    function NoteConceptComponent(_api) {
-        this._api = _api;
+    function NoteConceptComponent() {
         this.notes = [];
     }
     Object.defineProperty(NoteConceptComponent.prototype, "set_notes", {
-        set: function (ids) {
-            var _this = this;
-            this.notes = [];
-            ids.forEach(function (id) {
-                _this._api.getNote(id).toPromise().then(function (note) { return _this.notes.push(new ConceptNote(note.id, JSON.parse(note.content), note.relations)); });
-            });
+        set: function (notes) {
+            console.info(notes, "concepts note before.");
+            this.notes = notes.map(function (n) { return new ConceptNote(n.id, JSON.parse(n.content), n.relations); });
+            console.info(this.notes, "concepts note after.");
         },
         enumerable: true,
         configurable: true
@@ -38,10 +34,9 @@ var NoteConceptComponent = (function () {
         core_1.Component({
             selector: 'nb-app-note-concept',
             templateUrl: "app/notes/note-concept.component.html",
-            styleUrls: ["app/notes/note-concept.component.css"],
-            providers: [api_services_1.ApiServices]
+            styleUrls: ["app/notes/note-concept.component.css"]
         }), 
-        __metadata('design:paramtypes', [api_services_1.ApiServices])
+        __metadata('design:paramtypes', [])
     ], NoteConceptComponent);
     return NoteConceptComponent;
 }());

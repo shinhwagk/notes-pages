@@ -10,13 +10,13 @@ object ApplicationObject {
 
   case class RestAddNote(id: Int, category: String, content: String, labels: List[String])
 
-  case class RestPutNote(id: Int, category: String, content: String, relations: List[Int])
+  case class RestPutNote(id: Int, category: String, content: String, relations: List[Int], labels: List[String])
 
   case class RestAddLabel(name: String)
 
-  case class RestLabel(name: String, edge: List[String], notes: Map[String, List[Int]])
+  case class RestLabel(name: String, edge: List[String], notes: List[Int])
 
-  case class RestNote(id: Int, content: String, relations: Map[String, List[Int]])
+  case class RestNote(id: Int, category: String, content: String, relations: List[Int])
 
   case class RestPutNote2(id: Int, category: String, content: String, relations: List[Int], labels: List[String])
 

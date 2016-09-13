@@ -3,7 +3,8 @@ package controllers
 import javax.inject.Inject
 
 import database.Dao
-import database.table.Notes
+import database.table.LabelsNotesRelations.LabelsNotesRelation
+import database.table.{LabelsLabelsRelations, LabelsNotesRelations, Notes, NotesNotesRelations}
 import models.database.Labels
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
@@ -32,54 +33,54 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   }
 
   def getLabel(name: String) = Action.async { implicit request =>
-    db.run(Labels._table.filter(_.status).filter(_.name === name).result.head)
-      .flatMap { l =>
-        Future.sequence(l.notes.map(dao.getNoteById(_)))
-          .map(notes => notes.map(n => (n.category, n.id)).groupBy(_._1).map { case (k, v) => (k, v.map(_._2)) })
-          .map(n => RestLabel(l.name, l.edges, n))
-      }.map(rl => Ok(Json.toJson(rl).toString()))
+    val restLabel = for {
+      edges <- db.run(LabelsLabelsRelations._table.filter(_.center === name).map(_.edge).to[List].result)
+      notes <- db.run(LabelsNotesRelations._table.filter(_.labelName === name).map(_.noteId).to[List].result)
+    } yield RestLabel(name, edges, notes)
+    restLabel.map(rl => Ok(Json.toJson(rl).toString()))
   }
 
   def getNote(id: Int) = Action.async { implicit request =>
-    db.run(Notes._table.filter(_.id === id).result.head)
-      .flatMap { note =>
-        Future.sequence(note.relations.map(dao.getNoteById(_)))
-          .map(notes => notes.map(n => (n.category, n.id)).groupBy(_._1).map { case (k, v) => (k, v.map(_._2)) })
-          .map(n => RestNote(note.id, note.content, n))
-
-      }.map(rl => Ok(Json.toJson(rl).toString()))
+    val restNote = for {
+      note <- db.run(Notes._table.filter(_.id === id).result.head)
+      relations <- db.run(NotesNotesRelations._table.filter(_.noteId === id).map(_.relationId).to[List].result)
+    } yield RestNote(note.id, note.category, note.content, relations)
+    restNote.map(rl => Ok(Json.toJson(rl).toString()))
   }
 
   def addLabel = Action.async { implicit request =>
-    request.body.asJson.map { restLabel =>
-      val rn = restLabel.as[RestAddLabel]
-      dao.addLabel(rn.name).map(_ => Ok("{}"))
+    request.body.asJson.map {
+      restLabel =>
+        val rn = restLabel.as[RestAddLabel]
+        dao.addLabel(rn.name).map(_ => Ok("{}"))
     }.getOrElse(Future(InternalServerError("xxx")))
   }
 
-  def addNote = Action.async { implicit request =>
-    request.body.asJson.map { restNote =>
-      val rn = restNote.as[RestAddNote]
-      dao.addNote(rn).map(id => Ok(Json.parse(s"[${id}]").toString()))
-    }.getOrElse(Future(InternalServerError("xxx")))
-  }
+//  def addNote = Action.async { implicit request =>
+//    request.body.asJson.map {
+//      restNote =>
+//        val rn = restNote.as[RestAddNote]
+//        dao.addNote(rn).map(id => Ok(Json.parse(s"[${id}]").toString()))
+//    }.getOrElse(Future(InternalServerError("xxx")))
+//  }
 
-  def putNote(id: Int) = Action.async { implicit request =>
-    request.body.asJson.map { restPutNote =>
-      val rpn = restPutNote.as[RestPutNote]
-      dao.putNoteById(id, rpn).map(_ => Ok("{}"))
-    }.getOrElse(Future(InternalServerError("xxx")))
-  }
+//  def putNote(id: Int) = Action.async { implicit request =>
+//    request.body.asJson.map {
+//      restPutNote =>
+//        val rpn = restPutNote.as[RestPutNote]
+//        dao.putNoteById(id, rpn).map(_ => Ok("{}"))
+//    }.getOrElse(Future(InternalServerError("xxx")))
+//  }
 
-  def getPutNote(id: Int) = Action.async { implicit request =>
-    db.run(Notes._table.filter(_.id === id).result.head)
-      .flatMap(note => {
-        val labelInfo = db.run(Labels._table.map(l => (l.name, l.notes)).to[List].result)
-        val labels: Future[List[String]] = labelInfo.map(_.filter(_._2.contains(note.id)).map(_._1))
-        labels.map(RestPutNote2(note.id, note.category, note.content, note.relations, _))
-      })
-      .map(rl => Ok(Json.toJson(rl).toString()))
-  }
+//  def getPutNote(id: Int) = Action.async { implicit request =>
+//    db.run(Notes._table.filter(_.id === id).result.head)
+//      .flatMap(note => {
+//        val labelInfo = db.run(Labels._table.map(l => (l.name, l.notes)).to[List].result)
+//        val labels: Future[List[String]] = labelInfo.map(_.filter(_._2.contains(note.id)).map(_._1))
+//        labels.map(RestPutNote2(note.id, note.category, note.content, note.relations, _))
+//      })
+//      .map(rl => Ok(Json.toJson(rl).toString()))
+//  }
 
   //  def getNote(id: Int) = Action.async { implicit request =>
   //

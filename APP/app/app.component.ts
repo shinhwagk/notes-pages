@@ -3,8 +3,7 @@ import {ApiServices} from "./api.services";
 
 @Component({
   selector: 'nb-app',
-  templateUrl: `app/app.component.html`,
-  providers: [ApiServices]
+  templateUrl: `app/app.component.html`
 })
 
 export class AppComponent {

@@ -24,50 +24,52 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
-  def addNote(rNote: RestAddNote): Future[Int] = {
-    //    db.run(Labels._table.map(_.edges).update(Nil)).flatMap(_ =>
-    val futureNodeId = db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
-
-    futureNodeId.flatMap(noteId => Future.sequence(rNote.labels.map(updateLabelSinceAddNote(_, noteId))))
-      .flatMap(_ => updateLabelsColumnEdges)
-      .flatMap(_ => futureNodeId)
-  }
+//  def addNote(rNote: RestAddNote): Future[Int] = {
+//    //    db.run(Labels._table.map(_.edges).update(Nil)).flatMap(_ =>
+//    val futureNodeId = db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
+//
+//    futureNodeId.flatMap(noteId => Future.sequence(rNote.labels.map(updateLabelSinceAddNote(_, noteId))))
+//      .flatMap(_ => updateLabelsColumnEdges)
+//      .flatMap(_ => futureNodeId)
+//  }
 
   def addLabel(name: String): Future[Int] = {
     db.run(Labels._table += Label(name))
   }
 
-  def updateLabelSinceAddNote(name: String, noteId: Int): Future[Int] = {
-    db.run(Labels._table.filter(_.name === name).map(_.notes).result.head)
-      .flatMap(notes => db.run(Labels._table.filter(_.name === name).map(_.notes).update(noteId :: notes)))
-  }
+//  def updateLabelSinceAddNote(name: String, noteId: Int): Future[Int] = {
+//    db.run(Labels._table.filter(_.name === name).map(_.notes).result.head)
+//      .flatMap(notes => db.run(Labels._table.filter(_.name === name).map(_.notes).update(noteId :: notes)))
+//  }
 
-  def updateLabelsColumnEdges: Future[List[Int]] = {
-    val c1: Future[List[(String, List[Int])]] = db.run(Labels._table.map(p => (p.name, p.notes)).to[List].result)
-    val c2: Future[List[(String, Int)]] = c1.map(_.flatMap(p => p._2.map((p._1, _))))
-    val c3: Future[List[List[String]]] = c2.map(_.groupBy(_._2).map { case (k, v) => (k, v.map(_._1)) }.map(_._2).toList)
-    c3.flatMap { labelGroup =>
-      Future.sequence(labelGroup.map { labelNames =>
-        labelNames match {
-          case List(name) => updateLabelsColumnEdgesByid(name, Nil)
-          case _ => Future.sequence(labelNames.map(name => updateLabelsColumnEdgesByid(name, labelNames.filter(_ != name)))).map(_.sum)
-        }
-      })
-    }
-  }
+//  def updateLabelsColumnEdges: Future[List[Int]] = {
+//    val c1: Future[List[(String, List[Int])]] = db.run(Labels._table.map(p => (p.name, p.notes)).to[List].result)
+//    val c2: Future[List[(String, Int)]] = c1.map(_.flatMap(p => p._2.map((p._1, _))))
+//    val c3: Future[List[List[String]]] = c2.map(_.groupBy(_._2).map { case (k, v) => (k, v.map(_._1)) }.map(_._2).toList)
+//    c3.flatMap { labelGroup =>
+//      Future.sequence(labelGroup.map { labelNames =>
+//        labelNames match {
+//          case List(name) => updateLabelsColumnEdgesByid(name, Nil)
+//          case _ => Future.sequence(labelNames.map(name => updateLabelsColumnEdgesByid(name, labelNames.filter(_ != name)))).map(_.sum)
+//        }
+//      })
+//    }
+//  }
 
-  def updateLabelsColumnEdgesByid(name: String, es: List[String]): Future[Int] = {
-    db.run(Labels._table.filter(_.name === name).map(_.edges).result.head)
-      .flatMap(ee => db.run(Labels._table.filter(_.name === name).map(_.edges).update((ee ::: es).distinct)))
-  }
+//  def updateLabelsColumnEdgesByid(name: String, es: List[String]): Future[Int] = {
+//    db.run(Labels._table.filter(_.name === name).map(_.edges).result.head)
+//      .flatMap(ee => db.run(Labels._table.filter(_.name === name).map(_.edges).update((ee ::: es).distinct)))
+//  }
 
   def getNoteById(id: Int): Future[Note] = {
     db.run(Notes._table.filter(_.id === id).result.head)
   }
 
-  def putNoteById(id: Int, rpn: RestPutNote) = {
-    db.run(Notes._table.filter(_.id === id).map(n => (n.content, n.relations)).update(rpn.content, rpn.relations))
-  }
+//  def putNoteById(id: Int, rpn: RestPutNote) = {
+//    db.run(Notes._table.filter(_.id === id).map(n => (n.content, n.relations)).update(rpn.content, rpn.relations)).flatMap(_ =>
+//
+//    )
+//  }
 
   //  def selectNoteById(id: Int) = {
   //    db.run(Notes._table.filter(_.id === id))

@@ -30,7 +30,7 @@ var NavComponent = (function () {
     NavComponent.prototype.select_label = function (l) {
         if (this.check_label_selected(l)) {
             if (this._selected_labels.length - 1 === 0) {
-                this._labels = this._all_label;
+                this.clear_selected_labels();
             }
             else {
                 this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });

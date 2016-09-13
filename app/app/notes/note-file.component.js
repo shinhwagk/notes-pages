@@ -12,20 +12,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by zhangxu on 2016/8/19.
  */
 var core_1 = require("@angular/core");
-var api_services_1 = require("../api.services");
 var NoteFileComponent = (function () {
-    function NoteFileComponent(_api) {
-        this._api = _api;
+    function NoteFileComponent() {
         this.header = "File";
         this.notes = [];
     }
     Object.defineProperty(NoteFileComponent.prototype, "set_notes", {
-        set: function (ids) {
-            var _this = this;
-            this.notes = [];
-            ids.forEach(function (id) {
-                _this._api.getNote(id).toPromise().then(function (note) { return _this.notes.push(new FileNote(note.id, JSON.parse(note.content), note.relations)); });
-            });
+        set: function (notes) {
+            console.info(notes, "files note before.");
+            this.notes = notes.map(function (n) { return new FileNote(n.id, JSON.parse(n.content), n.relations); });
+            console.info(this.notes, "files note after.");
         },
         enumerable: true,
         configurable: true
@@ -39,10 +35,9 @@ var NoteFileComponent = (function () {
         core_1.Component({
             selector: 'nb-app-note-file',
             templateUrl: "app/notes/note-file.component.html",
-            styleUrls: ["app/notes/note-file.component.css"],
-            providers: [api_services_1.ApiServices]
+            styleUrls: ["app/notes/note-file.component.css"]
         }), 
-        __metadata('design:paramtypes', [api_services_1.ApiServices])
+        __metadata('design:paramtypes', [])
     ], NoteFileComponent);
     return NoteFileComponent;
 }());

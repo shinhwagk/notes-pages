@@ -2,7 +2,11 @@ package database
 
 import java.io.File
 
-import database.table.Notes
+import database.table.LabelsLabelsRelations.LabelsLabelsRelation
+import database.table.LabelsNotesRelations.LabelsNotesRelation
+import database.table.Notes.Note
+import database.table.NotesNotesRelations.NotesNotesRelation
+import database.table.{LabelsLabelsRelations, LabelsNotesRelations, Notes, NotesNotesRelations}
 import models.database.Labels
 import models.database.Labels.Label
 import play.api.libs.json.{Json, Writes}
@@ -17,22 +21,38 @@ object InitDatabase {
   lazy val db = Database.forConfig("default")
 
   def main(args: Array[String]): Unit = {
-    createTables
-
+    //    createTables
+    insertTestData
     //    exportALLLabel
     sleep
   }
 
   def createTables = {
-    db.run(DBIO.seq((Labels._table.schema ++ Notes._table.schema).create)).onComplete {
+    db.run(DBIO.seq((Labels._table.schema
+      ++ Notes._table.schema
+      ++ NotesNotesRelations._table.schema
+      ++ LabelsLabelsRelations._table.schema
+      ++ LabelsNotesRelations._table.schema
+      ).create)).onComplete {
       case Success(_) => println("create table success.")
       case Failure(ex) => println(ex.getMessage)
     }
   }
 
   def insertTestData = {
-    db.run(Labels._table += Label("oracle")).onComplete {
-      case Success(_) => println("create table success.")
+    db.run(DBIO.seq(
+      Labels._table += Label("oracle"),
+      Labels._table += Label("install"),
+      Notes._table += Note(1, "file","""{"title","fff"}"""),
+      Notes._table += Note(1, "concept","""{"title","fff2"}"""),
+      LabelsLabelsRelations._table += LabelsLabelsRelation("oracle", "install"),
+      LabelsLabelsRelations._table += LabelsLabelsRelation("install", "oracle"),
+      LabelsNotesRelations._table += LabelsNotesRelation("oracle", 1),
+      LabelsNotesRelations._table += LabelsNotesRelation("install", 2),
+      LabelsNotesRelations._table += LabelsNotesRelation("install", 1),
+      NotesNotesRelations._table += NotesNotesRelation(1, 2)
+    )).onComplete {
+      case Success(_) => println("insert test data success.")
       case Failure(ex) => println(ex.getMessage)
     }
 

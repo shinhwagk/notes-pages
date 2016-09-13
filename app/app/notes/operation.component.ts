@@ -7,19 +7,15 @@ import {ApiServices} from "../api.services";
 @Component({
   selector: 'nb-app-note-operation',
   templateUrl: `app/notes/operation.component.html`,
-  styleUrls: ["app/notes/operation.component.css"],
-  providers: [ApiServices]
+  styleUrls: ["app/notes/operation.component.css"]
 })
 
 export class NoteOperationComponent {
-  constructor(private _api: ApiServices) {
-  }
 
-  @Input() set set_notes(ids) {
-    this.notes = []
-    ids.forEach(id=> {
-      this._api.getNote(id).toPromise().then(note=> this.notes.push(new OperationNote(note.id, JSON.parse(note.content), note.relations)))
-    })
+  @Input() set set_notes(notes) {
+      console.info(notes, `${this.header} note before.`)
+      this.notes = notes.map(n=>new OperationNote(n.id, JSON.parse(n.content), n.relations))
+      console.info(this.notes, `${this.header} note after`)
   }
 
   header = "Operation"
