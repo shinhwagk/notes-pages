@@ -10,21 +10,24 @@ import {Component, Input} from "@angular/core";
 })
 
 export class NoteOperationComponent {
-  @Input() set set_notes(notes_str: string) {
-    let notes = JSON.parse(notes_str)
-    this.notes = notes.map(note=> new OperationNote(note.id,JSON.parse(note.content)))
+  @Input() set set_notes(notes) {
+    console.info(notes, `${this.header} note before.`)
+    this.notes = notes.map(n=>new OperationNote(n.id, JSON.parse(n.content), n.relations))
+    console.info(this.notes, `${this.header} note after`)
   }
 
   header = "Operation"
-  notes: {id: number,content: {title: string}}[] = []
+  notes: OperationNote[] = []
 }
 
 class OperationNote {
   id: number
   content: {title: string}
+  relations: number[]
 
-  constructor(id: number, content: {title: string}) {
+  constructor(id: number, content: {title: string}, relations: number[]) {
     this.id = id
     this.content = content
+    this.relations = relations
   }
 }

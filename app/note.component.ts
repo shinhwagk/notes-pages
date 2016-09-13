@@ -2,7 +2,7 @@
  * Created by zhangxu on 2016/8/23.
  */
 import {ApiServices} from "./api.services";
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 
 @Component({
   selector: 'nb-app-note',
@@ -12,68 +12,98 @@ import {Component, OnInit, Input} from "@angular/core";
 })
 
 export class NoteComponent implements OnInit {
+  _selected_labels: string[] = []
+  _all_label: string[] = []
+  _labels: string[] = []
+  concepts = []
+  commands = []
+  files = []
+  operations = []
+
   ngOnInit(): void {
+    this._api.getAllLabels().toPromise().then(p => {
+      this._all_label = p
+      this._labels = this._all_label
+    })
   }
 
-  constructor(private _apiServices: ApiServices) {
+  constructor(private _api: ApiServices) {
   }
 
-  _note_ids: number[] = []
-
-  _note_commands: Note[] = []
-  _note_concepts: Note[] = []
-  _note_files: Note[] = []
-  _note_operations: Note[] = []
-
-  _note_commands_str: string = "{}"
-  _note_concepts_str: string = "{}"
-  _note_files_str: string = "{}"
-  _note_operations_str: string = "{}"
-
-  clear_note_str_and_note_container() {
-    this._note_commands = []
-    this._note_concepts = []
-    this._note_files = []
-    this._note_operations = []
-    this._note_commands_str = "{}"
-    this._note_concepts_str = "{}"
-    this._note_files_str = "{}"
-    this._note_operations_str = "{}"
+  noteIdCollect(labels, num, noteIdArr, labelArr) {
+    let sl = labels[num]
+    if (num == -1) {
+      this.clearNote()
+      let ids: number[] = this.filterCommonNoteId<number>(noteIdArr, this._selected_labels.length)
+      this._labels = this.filterCommonNoteId<string>(labelArr, this._selected_labels.length)
+      console.info(ids, "noteIdCollect")
+      console.info(labelArr, "noteIdCollect")
+      ids.forEach(id=> this._api.getNote(id).toPromise().then(note=> this.noteDispatcher(note)))
+    } else {
+      this._api.getLabel(sl).toPromise().then((label: {notes: number[],edge: string[]})=> {
+        label.notes.forEach(id=>noteIdArr.push(id))
+        label.edge.forEach(label=>labelArr.push(label))
+        this.noteIdCollect(labels, num - 1, noteIdArr, labelArr)
+      })
+    }
   }
 
-  @Input() set _notes_str(nids: string) {
-    this._note_ids = JSON.parse(nids)
-    this.clear_note_str_and_note_container()
-    this._note_ids.forEach(id =>
-      this._apiServices.getNote(id).toPromise().then(n => this.note_dispatcher(n))
-    )
+  filterCommonNoteId<T>(id_arr, cnt) {
+    let s = new Set<T>()
+    id_arr.filter(le => id_arr.filter(le2 => le2 == le).length >= cnt).forEach(v=>s.add(v))
+    return Array.from<T>(s)
   }
 
-  note_dispatcher(note) {
+  clearNote() {
+    this.concepts = []
+    this.commands = []
+    this.files = []
+    this.operations = []
+  }
+
+  noteDispatcher(note) {
     switch (note.category) {
       case "concept":
-        this._note_concepts.push(note)
-        this._note_concepts_str = JSON.stringify(this._note_concepts)
+        this.concepts.push(note)
+        this.concepts = this.concepts.slice(0)
         break
       case "command":
-        this._note_commands.push(note)
-        this._note_commands_str = JSON.stringify(this._note_commands)
+        this.commands.push(note)
+        this.commands = this.commands.slice(0)
         break
       case "file":
-        this._note_files.push(note)
-        this._note_files_str = JSON.stringify(this._note_files)
+        this.files.push(note)
+        this.files = this.files.slice(0)
         break
       case "operation":
-        this._note_operations.push(note)
-        this._note_operations_str = JSON.stringify(this._note_operations)
+        this.operations.push(note)
+        this.operations = this.operations.slice(0)
         break
       default:
         confirm("Sorry, that color is not in the system yet!");
     }
   }
-}
-export interface Note {
-  id: number;
-  content: string;
-  category: string
+
+  check_label_selected(l: string) {
+    return this._selected_labels.indexOf(l) === -1 ? false : true
+  }
+
+  select_label(l: string) {
+    if (this.check_label_selected(l)) {
+      if (this._selected_labels.length - 1 === 0) {
+        this.clear_selected_labels()
+      } else {
+        this._selected_labels = this._selected_labels.filter(p => p != l)
+        this.noteIdCollect(this._selected_labels, this._selected_labels.length - 1, [], this._selected_labels.slice(0))
+      }
+    } else {
+      this._selected_labels.push(l)
+      this.noteIdCollect(this._selected_labels, this._selected_labels.length - 1, [], this._selected_labels.slice(0))
+    }
+  }
+
+  clear_selected_labels() {
+    this._selected_labels = []
+    this._labels = this._all_label
+  }
 }

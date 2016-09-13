@@ -10,9 +10,10 @@ import {Component, Input} from "@angular/core";
 })
 
 export class NoteFileComponent {
-  @Input() set set_notes(notes_str) {
-    let notes = JSON.parse(notes_str)
-    this.notes = notes.map(note=> new FileNote(note.id,JSON.parse(note.content)))
+  @Input() set set_notes(notes) {
+    console.info(`${this.header} note before.`)
+    this.notes = notes.map(n=>new FileNote(n.id, JSON.parse(n.content), n.relations))
+    console.info(this.notes, `${this.header} note after`)
   }
 
   header = "File"
@@ -22,9 +23,11 @@ export class NoteFileComponent {
 class FileNote {
   id: number
   content: {title: string}
+  relations: number[]
 
-  constructor(id: number, content: {title: string}) {
+  constructor(id: number, content: {title: string}, relations: number[]) {
     this.id = id
     this.content = content
+    this.relations = relations
   }
 }

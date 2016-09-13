@@ -1,18 +1,27 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-7" *ngIf="_note_commands_str !='{}'">
-      <nb-app-note-command [set_notes]="_note_commands_str"></nb-app-note-command>
+    <div class="col-sm-7" [hidden]="commands.length === 0">
+      <nb-app-note-command [set_notes]="commands"></nb-app-note-command>
     </div>
-    <div class="col-sm-5" *ngIf="_note_operations_str !='{}'">
-      <nb-app-note-operation [set_notes]="_note_operations_str"></nb-app-note-operation>
+    <div class="col-sm-5" [hidden]="operations.length === 0">
+      <nb-app-note-operation [set_notes]="operations"></nb-app-note-operation>
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6" *ngIf="_note_concepts_str !='{}'">
-      <nb-app-note-concept [set_notes]="_note_concepts_str"></nb-app-note-concept>
+    <div class="col-sm-6" [hidden]="concepts.length === 0">
+      <nb-app-note-concept  [set_notes]="concepts"></nb-app-note-concept>
     </div>
-    <div class="col-sm-6" *ngIf="_note_files_str !='{}'">
-      <nb-app-note-file [set_notes]="_note_files_str"></nb-app-note-file>
+    <div class="col-sm-6" [hidden]="files.length === 0">
+      <nb-app-note-file [set_notes]="files"></nb-app-note-file>
     </div>
   </div>
 </div>
+
+<ul class="navbar-fixed-bottom">
+  <li *ngFor="let l of _labels"
+      (click)="select_label(l)"
+      [class.selected]="check_label_selected(l)">{{l}}
+  </li>
+  <li><button *ngIf="_selected_labels.length > 0" class="btn btn-secondary btn-sm" (click)="clear_selected_labels()">clear
+  </button></li>
+</ul>
