@@ -1,28 +1,31 @@
 <ul>
-    <li *ngFor="let l of _all_label"
-        (click)="select_label(l)"
-        [class.selected]="check_label_selected(l)">{{l}}
-    </li>
-    <li>
-        <button class="btn btn-secondary btn-sm" (click)="clear_selected_labels()">clear
-        </button>
-    </li>
+  <li *ngFor="let l of _all_label"
+      (click)="select_label(l)"
+      [class.selected]="check_label_selected(l)">{{l}}
+  </li>
+  <li>
+    <button class="btn btn-secondary btn-sm" (click)="clear_selected_labels()">clear
+    </button>
+  </li>
 </ul>
 <div class="container">
-    <div class="row">
-        <button (click)="open_template('concept')" [class.btn-info]="template_concept">concept</button>
-        <button (click)="open_template('command')" [class.btn-info]="template_command">command</button>
-        <button (click)="open_template('file')" [class.btn-info]="template_file">file</button>
-        <button (click)="open_template('operation')" [class.btn-info]="template_operation">operation</button>
-        <button (click)="open_template('label')" [class.btn-info]="template_label">add label</button>
-        <button (click)="open_template('modify')" [class.btn-info]="template_modify">modify</button>
-    </div>
-    <div class="row">
-        <nb-edit-command *ngIf="template_command" [set_labels]="_selected_labels"></nb-edit-command>
-        <nb-edit-concept *ngIf="template_concept" [set_labels]="_selected_labels"></nb-edit-concept>
-        <nb-edit-operation *ngIf="template_operation" [set_labels]="_selected_labels"></nb-edit-operation>
-        <nb-edit-file *ngIf="template_file" [set_labels]="_selected_labels"></nb-edit-file>
-        <nb-edit-label *ngIf="template_label"></nb-edit-label>
-        <nb-edit-modify *ngIf="template_modify"></nb-edit-modify>
-    </div>
+  <div class="row">
+    <form><input #noteid/>
+      <button (click)="deleteNoteId(noteid.value)">delNote</button>
+    </form>
+    <button (click)="open_template('concept')" [class.btn-info]="template_concept">concept</button>
+    <button (click)="open_template('command')" [class.btn-info]="template_command">command</button>
+    <button (click)="open_template('file')" [class.btn-info]="template_file">file</button>
+    <button (click)="open_template('operation')" [class.btn-info]="template_operation">operation</button>
+    <button (click)="open_template('label')" [class.btn-info]="template_label">add label</button>
+    <button (click)="open_template('modify')" [class.btn-info]="template_modify">modify</button>
+  </div>
+  <div class="row">
+    <nb-edit-command *ngIf="template_command" [set_labels]="_selected_labels"></nb-edit-command>
+    <nb-edit-concept *ngIf="template_concept" [set_labels]="_selected_labels"></nb-edit-concept>
+    <nb-edit-operation *ngIf="template_operation" [set_labels]="_selected_labels"></nb-edit-operation>
+    <nb-edit-file *ngIf="template_file" [set_labels]="_selected_labels"></nb-edit-file>
+    <nb-edit-label *ngIf="template_label"></nb-edit-label>
+    <nb-edit-modify *ngIf="template_modify"></nb-edit-modify>
+  </div>
 </div>

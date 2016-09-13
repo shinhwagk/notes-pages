@@ -14,6 +14,8 @@ GET /api/modify/note/:id       controllers.Application.getPutNote(id:Int)
 
 POST /api/label         controllers.Application.addLabel
 
+DELETE /api/note/:id    controllers.Application.deleteNote(id:Int)
+
 
 #export url
 

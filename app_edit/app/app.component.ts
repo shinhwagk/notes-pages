@@ -75,4 +75,8 @@ export class AppComponent implements OnInit {
         }
 
     }
+
+    deleteNoteId(id){
+        this._api.deleteNote(id).toPromise().then(p=>alert(`note delete success: ${id}`))
+    }
 }

@@ -21,11 +21,13 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
-  def insertNote(rNote: RestAddNote) = {
+  def insertNote(rNote: RestAddNote): Future[Int] = {
     val futureNodeId: Future[Int] = db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
-    futureNodeId.flatMap { noteId =>
-      Future.sequence(rNote.labels.map(label => db.run(LabelsNotesRelations._table += LabelsNotesRelation(label, noteId))))
-    }.flatMap(_ => futureNodeId)
+    futureNodeId.flatMap(id =>
+      Future.sequence(rNote.labels.map(name => LabelsNotesRelation(name, id))
+        .map { p => println(p); p }
+        .map(lnr => db.run(LabelsNotesRelations._table += lnr)))
+    ).flatMap(_ => futureNodeId)
   }
 
   def insertLabel(name: String): Future[Int] = {
@@ -50,6 +52,15 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
 
   def insertNotesNotesRelations(nnr: NotesNotesRelation): Future[Int] = {
     db.run(NotesNotesRelations._table += nnr)
+  }
+
+  def deleteLabelsNotesRelations(id: Int): Future[Int] = {
+    db.run(LabelsNotesRelations._table.filter(_.noteId === id).delete)
+  }
+
+  def deleteNotesNotesRelations(id: Int): Future[Int] = {
+    db.run(NotesNotesRelations._table.filter(_.noteId === id).delete).flatMap(_ =>
+      db.run(NotesNotesRelations._table.filter(_.relationId === id).delete))
   }
 
   def updateNoteById(id: Int, rpn: RestPutNote): Future[Int] = {

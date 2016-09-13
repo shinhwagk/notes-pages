@@ -16,46 +16,45 @@ var core_1 = require("@angular/core");
 var NoteComponent = (function () {
     function NoteComponent(_api) {
         this._api = _api;
-        this._note_ids = [];
+        this._selected_labels = [];
+        this._all_label = [];
+        this._labels = [];
         this.concepts = [];
         this.commands = [];
         this.files = [];
         this.operations = [];
-        this.labels = [];
     }
-    NoteComponent.prototype.noteIdCollect = function (labels, num, noteIdArr) {
+    NoteComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._api.getAllLabels().toPromise().then(function (p) {
+            _this._all_label = p;
+            _this._labels = _this._all_label;
+        });
+    };
+    NoteComponent.prototype.noteIdCollect = function (labels, num, noteIdArr, labelArr) {
         var _this = this;
         var sl = labels[num];
         if (num == -1) {
             this.clearNote();
-            var ids = this.filterCommonNoteId(noteIdArr);
+            var ids = this.filterCommonNoteId(noteIdArr, this._selected_labels.length);
+            this._labels = this.filterCommonNoteId(labelArr, this._selected_labels.length);
             console.info(ids, "noteIdCollect");
-            ids.forEach(function (id) {
-                _this._api.getNote(id).toPromise().then(function (note) { return _this.noteDispatcher(note); });
-            });
+            console.info(labelArr, "noteIdCollect");
+            ids.forEach(function (id) { return _this._api.getNote(id).toPromise().then(function (note) { return _this.noteDispatcher(note); }); });
         }
         else {
-            this._api.getLabel(sl).toPromise().then(function (n) {
-                n.notes.forEach(function (id) { return noteIdArr.push(id); });
-                _this.noteIdCollect(labels, num - 1, noteIdArr);
+            this._api.getLabel(sl).toPromise().then(function (label) {
+                label.notes.forEach(function (id) { return noteIdArr.push(id); });
+                label.edge.forEach(function (label) { return labelArr.push(label); });
+                _this.noteIdCollect(labels, num - 1, noteIdArr, labelArr);
             });
         }
     };
-    NoteComponent.prototype.filterCommonNoteId = function (id_arr) {
-        var _this = this;
+    NoteComponent.prototype.filterCommonNoteId = function (id_arr, cnt) {
         var s = new Set();
-        id_arr.filter(function (le) { return id_arr.filter(function (le2) { return le2 == le; }).length >= _this.labels.length; }).forEach(function (v) { return s.add(v); });
+        id_arr.filter(function (le) { return id_arr.filter(function (le2) { return le2 == le; }).length >= cnt; }).forEach(function (v) { return s.add(v); });
         return Array.from(s);
     };
-    Object.defineProperty(NoteComponent.prototype, "_notes_str", {
-        set: function (labels) {
-            this.labels = labels;
-            this.clearNote();
-            this.noteIdCollect(labels, labels.length - 1, []);
-        },
-        enumerable: true,
-        configurable: true
-    });
     NoteComponent.prototype.clearNote = function () {
         this.concepts = [];
         this.commands = [];
@@ -84,11 +83,28 @@ var NoteComponent = (function () {
                 confirm("Sorry, that color is not in the system yet!");
         }
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Object), 
-        __metadata('design:paramtypes', [Object])
-    ], NoteComponent.prototype, "_notes_str", null);
+    NoteComponent.prototype.check_label_selected = function (l) {
+        return this._selected_labels.indexOf(l) === -1 ? false : true;
+    };
+    NoteComponent.prototype.select_label = function (l) {
+        if (this.check_label_selected(l)) {
+            if (this._selected_labels.length - 1 === 0) {
+                this.clear_selected_labels();
+            }
+            else {
+                this._selected_labels = this._selected_labels.filter(function (p) { return p != l; });
+                this.noteIdCollect(this._selected_labels, this._selected_labels.length - 1, [], this._selected_labels.slice(0));
+            }
+        }
+        else {
+            this._selected_labels.push(l);
+            this.noteIdCollect(this._selected_labels, this._selected_labels.length - 1, [], this._selected_labels.slice(0));
+        }
+    };
+    NoteComponent.prototype.clear_selected_labels = function () {
+        this._selected_labels = [];
+        this._labels = this._all_label;
+    };
     NoteComponent = __decorate([
         core_1.Component({
             selector: 'nb-app-note',

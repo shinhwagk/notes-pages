@@ -43,8 +43,12 @@ export class ApiServices {
   }
 
   updateNote(id, note) {
-      console.info(note,'update note')
+    console.info(note, 'update note')
     return this._http.put(`/api/note/${id}`, JSON.stringify(note), this.options).map(res => res.text())
+  }
+
+  deleteNote(id) {
+    return this._http.delete(`/api/note/${id}`).map(res => res.text())
   }
 
   headers = new Headers({'Content-Type': 'application/json'});

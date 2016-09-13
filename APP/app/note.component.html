@@ -16,3 +16,12 @@
     </div>
   </div>
 </div>
+
+<ul class="navbar-fixed-bottom">
+  <li *ngFor="let l of _labels"
+      (click)="select_label(l)"
+      [class.selected]="check_label_selected(l)">{{l}}
+  </li>
+  <li><button *ngIf="_selected_labels.length > 0" class="btn btn-secondary btn-sm" (click)="clear_selected_labels()">clear
+  </button></li>
+</ul>

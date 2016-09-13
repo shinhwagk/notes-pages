@@ -3,7 +3,7 @@ package controllers
 import javax.inject.Inject
 
 import database.Dao
-import database.table.{LabelsLabelsRelations, LabelsNotesRelations, Notes, NotesNotesRelations}
+import database.table.{LabelsNotesRelations, Notes, NotesNotesRelations}
 import models.database.Labels
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.json._
@@ -32,9 +32,13 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
 
   def getLabel(name: String) = Action.async { implicit request =>
     val restLabel = for {
-      edges <- db.run(LabelsLabelsRelations._table.filter(_.center === name).map(_.edge).to[List].result)
       notes <- db.run(LabelsNotesRelations._table.filter(_.labelName === name).map(_.noteId).to[List].result)
-    } yield RestLabel(name, edges, notes)
+      edges <- Future.sequence(notes.map(id => db.run(LabelsNotesRelations._table.filter(_.noteId === id).map(_.labelName).result)))
+        .map(_.flatten.distinct)
+        .map(_.filterNot(_ == name))
+    } yield {
+      RestLabel(name, edges, notes)
+    }
     restLabel.map(rl => Ok(Json.toJson(rl).toString()))
   }
 
@@ -76,6 +80,15 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
         } yield RestPutNote(note.id, note.category, note.content, notes, labels)
       })
       .map(rl => Ok(Json.toJson(rl).toString()))
+  }
+
+  def deleteNote(id: Int) = Action.async { implicit request =>
+    val del = for {
+      delNote <- db.run(Notes._table.filter(_.id === id).delete)
+      dlnr <- dao.deleteLabelsNotesRelations(id)
+      dnnr <- dao.deleteNotesNotesRelations(id)
+    } yield 0
+    del.map(_ => Ok)
   }
 
   //  def getNote(id: Int) = Action.async { implicit request =>
