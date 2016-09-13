@@ -15,6 +15,7 @@ var core_1 = require("@angular/core");
 var NoteConceptComponent = (function () {
     function NoteConceptComponent() {
         this.notes = [];
+        this.header = "Concept";
     }
     Object.defineProperty(NoteConceptComponent.prototype, "set_notes", {
         set: function (notes) {

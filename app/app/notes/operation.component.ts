@@ -2,7 +2,6 @@
  * Created by zhangxu on 2016/8/19.
  */
 import {Component, Input} from "@angular/core";
-import {ApiServices} from "../api.services";
 
 @Component({
   selector: 'nb-app-note-operation',
@@ -11,15 +10,14 @@ import {ApiServices} from "../api.services";
 })
 
 export class NoteOperationComponent {
-
   @Input() set set_notes(notes) {
-      console.info(notes, `${this.header} note before.`)
-      this.notes = notes.map(n=>new OperationNote(n.id, JSON.parse(n.content), n.relations))
-      console.info(this.notes, `${this.header} note after`)
+    console.info(notes, `${this.header} note before.`)
+    this.notes = notes.map(n=>new OperationNote(n.id, JSON.parse(n.content), n.relations))
+    console.info(this.notes, `${this.header} note after`)
   }
 
   header = "Operation"
-  notes: {id: number,content: {title: string}}[] = []
+  notes: OperationNote[] = []
 }
 
 class OperationNote {

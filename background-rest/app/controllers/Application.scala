@@ -3,7 +3,6 @@ package controllers
 import javax.inject.Inject
 
 import database.Dao
-import database.table.LabelsNotesRelations.LabelsNotesRelation
 import database.table.{LabelsLabelsRelations, LabelsNotesRelations, Notes, NotesNotesRelations}
 import models.database.Labels
 import play.api.db.slick.DatabaseConfigProvider
@@ -21,7 +20,6 @@ import scala.concurrent.Future
 class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) extends Controller {
 
   import controllers.ApplicationObject._
-  import database.table.CustomColumnType._
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
@@ -42,45 +40,43 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
 
   def getNote(id: Int) = Action.async { implicit request =>
     val restNote = for {
-      note <- db.run(Notes._table.filter(_.id === id).result.head)
+      note <- dao.selectNoteById(id)
       relations <- db.run(NotesNotesRelations._table.filter(_.noteId === id).map(_.relationId).to[List].result)
     } yield RestNote(note.id, note.category, note.content, relations)
     restNote.map(rl => Ok(Json.toJson(rl).toString()))
   }
 
   def addLabel = Action.async { implicit request =>
-    request.body.asJson.map {
-      restLabel =>
-        val rn = restLabel.as[RestAddLabel]
-        dao.addLabel(rn.name).map(_ => Ok("{}"))
+    request.body.asJson.map { restLabel =>
+      val rn = restLabel.as[RestAddLabel]
+      dao.insertLabel(rn.name).map(_ => Ok("{}"))
     }.getOrElse(Future(InternalServerError("xxx")))
   }
 
-//  def addNote = Action.async { implicit request =>
-//    request.body.asJson.map {
-//      restNote =>
-//        val rn = restNote.as[RestAddNote]
-//        dao.addNote(rn).map(id => Ok(Json.parse(s"[${id}]").toString()))
-//    }.getOrElse(Future(InternalServerError("xxx")))
-//  }
+  def addNote = Action.async { implicit request =>
+    request.body.asJson.map { restNote =>
+      val rn = restNote.as[RestAddNote]
+      dao.insertNote(rn).map(id => Ok(Json.parse(s"[${id}]").toString()))
+    }.getOrElse(Future(InternalServerError("xxx")))
+  }
 
-//  def putNote(id: Int) = Action.async { implicit request =>
-//    request.body.asJson.map {
-//      restPutNote =>
-//        val rpn = restPutNote.as[RestPutNote]
-//        dao.putNoteById(id, rpn).map(_ => Ok("{}"))
-//    }.getOrElse(Future(InternalServerError("xxx")))
-//  }
+  def putNote(id: Int) = Action.async { implicit request =>
+    request.body.asJson.map { restPutNote =>
+      val rpn = restPutNote.as[RestPutNote]
+      dao.updateNoteById(id, rpn).map(_ => Ok("{}"))
+    }.getOrElse(Future(InternalServerError("xxx")))
+  }
 
-//  def getPutNote(id: Int) = Action.async { implicit request =>
-//    db.run(Notes._table.filter(_.id === id).result.head)
-//      .flatMap(note => {
-//        val labelInfo = db.run(Labels._table.map(l => (l.name, l.notes)).to[List].result)
-//        val labels: Future[List[String]] = labelInfo.map(_.filter(_._2.contains(note.id)).map(_._1))
-//        labels.map(RestPutNote2(note.id, note.category, note.content, note.relations, _))
-//      })
-//      .map(rl => Ok(Json.toJson(rl).toString()))
-//  }
+  def getPutNote(id: Int) = Action.async { implicit request =>
+    db.run(Notes._table.filter(_.id === id).result.head)
+      .flatMap(note => {
+        for {
+          labels <- db.run(LabelsNotesRelations._table.filter(_.noteId === id).map(_.labelName).to[List].result)
+          notes <- db.run(NotesNotesRelations._table.filter(_.noteId === id).map(_.relationId).to[List].result)
+        } yield RestPutNote(note.id, note.category, note.content, notes, labels)
+      })
+      .map(rl => Ok(Json.toJson(rl).toString()))
+  }
 
   //  def getNote(id: Int) = Action.async { implicit request =>
   //

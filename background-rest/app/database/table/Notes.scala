@@ -7,8 +7,6 @@ import slick.driver.H2Driver.api._
   */
 object Notes {
 
-  import CustomColumnType._
-
   object NoteCategory {
     val command = "COMMAND"
     val concept = "CONCEPT"

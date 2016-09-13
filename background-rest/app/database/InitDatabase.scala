@@ -21,8 +21,8 @@ object InitDatabase {
   lazy val db = Database.forConfig("default")
 
   def main(args: Array[String]): Unit = {
-    //    createTables
-    insertTestData
+//        createTables
+//    insertTestData
     //    exportALLLabel
     sleep
   }
@@ -43,8 +43,8 @@ object InitDatabase {
     db.run(DBIO.seq(
       Labels._table += Label("oracle"),
       Labels._table += Label("install"),
-      Notes._table += Note(1, "file","""{"title","fff"}"""),
-      Notes._table += Note(1, "concept","""{"title","fff2"}"""),
+      Notes._table += Note(1, "file","""{"title":"fff"}"""),
+      Notes._table += Note(1, "concept","""{"title":"fff2"}"""),
       LabelsLabelsRelations._table += LabelsLabelsRelation("oracle", "install"),
       LabelsLabelsRelations._table += LabelsLabelsRelation("install", "oracle"),
       LabelsNotesRelations._table += LabelsNotesRelation("oracle", 1),

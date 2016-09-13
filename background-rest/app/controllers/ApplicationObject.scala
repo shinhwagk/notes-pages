@@ -18,8 +18,6 @@ object ApplicationObject {
 
   case class RestNote(id: Int, category: String, content: String, relations: List[Int])
 
-  case class RestPutNote2(id: Int, category: String, content: String, relations: List[Int], labels: List[String])
-
   implicit val noteReads = Json.reads[Note]
   implicit val noteWrites = Json.writes[Note]
   implicit val restNoteAddReads = Json.reads[RestAddNote]
@@ -28,6 +26,5 @@ object ApplicationObject {
   implicit val restLabelWrites = Json.writes[RestLabel]
   implicit val restNoteReads = Json.writes[RestNote]
   implicit val restPutNoteReads = Json.reads[RestPutNote]
-  implicit val restPutNote2Reads = Json.reads[RestPutNote2]
-  implicit val restPutNote2Writes = Json.writes[RestPutNote2]
+  implicit val restPutNoteWrites = Json.writes[RestPutNote]
 }

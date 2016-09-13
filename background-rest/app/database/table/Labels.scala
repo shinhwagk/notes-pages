@@ -7,8 +7,6 @@ import slick.driver.H2Driver.api._
   */
 object Labels {
 
-  import database.table.CustomColumnType._
-
   case class Label(name: String, status: Boolean = true)
 
   class Labels(tag: Tag) extends Table[Label](tag, "LABELS") {

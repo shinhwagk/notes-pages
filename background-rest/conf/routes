@@ -6,13 +6,13 @@ GET /api/label/:name    controllers.Application.getLabel(name:String)
 
 GET /api/note/:id       controllers.Application.getNote(id:Int)
 
-#POST /api/note          controllers.Application.addNote
+POST /api/note          controllers.Application.addNote
 
-#PUT /api/note/:id       controllers.Application.putNote(id:Int)
+PUT /api/note/:id       controllers.Application.putNote(id:Int)
 
-#GET /api/modify/note/:id       controllers.Application.getPutNote(id:Int)
+GET /api/modify/note/:id       controllers.Application.getPutNote(id:Int)
 
-#POST /api/label         controllers.Application.addLabel
+POST /api/label         controllers.Application.addLabel
 
 
 #export url

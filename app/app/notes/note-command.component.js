@@ -20,15 +20,12 @@ var NoteCommandComponent = (function () {
     Object.defineProperty(NoteCommandComponent.prototype, "set_notes", {
         set: function (notes) {
             console.info(notes, this.header + " note before.");
-            this.notes = notes.map(function (n) { return new CommandeNote(n.id, JSON.parse(n.content), n.relations); });
+            this.notes = notes.map(function (n) { return new CommandNote(n.id, JSON.parse(n.content), n.relations); });
             console.info(this.notes, this.header + " note after");
         },
         enumerable: true,
         configurable: true
     });
-    NoteCommandComponent.prototype.jsonToString = function (a) {
-        return JSON.stringify(a);
-    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Object), 
@@ -45,11 +42,11 @@ var NoteCommandComponent = (function () {
     return NoteCommandComponent;
 }());
 exports.NoteCommandComponent = NoteCommandComponent;
-var CommandeNote = (function () {
-    function CommandeNote(id, content, relations) {
+var CommandNote = (function () {
+    function CommandNote(id, content, relations) {
         this.id = id;
         this.content = content;
         this.relations = relations;
     }
-    return CommandeNote;
+    return CommandNote;
 }());

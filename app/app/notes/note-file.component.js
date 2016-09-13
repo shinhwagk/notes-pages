@@ -19,9 +19,9 @@ var NoteFileComponent = (function () {
     }
     Object.defineProperty(NoteFileComponent.prototype, "set_notes", {
         set: function (notes) {
-            console.info(notes, "files note before.");
+            console.info(this.header + " note before.");
             this.notes = notes.map(function (n) { return new FileNote(n.id, JSON.parse(n.content), n.relations); });
-            console.info(this.notes, "files note after.");
+            console.info(this.notes, this.header + " note after");
         },
         enumerable: true,
         configurable: true

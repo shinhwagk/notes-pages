@@ -7,7 +7,7 @@ import slick.driver.H2Driver.api._
   */
 object NotesNotesRelations {
 
-  case class NotesNotesRelation(center: Int, relationId: Int)
+  case class NotesNotesRelation(noteId: Int, relationId: Int)
 
   class NotesNotesRelations(tag: Tag) extends Table[NotesNotesRelation](tag, "NOTES_NOTES_RELATION") {
 
