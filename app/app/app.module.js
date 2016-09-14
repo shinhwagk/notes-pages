@@ -15,13 +15,12 @@ var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var http_1 = require("@angular/http");
 var app_component_1 = require("./app.component");
-var note_concept_component_1 = require("./notes/note-concept.component");
-var note_command_component_1 = require("./notes/note-command.component");
-var note_file_component_1 = require("./notes/note-file.component");
 var nav_component_1 = require("./nav.component");
 var note_component_1 = require("./note.component");
-var operation_component_1 = require("./notes/operation.component");
 var relation_component_1 = require("./notes/relation.component");
+var command_component_1 = require("./template/command.component");
+var title_component_1 = require("./template/title.component");
+var category_pipe_1 = require("./template/category.pipe");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -31,11 +30,10 @@ var AppModule = (function () {
             declarations: [app_component_1.AppComponent,
                 nav_component_1.NavComponent,
                 note_component_1.NoteComponent,
-                note_concept_component_1.NoteConceptComponent,
-                note_command_component_1.NoteCommandComponent,
-                note_file_component_1.NoteFileComponent,
-                operation_component_1.NoteOperationComponent,
-                relation_component_1.NoteRelationComponent],
+                relation_component_1.NoteRelationComponent,
+                command_component_1.CommandTemplateComponent,
+                title_component_1.TitleTemplateComponent,
+                category_pipe_1.CategoryFilterPipe],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

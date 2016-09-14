@@ -19,10 +19,8 @@ var NoteComponent = (function () {
         this._selected_labels = [];
         this._all_label = [];
         this._labels = [];
-        this.concepts = [];
-        this.commands = [];
-        this.files = [];
-        this.operations = [];
+        this._notes = [];
+        this.categorys = [];
     }
     NoteComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -31,16 +29,31 @@ var NoteComponent = (function () {
             _this._labels = _this._all_label;
         });
     };
+    NoteComponent.prototype.noteCollect = function (ids, num, noteArr) {
+        var _this = this;
+        var id = ids[num];
+        if (num == -1) {
+            var categorys_1 = new Set();
+            noteArr.forEach(function (note) { return categorys_1.add(note.category); });
+            this.categorys = Array.from(categorys_1);
+            this._notes = noteArr;
+        }
+        else {
+            this._api.getNote(id).toPromise().then(function (note) {
+                noteArr.push(note);
+                _this.noteCollect(ids, num - 1, noteArr);
+            });
+        }
+    };
     NoteComponent.prototype.noteIdCollect = function (labels, num, noteIdArr, labelArr) {
         var _this = this;
         var sl = labels[num];
         if (num == -1) {
-            this.clearNote();
             var ids = this.filterCommonNoteId(noteIdArr, this._selected_labels.length);
             this._labels = this.filterCommonNoteId(labelArr, this._selected_labels.length);
             console.info(ids, "noteIdCollect");
             console.info(labelArr, "noteIdCollect");
-            ids.forEach(function (id) { return _this._api.getNote(id).toPromise().then(function (note) { return _this.noteDispatcher(note); }); });
+            this.noteCollect(ids, ids.length - 1, []);
         }
         else {
             this._api.getLabel(sl).toPromise().then(function (label) {
@@ -54,34 +67,6 @@ var NoteComponent = (function () {
         var s = new Set();
         id_arr.filter(function (le) { return id_arr.filter(function (le2) { return le2 == le; }).length >= cnt; }).forEach(function (v) { return s.add(v); });
         return Array.from(s);
-    };
-    NoteComponent.prototype.clearNote = function () {
-        this.concepts = [];
-        this.commands = [];
-        this.files = [];
-        this.operations = [];
-    };
-    NoteComponent.prototype.noteDispatcher = function (note) {
-        switch (note.category) {
-            case "concept":
-                this.concepts.push(note);
-                this.concepts = this.concepts.slice(0);
-                break;
-            case "command":
-                this.commands.push(note);
-                this.commands = this.commands.slice(0);
-                break;
-            case "file":
-                this.files.push(note);
-                this.files = this.files.slice(0);
-                break;
-            case "operation":
-                this.operations.push(note);
-                this.operations = this.operations.slice(0);
-                break;
-            default:
-                confirm("Sorry, that color is not in the system yet!");
-        }
     };
     NoteComponent.prototype.check_label_selected = function (l) {
         return this._selected_labels.indexOf(l) === -1 ? false : true;
