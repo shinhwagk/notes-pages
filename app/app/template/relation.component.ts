@@ -5,13 +5,13 @@ import {Component, Input} from "@angular/core";
 import {ApiServices} from "../api.services";
 
 @Component({
-  selector: 'nb-app-note-relation',
-  templateUrl: `app/notes/relation.component.html`,
-  styleUrls: ["app/notes/relation.component.css"],
+  selector: 'nb-app-note-template-relation',
+  templateUrl: `app/template/relation.component.html`,
+  styleUrls: ["app/template/relation.component.css"],
   providers: [ApiServices]
 })
 
-export class NoteRelationComponent {
+export class RelationTemplateComponent {
   constructor(private _api: ApiServices) {
   }
 

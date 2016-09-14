@@ -46,7 +46,7 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
     val restNote = for {
       note <- dao.selectNoteById(id)
       relations <- db.run(NotesNotesRelations._table.filter(_.noteId === id).map(_.relationId).to[List].result)
-    } yield RestNote(note.id, note.category, note.content, relations)
+    } yield RestNote(note.id, note.category, Json.parse(note.content).as[List[String]], relations)
     restNote.map(rl => Ok(Json.toJson(rl).toString()))
   }
 

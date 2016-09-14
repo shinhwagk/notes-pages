@@ -1,30 +1,19 @@
 <div class="container-fluid">
-    <div class="row">
-        <template ngFor let-c [ngForOf]="categorys">
-            <div [ngSwitch]="c">
-                <nb-app-note-template-title *ngSwitchCase="'file'" [title]="'file'"
-                                            [notes]="_notes | categoryfilter:'file'"></nb-app-note-template-title>
-                <nb-app-note-template-title *ngSwitchCase="'concept'" [title]="'concept'"
-                                            [notes]="_notes | categoryfilter:'concept'"></nb-app-note-template-title>
-                <nb-app-note-template-title *ngSwitchCase="'operation'" [title]="'operation'"
-                                            [notes]="_notes | categoryfilter:'operation'"></nb-app-note-template-title>
-                <nb-app-note-template-command *ngSwitchCase="'command'" [title]="'command'"
-                                              [notes]="_notes | categoryfilter:'command'"></nb-app-note-template-command>
-                <span *ngSwitchDefault>other</span>
-            </div>
-        </template>
-    </div>
+  <div class="row">
+    <nb-app-note-template-content *ngFor="let c of categorys" [title]="c"
+                                  [notes]="_notes | notesFilterByCategory:c"></nb-app-note-template-content>
+  </div>
 </div>
 
 <ul class="navbar-fixed-bottom">
-    <li *ngFor="let l of _labels"
-        (click)="select_label(l)"
-        [class.selected]="check_label_selected(l)">{{l}}
-    </li>
-    <li>
-        <button *ngIf="_selected_labels.length > 0" class="btn btn-secondary btn-sm"
-                (click)="clear_selected_labels()">
-            clear
-        </button>
-    </li>
+  <li *ngFor="let l of _labels"
+      (click)="select_label(l)"
+      [class.selected]="check_label_selected(l)">{{l}}
+  </li>
+  <li>
+    <button *ngIf="_selected_labels.length > 0" class="btn btn-secondary btn-sm"
+            (click)="clear_selected_labels()">
+      clear
+    </button>
+  </li>
 </ul>

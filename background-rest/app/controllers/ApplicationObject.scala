@@ -16,7 +16,7 @@ object ApplicationObject {
 
   case class RestLabel(name: String, edge: List[String], notes: List[Int])
 
-  case class RestNote(id: Int, category: String, content: String, relations: List[Int])
+  case class RestNote(id: Int, category: String, content: List[String], relations: List[Int])
 
   implicit val noteReads = Json.reads[Note]
   implicit val noteWrites = Json.writes[Note]

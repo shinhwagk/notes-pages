@@ -17,9 +17,8 @@ var http_1 = require("@angular/http");
 var app_component_1 = require("./app.component");
 var nav_component_1 = require("./nav.component");
 var note_component_1 = require("./note.component");
-var relation_component_1 = require("./notes/relation.component");
-var command_component_1 = require("./template/command.component");
-var title_component_1 = require("./template/title.component");
+var relation_component_1 = require("./template/relation.component");
+var content_component_1 = require("./template/content.component");
 var category_pipe_1 = require("./template/category.pipe");
 var AppModule = (function () {
     function AppModule() {
@@ -30,10 +29,9 @@ var AppModule = (function () {
             declarations: [app_component_1.AppComponent,
                 nav_component_1.NavComponent,
                 note_component_1.NoteComponent,
-                relation_component_1.NoteRelationComponent,
-                command_component_1.CommandTemplateComponent,
-                title_component_1.TitleTemplateComponent,
-                category_pipe_1.CategoryFilterPipe],
+                relation_component_1.RelationTemplateComponent,
+                content_component_1.ContentTemplateComponent,
+                category_pipe_1.NotesFilterByCategory],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

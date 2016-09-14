@@ -7,21 +7,19 @@ import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {NavComponent} from "./nav.component";
 import {NoteComponent} from "./note.component";
-import {NoteRelationComponent} from "./notes/relation.component";
-import {CommandTemplateComponent} from "./template/command.component";
-import {TitleTemplateComponent} from "./template/title.component";
-import {CategoryFilterPipe} from "./template/category.pipe";
+import {RelationTemplateComponent} from "./template/relation.component";
+import {ContentTemplateComponent} from "./template/content.component";
+import {NotesFilterByCategory} from "./template/category.pipe";
 
 @NgModule({
-    imports: [BrowserModule, HttpModule],
-    declarations: [AppComponent,
-        NavComponent,
-        NoteComponent,
-        NoteRelationComponent,
-        CommandTemplateComponent,
-        TitleTemplateComponent,
-        CategoryFilterPipe],
-    bootstrap: [AppComponent]
+  imports: [BrowserModule, HttpModule],
+  declarations: [AppComponent,
+    NavComponent,
+    NoteComponent,
+    RelationTemplateComponent,
+    ContentTemplateComponent,
+    NotesFilterByCategory],
+  bootstrap: [AppComponent]
 })
 
 export class AppModule {

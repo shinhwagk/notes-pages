@@ -20,11 +20,12 @@ object InitDatabase {
   lazy val db = Database.forConfig("default")
 
   def main(args: Array[String]): Unit = {
-    //        createTables
-    //    insertTestData
-    exportAllLabelName
-    exportALLabel
-    exportALLNote
+    createTables
+    Thread.sleep(1000)
+    insertTestData
+    //    exportAllLabelName
+    //    exportALLabel
+    //    exportALLNote
     sleep
   }
 
@@ -45,15 +46,17 @@ object InitDatabase {
       Labels._table += Label("install"),
       Labels._table += Label("hadoop"),
       Labels._table += Label("silent"),
-      Notes._table += Note(1, "file","""{"title":"fff"}"""),
-      Notes._table += Note(1, "concept","""{"title":"install"}"""),
-      Notes._table += Note(1, "concept","""{"title":"hadoop install"}"""),
+      Notes._table += Note(1, "file","""["fff"]"""),
+      Notes._table += Note(1, "concept","""["install"]"""),
+      Notes._table += Note(1, "concept","""["hadoop install"]"""),
+      Notes._table += Note(1, "command","""["hadoop install","xxx"]"""),
       LabelsNotesRelations._table += LabelsNotesRelation("oracle", 2),
       LabelsNotesRelations._table += LabelsNotesRelation("install", 2),
       LabelsNotesRelations._table += LabelsNotesRelation("silent", 2),
       LabelsNotesRelations._table += LabelsNotesRelation("oracle", 1),
       LabelsNotesRelations._table += LabelsNotesRelation("hadoop", 3),
       LabelsNotesRelations._table += LabelsNotesRelation("install", 3),
+      LabelsNotesRelations._table += LabelsNotesRelation("install", 4),
       NotesNotesRelations._table += NotesNotesRelation(1, 2)
     )).onComplete {
       case Success(_) => println("insert test data success.")
@@ -118,6 +121,6 @@ object InitDatabase {
   def createDir(path: String) = {
     val f = new File(path)
     val bool = f.mkdir()
-    println(path,bool)
+    println(path, bool)
   }
 }
