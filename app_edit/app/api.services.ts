@@ -18,7 +18,7 @@ export class ApiServices {
     let note: Note = {
       id: 0,
       category: category,
-      content: JSON.stringify(template),
+      content: template,
       labels: labels
     }
     this.postRequest("/api/note", JSON.stringify(note)).toPromise()
@@ -27,7 +27,7 @@ export class ApiServices {
   }
 
   addLabel(label) {
-    return this.postRequest("/api/label", JSON.stringify(label))
+    return this.postRequest("/api/label", {name: label})
   }
 
   postRequest(url, body) {

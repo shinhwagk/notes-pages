@@ -7,6 +7,8 @@ import slick.driver.H2Driver.api._
   */
 object Notes {
 
+  import CustomColumnType._
+
   object NoteCategory {
     val command = "COMMAND"
     val concept = "CONCEPT"
@@ -16,7 +18,7 @@ object Notes {
 
   case class Note(id: Int,
                   category: String,
-                  content: String,
+                  content: List[String],
                   createDate: Long = System.currentTimeMillis(),
                   updateDate: Long = System.currentTimeMillis(),
                   status: Boolean = true)
@@ -27,7 +29,7 @@ object Notes {
 
     def category = column[String]("CATEGORY")
 
-    def content = column[String]("CONTENT")
+    def content = column[List[String]]("CONTENT")
 
     def createDate = column[Long]("CREATE_DATE")
 

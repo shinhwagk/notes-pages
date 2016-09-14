@@ -21,21 +21,16 @@ export class ContentTemplateComponent {
   @Input() title: string
 
   template() {
-    switch (this.title) {
-      case 'command':
-        return 2
-        break
-      case 'file':
-        return 1
-        break
-      case 'concept':
-        return 1
-        break
-      case 'operation':
-        return 1
-        break
-      default :
-        0;
+    if (this.title === "command") {
+      return 2
+    } else if (this.title === "file") {
+      return 1
+    } else if (this.title === "concept") {
+      return 1
+    } else if (this.title === "operation") {
+      return 1
+    } else if (this.title === "parameter") {
+      return 2
     }
   }
 

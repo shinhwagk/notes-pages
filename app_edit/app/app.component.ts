@@ -37,32 +37,16 @@ export class AppComponent implements OnInit {
         this._selected_labels = []
     }
 
-    template_concept = false
-    template_command = false
-    template_file = false
-    template_operation = false
     template_label = false
     template_modify = false
+    template_add = false
 
     open_template(template) {
-        this.template_concept = false
-        this.template_command = false
-        this.template_file = false
-        this.template_operation = false
         this.template_label = false
         this.template_modify = false
         switch (template) {
-            case 'concept':
-                this.template_concept = true
-                break
-            case 'command':
-                this.template_command = true
-                break
-            case 'file':
-                this.template_file = true
-                break
-            case 'operation':
-                this.template_operation = true
+            case 'add':
+                this.template_add = true
                 break
             case 'label':
                 this.template_label = true
@@ -79,4 +63,8 @@ export class AppComponent implements OnInit {
     deleteNoteId(id){
         this._api.deleteNote(id).toPromise().then(p=>alert(`note delete success: ${id}`))
     }
+    addLabelName(name){
+        this._api.addLabel(name).toPromise().then(p => console.info("add label Success."))
+    }
+
 }

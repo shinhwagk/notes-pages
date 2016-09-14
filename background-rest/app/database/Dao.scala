@@ -1,6 +1,7 @@
 package database
 
 import javax.inject.Inject
+
 import database.table.LabelsNotesRelations.LabelsNotesRelation
 import database.table.Notes.Note
 import database.table.NotesNotesRelations.NotesNotesRelation
@@ -8,8 +9,10 @@ import database.table._
 import models.database.Labels
 import models.database.Labels.Label
 import play.api.db.slick.DatabaseConfigProvider
+import play.api.libs.json.Json
 import slick.driver.H2Driver.api._
 import slick.driver.JdbcProfile
+
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
@@ -18,6 +21,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: ExecutionContext) {
 
   import controllers.ApplicationObject._
+  import CustomColumnType._
 
   val db = dbConfigProvider.get[JdbcProfile].db
 
@@ -25,7 +29,6 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
     val futureNodeId: Future[Int] = db.run(Notes._table returning Notes._table.map(_.id) += Note(rNote.id, rNote.category, rNote.content))
     futureNodeId.flatMap(id =>
       Future.sequence(rNote.labels.map(name => LabelsNotesRelation(name, id))
-        .map { p => println(p); p }
         .map(lnr => db.run(LabelsNotesRelations._table += lnr)))
     ).flatMap(_ => futureNodeId)
   }

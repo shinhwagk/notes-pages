@@ -46,12 +46,13 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
     val restNote = for {
       note <- dao.selectNoteById(id)
       relations <- db.run(NotesNotesRelations._table.filter(_.noteId === id).map(_.relationId).to[List].result)
-    } yield RestNote(note.id, note.category, Json.parse(note.content).as[List[String]], relations)
+    } yield RestNote(note.id, note.category, note.content, relations)
     restNote.map(rl => Ok(Json.toJson(rl).toString()))
   }
 
   def addLabel = Action.async { implicit request =>
     request.body.asJson.map { restLabel =>
+      println(restLabel)
       val rn = restLabel.as[RestAddLabel]
       dao.insertLabel(rn.name).map(_ => Ok("{}"))
     }.getOrElse(Future(InternalServerError("xxx")))

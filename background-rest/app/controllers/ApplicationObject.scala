@@ -8,9 +8,9 @@ import play.api.libs.json.Json
   */
 object ApplicationObject {
 
-  case class RestAddNote(id: Int, category: String, content: String, labels: List[String])
+  case class RestAddNote(id: Int, category: String, content: List[String], labels: List[String])
 
-  case class RestPutNote(id: Int, category: String, content: String, relations: List[Int], labels: List[String])
+  case class RestPutNote(id: Int, category: String, content: List[String], relations: List[Int], labels: List[String])
 
   case class RestAddLabel(name: String)
 
