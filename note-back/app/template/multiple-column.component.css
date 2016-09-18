@@ -1,7 +1,10 @@
 .card-header {
     font-size: 0.8rem;
     padding: 0.3rem 0.5rem 0.3rem;
-    padding: 0.3rem 0.5rem 0.3rem;
+}
+
+.table {
+    margin-bottom: 0rem;
 }
 
 pre {
@@ -9,11 +12,11 @@ pre {
     margin-bottom: 0rem;
 }
 
-.table {
-    margin-bottom: 0rem;
-}
-
 .table td {
     padding: 0.3rem 0.5rem 0.3rem;
+}
+
+.card-block {
     font-size: 0.8rem;
+    padding: 0.3rem 0.5rem 0.3rem;
 }
