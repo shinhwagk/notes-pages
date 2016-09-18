@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-header">Concept</div>
+  <div class="card-block">
+    <table class="table table-hover">
+      <tr *ngFor="let note of notes">
+        <td><a href="{{note.id}}">{{note.content.title}}</a></td>
+        <td>
+          <nb-app-note-relation *ngIf="note.relations.length > 0"
+                                [set_relation]="note.relations"></nb-app-note-relation>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
