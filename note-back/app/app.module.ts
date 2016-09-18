@@ -8,8 +8,8 @@ import {AppComponent} from "./app.component";
 import {NavComponent} from "./nav.component";
 import {NoteComponent} from "./note.component";
 import {RelationTemplateComponent} from "./template/relation.component";
-import {ContentTemplateComponent} from "./template/content.component";
 import {NotesFilterByCategory} from "./template/category.pipe";
+import {MultipleColumnTemplate} from "./template/multiple-column.component";
 
 @NgModule({
   imports: [BrowserModule, HttpModule],
@@ -17,8 +17,9 @@ import {NotesFilterByCategory} from "./template/category.pipe";
     NavComponent,
     NoteComponent,
     RelationTemplateComponent,
-    ContentTemplateComponent,
-    NotesFilterByCategory],
+    NotesFilterByCategory,
+
+    MultipleColumnTemplate],
   bootstrap: [AppComponent]
 })
 

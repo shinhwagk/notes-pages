@@ -1,0 +1,37 @@
+<ul class="navbar-fixed-top">
+  <li *ngFor="let l of _labels"
+      (click)="select_label(l)"
+      [class.selected]="check_label_selected(l)">{{l}}
+  </li>
+  <li>
+    <button *ngIf="_selected_labels.length > 0" class="btn btn-secondary btn-sm"
+            (click)="clear_selected_labels()">
+      clear
+    </button>
+  </li>
+</ul>
+
+<div class="container-fluid">
+  <div class="row">
+    <nb-app-note-template-multiple-column class="col-sm-7"
+                                          *ngIf="categoryExist('command')"
+                                          [_title]="'command'"
+                                          [set_notes]="_notes | notesFilterByCategory:'command'"></nb-app-note-template-multiple-column>
+    <nb-app-note-template-multiple-column class="col-sm-5"
+                                          *ngIf="categoryExist('concept')"
+                                          [_title]="'concept'"
+                                          [set_notes]="_notes | notesFilterByCategory:'concept'"></nb-app-note-template-multiple-column>
+    <nb-app-note-template-multiple-column class="col-sm-5"
+                                          *ngIf="categoryExist('file')"
+                                          [_title]="'file'"
+                                          [set_notes]="_notes | notesFilterByCategory:'file'"></nb-app-note-template-multiple-column>
+    <nb-app-note-template-multiple-column class="col-sm-5"
+                                          *ngIf="categoryExist('operation')"
+                                          [_title]="'operation'"
+                                          [set_notes]="_notes | notesFilterByCategory:'operation'"></nb-app-note-template-multiple-column>
+    <nb-app-note-template-multiple-column class="col-sm-5"
+                                          *ngIf="categoryExist('parameter')"
+                                          [_title]="'parameter'"
+                                          [set_notes]="_notes | notesFilterByCategory:'parameter'"></nb-app-note-template-multiple-column>
+  </div>
+</div>

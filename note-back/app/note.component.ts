@@ -16,7 +16,6 @@ export class NoteComponent implements OnInit {
   _all_label: string[] = []
   _labels: string[] = []
   _notes = []
-  categorys = []
 
   ngOnInit(): void {
     this._api.getAllLabels().toPromise().then(p => {
@@ -25,16 +24,18 @@ export class NoteComponent implements OnInit {
     })
   }
 
+  map: Map<string, any[]> = new Map<string, any[]>();
+
   constructor(private _api: ApiServices) {
   }
 
+  categoryExist(category) {
+    return this._notes.filter(n=>n.category === category).length > 0
+  }
 
   noteCollect(ids, num, noteArr) {
     let id = ids[num]
     if (num == -1) {
-      let categorys = new Set<string>()
-      noteArr.forEach(note=>categorys.add(note.category))
-      this.categorys = Array.from<string>(categorys)
       this._notes = noteArr
     } else {
       this._api.getNote(id).toPromise().then(note=> {
