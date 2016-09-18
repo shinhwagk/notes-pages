@@ -71,6 +71,14 @@ object InitDatabase {
     }
   }
 
+  def exportTemplate = {
+    exportAllLabelName
+    Thread.sleep(1000)
+    exportALLabel
+    Thread.sleep(1000)
+    exportALLNote
+  }
+
   /**
     * export operation: all label name
     */
