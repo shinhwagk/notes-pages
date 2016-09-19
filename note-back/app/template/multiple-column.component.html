@@ -6,8 +6,7 @@
         <td><a href="{{note.id}}">{{note.id}}</a></td>
         <td *ngFor="let n of note.content">{{n}}</td>
         <td>
-          <nb-app-note-template-relation *ngIf="note.relations.length > 0"
-                                         [set_relation]="note.relations"></nb-app-note-template-relation>
+          <nb-app-note-template-relation [set_id]="note.id"></nb-app-note-template-relation>
         </td>
       </tr>
     </table>

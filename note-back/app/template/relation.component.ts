@@ -7,17 +7,18 @@ import {ApiServices} from "../api.services";
 @Component({
   selector: 'nb-app-note-template-relation',
   templateUrl: `app/template/relation.component.html`,
-  styleUrls: ["app/template/relation.component.css"],
-  providers: [ApiServices]
+  styleUrls: ["app/template/relation.component.css"]
+  // ,
+  // providers: [ApiServices]
 })
 
 export class RelationTemplateComponent {
-  constructor(private _api: ApiServices) {
+  // constructor(private _api: ApiServices) {
+  // }
+
+  @Input() set set_id(id: number) {
+    this._id = id
   }
 
-  @Input() set set_relation(relations: number[]) {
-    relations.forEach(id=>this._api.getNote(id).toPromise().then(note=> this.notes.push(note)))
-  }
-
-  notes = []
+  _id: number
 }

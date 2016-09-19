@@ -4,11 +4,6 @@
         <i class="fa fa-cog" aria-hidden="true"></i>
     </button>
     <div class="dropdown-menu">
-        <div *ngFor="let n of notes">
-            <a *ngIf="n.category === 'command'">command {{n.id}}</a>
-            <a *ngIf="n.category === 'operation'">operation {{n.id}}</a>
-            <a *ngIf="n.category === 'file'">file {{n.id}}</a>
-            <a *ngIf="n.category === 'concept'">concept {{n.id}}</a>
-        </div>
+        <a href="https://github.com/shinhwagk/note-back/tree/master/notes/{{_id}}">link</a>
     </div>
 </div>

@@ -5,8 +5,8 @@ import {ApiServices} from "./api.services";
 import {Component, OnInit} from "@angular/core";
 
 @Component({
-  selector: 'nb-app-note',
-  templateUrl: `app/note.component.html`,
+  selector: "nb-app-note",
+  templateUrl: "app/note.component.html",
   styleUrls: ["app/note.component.css"],
   providers: [ApiServices]
 })
@@ -74,15 +74,14 @@ export class NoteComponent implements OnInit {
   }
 
   select_label(l: string) {
-    if (this.check_label_selected(l)) {
-      if (this._selected_labels.length - 1 === 0) {
-        this.clear_selected_labels()
-      } else {
-        this._selected_labels = this._selected_labels.filter(p => p != l)
-        this.noteIdCollect(this._selected_labels, this._selected_labels.length - 1, [], this._selected_labels.slice(0))
-      }
+    if (this.check_label_selected(l) && this._selected_labels.length === 1) {
+      this.clear_selected_labels()
     } else {
-      this._selected_labels.push(l)
+      if (this.check_label_selected(l)) {
+        this._selected_labels = this._selected_labels.filter(p => p != l)
+      } else {
+        this._selected_labels.push(l)
+      }
       this.noteIdCollect(this._selected_labels, this._selected_labels.length - 1, [], this._selected_labels.slice(0))
     }
   }
