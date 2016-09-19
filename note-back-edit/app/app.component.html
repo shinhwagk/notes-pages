@@ -18,7 +18,7 @@
       </form>
     </div>
     <div class="col-sm-12">
-      <h3>Add Note</h3>
+      <h3>Add Label</h3>
       <form>
         <input #labelName/>
         <button (click)="addLabelName(labelName.value)">addLabel</button>
@@ -27,9 +27,6 @@
     <div class="col-sm-12">
       <h3>Edit Note</h3>
       <nb-edit-add [set_labels]="_selected_labels"></nb-edit-add>
-    </div>
-    <div class="col-sm-12">
-      <nb-edit-label></nb-edit-label>
     </div>
     <div class="col-sm-12">
       <nb-edit-modify *ngIf="template_modify"></nb-edit-modify>
