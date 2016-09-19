@@ -22,7 +22,7 @@ object InitDatabase {
   def main(args: Array[String]): Unit = {
     createTables
     Thread.sleep(1000)
-    insertTestData
+//    insertTestData
     //    exportAllLabelName
     //    exportALLabel
     //    exportALLNote
