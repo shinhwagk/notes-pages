@@ -1,5 +1,5 @@
-import {Component} from "@angular/core";
-import {ApiServices} from "../api.services";
+import { Component } from "@angular/core";
+import { ApiServices } from "../api.services";
 /**
  * Created by zhangxu on 2016/8/26.
  */
@@ -18,15 +18,30 @@ export class TemplateModifyComponent {
 
   _note: any
   template_name: string
-  template_concept = false
-  template_command = false
-  template_file = false
-  template_operation = false
-  template_label = false
+  // template_concept = false
+  // template_command = false
+  // template_file = false
+  // template_operation = false
+  // template_label = false
   template_modify = false
 
   submit() {
-    this._api.getNote(this._id).toPromise().then(note => this.showTemplate(note))
+    this._api.getNote(this._id).toPromise().then((note: { id: number, category: string, labels: string[], relations: number[], content: string[] }) => {
+      this._note = {
+        id: note.id,
+        category: note.category,
+        content: note.content.map(this.multipleColumn_ContentTemplate),
+        relations: note.relations,
+        labels: note.labels
+      }
+      console.info(this._note)
+      console.info(this._note.content)
+      this.template_modify = true
+    })
+  }
+
+  multipleColumn_ContentTemplate(str: string) {
+    return { value: str }
   }
 
   submit_modify() {
@@ -38,48 +53,5 @@ export class TemplateModifyComponent {
       labels: this._note.labels.split(",")
     }
     this._api.updateNote(this._id, putNote).toPromise().then(note => alert("modify success."))
-  }
-
-  showTemplate(note) {
-    this.closeAllTemplate()
-    switch (note.category) {
-      case 'command':
-        this.modifyTemplate("command", note)
-        this.template_command = true
-        break;
-      case 'file':
-        this.modifyTemplate("file", note)
-        this.template_file = true
-        break;
-      case 'concept':
-        this.modifyTemplate("concept", note)
-        this.template_file = true
-        break;
-      case 'operation':
-        this.modifyTemplate("operation", note)
-        this.template_file = true
-        break;
-      default:
-        confirm("Sorry, that color is not in the system yet!");
-    }
-  }
-
-  modifyTemplate(template_name, note) {
-    this.template_name = template_name
-    this._note = {
-      id: note.id,
-      category: template_name,
-      content: JSON.parse(note.content),
-      relations: JSON.stringify(note.relations),
-      labels: note.labels.toString()
-    }
-  }
-
-  closeAllTemplate() {
-    this.template_concept = false
-    this.template_command = false
-    this.template_file = false
-    this.template_operation = false
-    this.template_label = false
   }
 }

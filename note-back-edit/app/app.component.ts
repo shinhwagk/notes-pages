@@ -64,7 +64,11 @@ export class AppComponent implements OnInit {
         this._api.deleteNote(id).toPromise().then(p=>alert(`note delete success: ${id}`))
     }
     addLabelName(name){
-        this._api.addLabel(name).toPromise().then(p => console.info("add label Success."))
+        
+        this._api.addLabel(name).toPromise().then(p => {
+            console.info("add label Success.")
+            this._all_label.push(name)
+        })
     }
 
 }

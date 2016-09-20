@@ -2,9 +2,10 @@
   <select name="category" (change)="generate_template($event.target.value)" required>
     <option *ngFor="let t of templates" [value]="t[0]">{{t[0]}}</option>
   </select>
-
+  <div><span>{{_selected_labels | json}}</span></div>
   <div *ngFor="let n of _content; let i=index">
     <textarea [(ngModel)]="n.value" cols="100" name="{{i}}" required>{{n.value}}</textarea>
   </div>
   <button type="submit" class="btn btn-default" (click)="submit()">Submit</button>
+  <button type="button" class="btn btn-default" (click)="clear()">Clear</button>
 </form>

@@ -4,7 +4,7 @@
     <table class="table table-hover">
       <tr *ngFor="let note of _notes">
         <td><a href="{{note.id}}">{{note.id}}</a></td>
-        <td *ngFor="let n of note.content">{{n}}</td>
+        <td *ngFor="let n of note.content"><pre>{{n}}</pre></td>
         <td>
           <nb-app-note-template-relation [set_id]="note.id"></nb-app-note-template-relation>
         </td>
