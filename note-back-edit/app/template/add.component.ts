@@ -22,7 +22,8 @@ export class TemplateAddCommponent {
   _content = [{ value: "" }];
   _category: string = ""
   _selected_labels = []
-  templates: [string, number][] = [["", 0], ["file", 1], ["operation", 1], ["command", 2], ["concept", 1], ["parameter", 2], ["abbreviation", 2], ["option", 2], ["operation short", 2]]
+  templates: [string, number][] = [["", 0], ["file", 1], ["operation", 1], ["command", 2], ["concept", 1], ["parameter", 2],
+  ["abbreviation", 2], ["option", 2], ["operation short", 2], ["keymap", 2]]
 
   generate_template(category) {
     this._content = []

@@ -20,9 +20,18 @@ object InitDatabase {
   lazy val db = Database.forConfig("default")
 
   def main(args: Array[String]): Unit = {
-    createTables
-    Thread.sleep(1000)
-//    insertTestData
+    //    createTables
+    //    Thread.sleep(1000)
+    //    updateNodesCategoryById(27, "keymap")
+
+    List(36, 35, 30).foreach { i =>
+      db.run(Notes._table.filter(_.id === i).map(_.category).update("command")).onComplete {
+        case Success(_) => println("create table success.")
+        case Failure(ex) => println(ex.getMessage)
+      }
+    }
+
+    //    insertTestData
     //    exportAllLabelName
     //    exportALLabel
     //    exportALLNote
@@ -36,6 +45,13 @@ object InitDatabase {
       ++ LabelsNotesRelations._table.schema
       ).create)).onComplete {
       case Success(_) => println("create table success.")
+      case Failure(ex) => println(ex.getMessage)
+    }
+  }
+
+  def updateNodesCategoryById(id: Int, category: String) = {
+    db.run(Notes._table.filter(_.id === id).map(_.category).update(category)).onComplete {
+      case Success(_) => println(s"update id:${id},categor:${category}  success.")
       case Failure(ex) => println(ex.getMessage)
     }
   }
