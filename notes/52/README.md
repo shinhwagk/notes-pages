@@ -9,3 +9,8 @@ apt install racket
 
 (setq scheme-program-name "racket")
 ```
+
+###运行
+```text
+M-X:run-scheme
+```
