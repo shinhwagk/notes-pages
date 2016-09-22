@@ -6,9 +6,12 @@
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
 
-<form *ngIf="template_modify" (submit)="submit_modify()">
+<form *ngIf="template_modify">
+  category <input type="text" name="category" [value]="_note.category">
   <div *ngFor="let n of _note.content; let i=index">
     <textarea [(ngModel)]="n.value" cols="100" name="{{i}}" required>{{n.value}}</textarea>
   </div>
-  <button type="submit" class="btn btn-default">Submit</button>
+  relations <input type="text" name="relations" [value]="_note.relations">
+  labels <input type="text" name="labels" [(ngModel)]="_note.labels">
+  <button type="submit" class="btn btn-default" (click)="submit_modify()">Submit</button>
 </form>

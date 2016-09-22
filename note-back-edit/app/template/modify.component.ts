@@ -16,7 +16,7 @@ export class TemplateModifyComponent {
 
   _id: number = 0
 
-  _note: any
+  _note: { id: number, category: string, labels: string, relations: string, content: { value: string }[] }
   template_name: string
   // template_concept = false
   // template_command = false
@@ -31,11 +31,10 @@ export class TemplateModifyComponent {
         id: note.id,
         category: note.category,
         content: note.content.map(this.multipleColumn_ContentTemplate),
-        relations: note.relations,
-        labels: note.labels
+        relations: JSON.stringify(note.relations),
+        labels: JSON.stringify(note.labels)
       }
-      console.info(this._note)
-      console.info(this._note.content)
+      console.info("relations", this._note.relations)
       this.template_modify = true
     })
   }
@@ -45,12 +44,13 @@ export class TemplateModifyComponent {
   }
 
   submit_modify() {
-    let putNote = {
+    console.info(this._note)
+    let putNote: { id: number, category: string, content: string[], relations: number[], labels: string[] } = {
       id: this._note.id,
       category: this._note.category,
-      content: JSON.stringify(this._note.content),
+      content: this._note.content.map(c=>c.value),
       relations: JSON.parse(this._note.relations),
-      labels: this._note.labels.split(",")
+      labels: JSON.parse(this._note.labels)
     }
     this._api.updateNote(this._id, putNote).toPromise().then(note => alert("modify success."))
   }
