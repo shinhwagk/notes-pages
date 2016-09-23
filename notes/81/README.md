@@ -13,11 +13,12 @@
 (defun goku/packages-installed-p()
   (loop for pkg in goku/packages
      when (not (package-installed-p pkd)) do (return nil)
-     finally (return i)))
+     finally (return t)))
      
 (unless (goku/packages-install-p)
   (message "%s" "Refreshing package database...")
   (package-refresh-contents)
+  (dolist (pkg goku/packages)
     (when (not (package-installed-p pkg))
       (package-install pkg))))
 ```
