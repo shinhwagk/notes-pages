@@ -26,7 +26,12 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider, dao: Dao) 
   def index = Action(Ok("<h1>test index</h1>").as("text/html"))
 
   def allLabels = Action.async { implicit request =>
-    db.run(Labels._table.filter(_.status).map(_.name).result)
+    val query = for {
+      (l, ln) <- Labels._table joinLeft LabelsNotesRelations._table on (_.name === _.labelName)
+    } yield (l.name, ln.map(_ => 1).getOrElse(0))
+
+    val query2 = query.groupBy(_._1).map(c => (c._1, c._2.length)).sortBy(_._2.desc).map(_._1)
+    db.run(query2.result)
       .map(rs => Ok(Json.toJson(rs)))
   }
 
