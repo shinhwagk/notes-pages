@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int power(int m, int n);
-//int power(int,int);
+//int power(int,int); 也可以不写变量名
 
 void main(){
   int i;
