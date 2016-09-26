@@ -7,7 +7,7 @@
 </form>
 
 <form *ngIf="template_modify">
-  category <input type="text" name="category" [value]="_note.category">
+  category <input type="text" name="category" [(ngModel)]="_note.category">
   <div *ngFor="let n of _note.content; let i=index">
     <textarea [(ngModel)]="n.value" cols="100" name="{{i}}" required>{{n.value}}</textarea>
   </div>
