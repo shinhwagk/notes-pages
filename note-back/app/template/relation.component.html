@@ -1,9 +1,9 @@
-<div class="btn-group pull-right">
+<div class="btn-group pull-right" *ngIf="docStatus">
     <button type="button" class="btn btn-link btn-sm" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
         <i class="fa fa-cog" aria-hidden="true"></i>
     </button>
     <div class="dropdown-menu">
-        <a href="https://github.com/shinhwagk/note-back/tree/master/notes/{{_id}}" target="_blank">link</a>
+        <a [href]="getUrl()" target="_blank">link</a>
     </div>
 </div>
