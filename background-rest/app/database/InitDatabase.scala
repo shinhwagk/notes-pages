@@ -24,17 +24,17 @@ object InitDatabase {
     //    Thread.sleep(1000)
     //    updateNodesCategoryById(27, "keymap")
 
-//    List(36, 35, 30).foreach { i =>
-//      db.run(Notes._table.filter(_.id === i).map(_.category).update("command")).onComplete {
-//        case Success(_) => println("create table success.")
-//        case Failure(ex) => println(ex.getMessage)
-//      }
-//    }
-
-    db.run(LabelsNotesRelations._table.filter(_.labelName==="angular2").filter(_.noteId===53).delete).onComplete {
-      case Success(_) => println("create table success.")
-      case Failure(ex) => println(ex.getMessage)
+    (197 to 205).foreach { i =>
+      db.run(LabelsNotesRelations._table.filter(_.noteId === i).filter(_.labelName === "command").map(_.labelName).update("variable")).onComplete {
+        case Success(_) => println("create table success.")
+        case Failure(ex) => println(ex.getMessage)
+      }
     }
+
+//    db.run(LabelsNotesRelations._table.filter(_.labelName==="angular2").filter(_.noteId===53).delete).onComplete {
+//      case Success(_) => println("create table success.")
+//      case Failure(ex) => println(ex.getMessage)
+//    }
 
     //    insertTestData
     //    exportAllLabelName
