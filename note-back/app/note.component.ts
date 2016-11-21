@@ -1,8 +1,8 @@
 /**
  * Created by zhangxu on 2016/8/23.
  */
-import {ApiServices} from "./api.services";
-import {Component, OnInit} from "@angular/core";
+import { ApiServices } from "./api.services";
+import { Component, OnInit } from "@angular/core";
 
 @Component({
   selector: "nb-app-note",
@@ -30,7 +30,7 @@ export class NoteComponent implements OnInit {
   }
 
   categoryExist(category) {
-    return this._notes.filter(n=>n.category === category).length > 0
+    return this._notes.filter(n => n.category === category).length > 0
   }
 
   noteCollect(ids, num, noteArr) {
@@ -38,7 +38,7 @@ export class NoteComponent implements OnInit {
     if (num == -1) {
       this._notes = noteArr
     } else {
-      this._api.getNote(id).toPromise().then(note=> {
+      this._api.getNote(id).toPromise().then(note => {
         noteArr.push(note)
         this.noteCollect(ids, num - 1, noteArr)
       })
@@ -54,9 +54,9 @@ export class NoteComponent implements OnInit {
       console.info(labelArr, "noteIdCollect")
       this.noteCollect(ids, ids.length - 1, [])
     } else {
-      this._api.getLabel(sl).toPromise().then((label: {notes: number[],edge: string[]})=> {
-        label.notes.forEach(id=>noteIdArr.push(id))
-        label.edge.forEach(label=>labelArr.push(label))
+      this._api.getLabel(sl).toPromise().then((label: { notes: number[], edge: string[] }) => {
+        label.notes.forEach(id => noteIdArr.push(id))
+        label.edge.forEach(label => labelArr.push(label))
         this.noteIdCollect(labels, num - 1, noteIdArr, labelArr)
       })
     }
@@ -64,7 +64,7 @@ export class NoteComponent implements OnInit {
 
   filterCommonNoteId<T>(id_arr, cnt) {
     let s = new Set<T>()
-    id_arr.filter(le => id_arr.filter(le2 => le2 == le).length >= cnt).forEach(v=>s.add(v))
+    id_arr.filter(le => id_arr.filter(le2 => le2 == le).length >= cnt).forEach(v => s.add(v))
     return Array.from<T>(s)
   }
 

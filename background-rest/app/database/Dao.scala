@@ -62,8 +62,8 @@ class Dao @Inject()(implicit dbConfigProvider: DatabaseConfigProvider, ec: Execu
   }
 
   def deleteNotesNotesRelations(id: Int): Future[Int] = {
-    db.run(NotesNotesRelations._table.filter(_.noteId === id).delete).flatMap(_ =>
-      db.run(NotesNotesRelations._table.filter(_.relationId === id).delete))
+    db.run(NotesNotesRelations._table.filter(_.noteId === id).delete)
+      .flatMap(_ => db.run(NotesNotesRelations._table.filter(_.relationId === id).delete))
   }
 
   def updateNoteById(id: Int, rpn: RestPutNote): Future[Int] = {
